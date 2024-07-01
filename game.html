@@ -102,7 +102,7 @@
                 'mage',
             ];
             const randomImage = images[Math.floor(Math.random() * images.length)];
-            document.getElementById('randomImage').src = `assets/img/${randomImage}.jpg`;
+            document.getElementById('randomImage').src = `assets/img/${randomImage}.jpg` ;
             const pointsToAdd = Math.floor(Math.random() * 10) + 1;
             scores[currentPlayerIndex] += pointsToAdd;
 
@@ -146,28 +146,41 @@
 
             // Images des faces de dés disponibles
             const diceFaces = [
-                'assets/img/face_dice/diamond.png',
-                'assets/img/face_dice/singe.png',
-                'assets/img/face_dice/piece.png',
-                'assets/img/face_dice/tete_de_mort.png',
-                'assets/img/face_dice/perroquet.png',
-                'assets/img/face_dice/epee.png'
+                'diamond',
+                'singe',
+                'piece',
+                'tete_de_mort',
+                'perroquet',
+                'epee'
             ];
 
             // Liste des dés sauvegardés
             const savedDice = Array.from(savedDiceContainer.children);
+
+            // Initialiser un objet pour compter les occurrences de chaque type de dé
+            const diceCount = {
+                diamond: 0,
+                singe: 0,
+                piece: 0,
+                tete_de_mort: 0,
+                perroquet: 0,
+                epee: 0
+            };
 
             // Générer et afficher les dés non sauvegardés avec des images aléatoires
             for (let i = 0; i < 8 - savedDice.length; i++) {
                 const randomIndex = Math.floor(Math.random() * diceFaces.length);
                 const diceFace = diceFaces[randomIndex];
 
+                // Incrémenter le compteur pour ce type de dé
+                diceCount[diceFace]++;
+
                 const diceElement = document.createElement('div');
                 diceElement.classList.add('dice');
-                diceElement.style.backgroundImage = `url('${diceFace}')`;
+                diceElement.style.backgroundImage = `url("assets/img/face_dice/${diceFace}.png")`;
 
                 // Vérifier si le dé est une tête de mort
-                if (diceFace.includes('tete_de_mort.png')) {
+                if (diceFace.includes('tete_de_mort')) {
                     diceElement.classList.add('tete-de-mort-dice'); // Ajouter la classe pour indiquer que le dé est une tête de mort
                     diceElement.classList.add('saved-dice', 'locked-dice'); // Verrouiller le dé tête de mort
                     savedDiceContainer.appendChild(diceElement); // Ajouter directement au conteneur de dés sauvegardés
@@ -184,9 +197,22 @@
                 }
             }
 
-            diceCount = diceContainer.children.length + savedDice.length; // Mettre à jour le nombre total de dés affichés
+            // Afficher les résultats du comptage dans la console
+            const MonTour = new Tour();
+            MonTour.tetesDeMort = diceCount['tete_de_mort'];
+            MonTour.diamonds = diceCount['diamond'];
+            MonTour.pieces = diceCount['piece'];
+            MonTour.singes = diceCount['singe'];
+            MonTour.perroquets = diceCount['perroquet'];
+            MonTour.Epee = diceCount['epee'];
+            console.log(MonTour);
 
-            checkSkull(); // Vérifier s'il y a trois têtes de mort dans les dés sauvegardés après chaque lancer de dés
+
+            // Mettre à jour le nombre total de dés affichés
+            const totalDiceCount = diceContainer.children.length + savedDice.length;
+            console.log('Nombre total de dés affichés:', totalDiceCount);
+
+            checkSkull(); // Vérifier s'il y a trois têtes de mort dans les dés sauvegardés après chaque sauvegarde de dé
         }
 
         function saveDice(diceElement) {
@@ -221,6 +247,113 @@
                 rollDiceButton.disabled = false; // Activer le bouton de lancer de dés
             }
         }
+
+        class Tour {
+            constructor() {
+                this.tetesDeMort = 0;
+                this.singes = 0;
+                this.perroquets = 0;
+                this.diamonds = 0;
+                this.pieces = 0;
+                this.Epee = 0;
+                this.vies = 1;
+                this.banque = 0;
+                this.objectif = null;
+                this.multiplier = 1;
+                this.carteTiree = null;
+                console.log('ZABI');
+            }
+
+            setCarteTiree(carte) {
+                this.carteTiree = carte;
+            }
+
+            ajouterTeteDeMort(nombre = 1) {
+                this.tetesDeMort += nombre;
+            }
+
+            ajouterSinge(nombre = 1) {
+                this.singes += nombre;
+            }
+
+            ajouterPerroquet(nombre = 1) {
+                this.perroquets += nombre;
+            }
+
+            ajouterDiamond(nombre = 1) {
+                this.diamonds += nombre;
+            }
+
+            ajouterPiece(nombre = 1) {
+                this.pieces += nombre;
+            }
+
+            ajouterVie(nombre = 1) {
+                this.vies += nombre;
+            }
+
+            appliquerCarte(carte) {
+                carte.appliquerEffet(this);
+            }
+
+            reset() {
+                this.tetesDeMort = 0;
+                this.singes = 0;
+                this.perroquets = 0;
+                this.diamonds = 0;
+                this.pieces = 0;
+                this.pieces = 0;
+                this.vies = 1;
+                this.banque = 0;
+                this.objectif = null;
+                this.multiplier = 1;
+            }
+
+            mettreAJour(resultats) {
+                this.tetesDeMort += resultats['Tete de mort'];
+                this.singes += resultats['Singe'];
+                this.perroquets += resultats['Perroquet'];
+                this.diamonds += resultats['Diamond'];
+                this.pieces += resultats['Piece'];
+                this.Epee += resultats['Epee'];
+            }
+
+            getTetesDeMort() {
+                return this.tetesDeMort;
+            }
+
+            getSinges() {
+                return this.singes;
+            }
+
+            getPerroquets() {
+                return this.perroquets;
+            }
+
+            getDiamonds() {
+                return this.diamonds;
+            }
+
+            getPieces() {
+                return this.pieces;
+            }
+
+            getVies() {
+                return this.vies;
+            }
+
+            getBanque() {
+                return this.banque;
+            }
+
+            getObjectif() {
+                return this.objectif;
+            }
+
+            getMultiplier() {
+                return this.multiplier;
+            }
+            }
 
     </script>
 </body>
