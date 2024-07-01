@@ -55,6 +55,11 @@
         </div>
     </div>
 
+    <!-- Message Container -->
+    <div id="messageContainer" style="display:none; color: red; font-weight: bold; margin-top: 20px;">
+        Vous avez perdu ! Au suivant !
+    </div>
+
     <script>
         let gameData;
         let scores = [];
@@ -97,7 +102,7 @@
                 'mage',
             ];
             const randomImage = images[Math.floor(Math.random() * images.length)];
-            document.getElementById('randomImage').src = `assets/img/${randomImage}.jpg` ;
+            document.getElementById('randomImage').src = `assets/img/${randomImage}.jpg`;
             const pointsToAdd = Math.floor(Math.random() * 10) + 1;
             scores[currentPlayerIndex] += pointsToAdd;
 
@@ -106,6 +111,12 @@
 
             currentPlayerIndex = (currentPlayerIndex + 1) % gameData.players.length;
             highlightActiveUser(currentPlayerIndex);
+
+            // Vider les dés
+            document.getElementById('diceContainer').innerHTML = '';
+            document.getElementById('savedDiceContainer').innerHTML = '';
+
+            checkSkull(); // Vérifier s'il y a trois têtes de mort dans les dés sauvegardés
         }
 
         function highlightActiveUser(index) {
@@ -157,6 +168,7 @@
 
                 // Vérifier si le dé est une tête de mort
                 if (diceFace.includes('tete_de_mort.png')) {
+                    diceElement.classList.add('tete-de-mort-dice'); // Ajouter la classe pour indiquer que le dé est une tête de mort
                     diceElement.classList.add('saved-dice', 'locked-dice'); // Verrouiller le dé tête de mort
                     savedDiceContainer.appendChild(diceElement); // Ajouter directement au conteneur de dés sauvegardés
                 } else {
@@ -173,6 +185,8 @@
             }
 
             diceCount = diceContainer.children.length + savedDice.length; // Mettre à jour le nombre total de dés affichés
+
+            checkSkull(); // Vérifier s'il y a trois têtes de mort dans les dés sauvegardés après chaque lancer de dés
         }
 
         function saveDice(diceElement) {
@@ -182,6 +196,8 @@
             if (savedDiceContainer.children.length < 8) {
                 diceElement.classList.add('saved-dice'); // Ajouter la classe pour indiquer que le dé est sauvegardé
                 savedDiceContainer.appendChild(diceElement); // Déplacer le dé vers le conteneur de dés sauvegardés
+
+                checkSkull(); // Vérifier s'il y a trois têtes de mort dans les dés sauvegardés après chaque sauvegarde de dé
             }
         }
 
@@ -189,6 +205,21 @@
             const diceContainer = document.getElementById('diceContainer');
             diceElement.classList.remove('saved-dice'); // Retirer la classe pour indiquer que le dé n'est plus sauvegardé
             diceContainer.appendChild(diceElement); // Déplacer le dé vers le conteneur principal de dés
+
+            checkSkull(); // Vérifier s'il y a trois têtes de mort dans les dés sauvegardés après chaque dé-sauvegarde de dé
+        }
+
+        function checkSkull() {
+            const savedDiceContainer = document.getElementById('savedDiceContainer');
+            const rollDiceButton = document.querySelector('button[onclick="rollDice()"]');
+
+            if (savedDiceContainer.querySelectorAll('.locked-dice').length >= 3) {
+                document.getElementById('messageContainer').style.display = 'block'; // Afficher le message
+                rollDiceButton.disabled = true; // Désactiver le bouton de lancer de dés
+            } else {
+                document.getElementById('messageContainer').style.display = 'none'; // Masquer le message
+                rollDiceButton.disabled = false; // Activer le bouton de lancer de dés
+            }
         }
 
     </script>
