@@ -84,21 +84,20 @@
 
         function nextTurn() {
             const images = [
-                'assets/img/pirate.jpg',
-                'assets/img/piece.jpg',
-                'assets/img/diamant.jpg',
-                'assets/img/bateau_300.jpg',
-                'assets/img/bateau_500.jpg',
-                'assets/img/bateau_1000.jpg',
-                'assets/img/singe_perroquet.jpg',
-                'assets/img/tete_de_mort_1.jpg',
-                'assets/img/tete_de_mort_2.jpg',
-                'assets/img/tresor.jpg',
-                'assets/img/mage.jpg',
+                'pirate',
+                'piece',
+                'diamant',
+                'bateau_300',
+                'bateau_500',
+                'bateau_1000',
+                'singe_perroquet',
+                'tete_de_mort_1',
+                'tete_de_mort_2',
+                'tresor',
+                'mage',
             ];
             const randomImage = images[Math.floor(Math.random() * images.length)];
-            document.getElementById('randomImage').src = randomImage;
-
+            document.getElementById('randomImage').src = `assets/img/${randomImage}.jpg` ;
             const pointsToAdd = Math.floor(Math.random() * 10) + 1;
             scores[currentPlayerIndex] += pointsToAdd;
 
