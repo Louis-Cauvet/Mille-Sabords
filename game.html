@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu - Milles Sabord</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="game-info">
+        <h2>Partie Milles - Sabord</h2>
+        <div id="maxPointsInfo"></div>
+        <ul id="playerList">
+            <!-- Liste des joueurs -->
+        </ul>
+    </div>
+
+    <div class="dice-container" id="diceContainer">
+        <!-- Les dés non sauvegardés seront ajoutés ici -->
+    </div>
+    <div class="dice-container" id="savedDiceContainer">
+        <!-- Les dés sauvegardés seront ajoutés ici -->
+    </div>
+    <button onclick="rollDice()">Lancer les dés</button>
+    <div class="image-container">
+        <img id="randomImage" src="" alt="Random Image">
+    </div>
+
+    <div class="photo-buttons">
+        <button class="photo-button" onclick="openModal('leftModal')">Photo</button>
+        <button class="next-turn-button" onclick="nextTurn()">Changer de tour</button>
+        <button class="photo-button" onclick="openModal('rightModal')">Photo</button>
+    </div>
+
+    <!-- Left Modal -->
+    <div id="leftModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('leftModal')">&times;</span>
+            <p>Left Photo Modal</p>
+            <img src="assets/img/regle.jpg" alt="Left Photo" style="width:100%;">
+        </div>
+    </div>
+
+    <!-- Right Modal -->
+    <div id="rightModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('rightModal')">&times;</span>
+            <p>Right Photo Modal</p>
+            <img src="assets/img/point.jpg" alt="Right Photo" style="width:100%;">
+        </div>
+    </div>
+
+    <script>
+        let gameData;
+        let scores = [];
+        let diceCount = 0; // Nombre total de dés affichés
+
+        document.addEventListener('DOMContentLoaded', () => {
+            gameData = JSON.parse(localStorage.getItem('gameData'));
+            const maxPointsInfo = document.getElementById('maxPointsInfo');
+            const playerList = document.getElementById('playerList');
+
+            if (gameData) {
+                maxPointsInfo.textContent = `Points maximum: ${gameData.maxPoints}`;
+                gameData.players.forEach(player => {
+                    scores.push(0);
+                    const li = document.createElement('li');
+                    li.textContent = `${player} - Score: ${scores[scores.length - 1]}`;
+                    playerList.appendChild(li);
+                });
+            } else {
+                alert('Aucune donnée de partie trouvée.');
+            }
+
+            highlightActiveUser(0);
+        });
+
+        let currentPlayerIndex = 0;
+
+        function nextTurn() {
+            const images = [
+                'assets/img/pirate.jpg',
+                'assets/img/piece.jpg',
+                'assets/img/diamant.jpg',
+                'assets/img/bateau_300.jpg',
+                'assets/img/bateau_500.jpg',
+                'assets/img/bateau_1000.jpg',
+                'assets/img/singe_perroquet.jpg',
+                'assets/img/tete_de_mort_1.jpg',
+                'assets/img/tete_de_mort_2.jpg',
+                'assets/img/tresor.jpg',
+                'assets/img/mage.jpg',
+            ];
+            const randomImage = images[Math.floor(Math.random() * images.length)];
+            document.getElementById('randomImage').src = randomImage;
+
+            const pointsToAdd = Math.floor(Math.random() * 10) + 1;
+            scores[currentPlayerIndex] += pointsToAdd;
+
+            const playerListItems = document.querySelectorAll('#playerList li');
+            playerListItems[currentPlayerIndex].textContent = `${gameData.players[currentPlayerIndex]} - Score: ${scores[currentPlayerIndex]}`;
+
+            currentPlayerIndex = (currentPlayerIndex + 1) % gameData.players.length;
+            highlightActiveUser(currentPlayerIndex);
+        }
+
+        function highlightActiveUser(index) {
+            const playerItems = document.querySelectorAll('#playerList li');
+
+            playerItems.forEach(item => {
+                item.classList.remove('active-user');
+            });
+
+            playerItems[index].classList.add('active-user');
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function rollDice() {
+            const diceContainer = document.getElementById('diceContainer');
+            const savedDiceContainer = document.getElementById('savedDiceContainer');
+
+            // Effacer les dés précédemment affichés
+            diceContainer.innerHTML = '';
+
+            // Images des faces de dés disponibles
+            const diceFaces = [
+                'assets/img/face_dice/diamond.png',
+                'assets/img/face_dice/singe.png',
+                'assets/img/face_dice/piece.png',
+                'assets/img/face_dice/tete_de_mort.png',
+                'assets/img/face_dice/perroquet.png',
+                'assets/img/face_dice/epee.png'
+            ];
+
+            // Liste des dés sauvegardés
+            const savedDice = Array.from(savedDiceContainer.children);
+
+            // Générer et afficher les dés non sauvegardés avec des images aléatoires
+            for (let i = 0; i < 8 - savedDice.length; i++) {
+                const randomIndex = Math.floor(Math.random() * diceFaces.length);
+                const diceFace = diceFaces[randomIndex];
+
+                const diceElement = document.createElement('div');
+                diceElement.classList.add('dice');
+                diceElement.style.backgroundImage = `url('${diceFace}')`;
+
+                // Vérifier si le dé est une tête de mort
+                if (diceFace.includes('tete_de_mort.png')) {
+                    diceElement.classList.add('saved-dice', 'locked-dice'); // Verrouiller le dé tête de mort
+                    savedDiceContainer.appendChild(diceElement); // Ajouter directement au conteneur de dés sauvegardés
+                } else {
+                    diceElement.onclick = function () {
+                        if (!diceElement.classList.contains('saved-dice')) {
+                            saveDice(diceElement);
+                        } else {
+                            unsaveDice(diceElement);
+                        }
+                    };
+
+                    diceContainer.appendChild(diceElement);
+                }
+            }
+
+            diceCount = diceContainer.children.length + savedDice.length; // Mettre à jour le nombre total de dés affichés
+        }
+
+        function saveDice(diceElement) {
+            const savedDiceContainer = document.getElementById('savedDiceContainer');
+
+            // Vérifier si le nombre de dés sauvegardés est inférieur à 8
+            if (savedDiceContainer.children.length < 8) {
+                diceElement.classList.add('saved-dice'); // Ajouter la classe pour indiquer que le dé est sauvegardé
+                savedDiceContainer.appendChild(diceElement); // Déplacer le dé vers le conteneur de dés sauvegardés
+            }
+        }
+
+        function unsaveDice(diceElement) {
+            const diceContainer = document.getElementById('diceContainer');
+            diceElement.classList.remove('saved-dice'); // Retirer la classe pour indiquer que le dé n'est plus sauvegardé
+            diceContainer.appendChild(diceElement); // Déplacer le dé vers le conteneur principal de dés
+        }
+
+    </script>
+</body>
+
+</html>
