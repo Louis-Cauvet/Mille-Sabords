@@ -95,3 +95,11 @@ function createGame() {
         alert('Définissez un score à atteindre pour gagner la partie');
     }
 }
+
+
+        function addPirate() {
+            const pirateContainer = document.getElementById('pirateContainer');
+            const pirate = document.createElement('div');
+            pirate.className = 'pirate';
+            pirateContainer.appendChild(pirate);
+        }
