@@ -150,7 +150,7 @@ function rollDice() {
     if (diceContainer.querySelectorAll('.dice').length > 1) {
         rollDiceButton.disabled = true;
 
-        // Initialisation de l'objet pour compter les occurrences de chaque type de dé
+        // on initialise un objet pour compter les occurrences de chaque type de dé
         const diceTypeCount = {
             diamants: 0,
             perroquets: 0,
@@ -163,6 +163,7 @@ function rollDice() {
         const dicesToRoll = diceContainer.querySelectorAll('.dice');
 
         dicesToRoll.forEach(dice => {
+            // On récupère une face de manière aléatoire pour chaque dé, et on fait en sorte qu'il tombe dessus
             const rollingIndex = Math.floor((Math.random() * 6) + 1);
             for (let i = 1; i <= 6; i++) {
                 dice.classList.remove('show-' + i);
@@ -171,35 +172,41 @@ function rollDice() {
                 }
             }
 
+            // On rend actif la face tirée au sort sur chaque dé
             dice.querySelectorAll('.side').forEach(side => {
                 side.classList.remove('active');
             });
             dice.querySelector(`.side:nth-child(${rollingIndex})`).classList.add('active');
 
+            // On incrémente le compteur du type de face correspondant à celle obtenue
             dice.dataset.result = dice.querySelector(`.side.active`).dataset.face;
             diceTypeCount[dice.dataset.result]++;
 
+            // on fixe un délai pour laisser le temps à l'animation de s'exécuter entièrement avant le tri des dés
             setTimeout(function() {
                 if (dice.dataset.result === 'tetes_de_mort') {
+                    // on ajoute automatiquement le dé tête de mort à l'espace de sauvegarde et on le verrouille
                     dice.classList.add('saved-dice', 'locked-dice');
                     savedDiceContainer.appendChild(dice);
                     checkSkull();
                 } else if (finishedPlayerTour == false) {
                     dice.onclick = function () {
+                        // on ajoute le dé choisi par l'utilisateur à l'espace de sauvegarde
                         if (!dice.classList.contains('saved-dice')) {
                             saveDice(dice);
                         } else {
                             unsaveDice(dice);
                         }
                     };
+
                     diceContainer.appendChild(dice);
+                }
+
+                if (finishedPlayerTour === false){
+                    rollDiceButton.disabled = false;
                 }
             }, 1500);
         });
-
-        if (finishedPlayerTour === false) {
-            rollDiceButton.disabled = false;
-        }
 
         const dicestoSave = savedDiceContainer.querySelectorAll('.saved-dice');
         dicestoSave.forEach(diceSaved => {
@@ -221,12 +228,9 @@ function rollDice() {
         // Affichage du score potentiel dans la console
         console.log("Score potentiel après ce lancer :", playerTour.scorePotentiel);
     } else {
-        alert("Vous ne pouvez pas relancer avec un seul dé dans votre zone de relance !");
+        alert("Vous ne pouvez pas relancer avec un seul dé dans votre zone de relance !")
     }
 }
-
-
-
 
 
 /*************************************
@@ -291,7 +295,6 @@ function nextTurn() {
     // Démarrer le tour du prochain joueur
     startPlayerTour();
 }
-
 
 //
 //
