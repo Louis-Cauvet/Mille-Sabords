@@ -14,7 +14,9 @@ class Tour {
         this.objectifBateau = null;
         this.scoreBateau = null;
         this.bonusCapitaine = false;
+        this.indiceReduction = 100;
         this.banque = false;
+        this.groupeAnimaux = false;
         this.score = 0;
         this.scorePotentiel = 0;
     }
@@ -115,12 +117,28 @@ class Tour {
         this.bonusCapitaine = value;
     }
 
+    getIndiceReduction() {
+        return this.indiceReduction;
+    }
+
+    setIndiceReduction(value) {
+        this.indiceReduction = value;
+    }
+
     getBanque() {
         return this.banque;
     }
 
     setBanque(value) {
         this.banque = value;
+    }
+
+    getGroupeAnimaux() {
+        return this.groupeAnimaux;
+    }
+
+    setGroupeAnimaux(value) {
+        this.groupeAnimaux = value;
     }
 
     appliquerCarte(carte) {
