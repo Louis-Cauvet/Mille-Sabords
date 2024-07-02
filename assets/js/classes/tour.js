@@ -10,6 +10,7 @@ class Tour {
         this.pieces = 0;
         this.epees = 0;
         this.vies = 0;
+        this.nblancers = 1;
         this.objectifBateau = null;
         this.scoreBateau = null;
         this.bonusCapitaine = false;
@@ -24,6 +25,14 @@ class Tour {
 
     setCarteTiree(carte) {
         this.carteTiree = carte;
+    }
+
+    getnblancers() {
+        return this.nblancers;
+    }
+
+    setnblancers(value) {
+        this.nblancers = value;
     }
 
     getTetesDeMort() {
@@ -156,7 +165,7 @@ calculerScorePotentiel() {
         // Attribution du score potentiel calculé à l'attribut de la classe
         this.scorePotentiel = score;
     }
-    
+
     // Affichage du score potentiel dans la console
     console.log("Score potentiel calculé :", this.scorePotentiel);
 
