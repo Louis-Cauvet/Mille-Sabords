@@ -184,8 +184,6 @@ calculerScorePotentiel() {
         this.scorePotentiel = score;
     }
 
-    // Affichage du score potentiel dans la console
-    console.log("Score potentiel calculé :", this.scorePotentiel);
 
     // Affichage du score potentiel dans le div avec l'id scorePotentiel
     const scorePotentielDiv = document.getElementById('scorePotentiel');

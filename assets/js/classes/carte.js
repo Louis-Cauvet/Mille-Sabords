@@ -71,11 +71,13 @@ class Carte {
                 break;
             case 'tete_de_mort_1':
                 playerTour.setTetesDeMort(1);
+                this.addSkullToSavedDices(1);
                 textDescription =
                     'Le tour du joueur débute avec un symbole tête de mort.';
                 break;
             case 'tete_de_mort_2':
                 playerTour.setTetesDeMort(2);
+                this.addSkullToSavedDices(2);
                 textDescription =
                     'Le tour du joueur débute avec deux symboles tête de mort.';
                 break;
@@ -101,11 +103,81 @@ class Carte {
     }
 
     addPieceToSavedDices() {
-        console.log(savedDiceContainer);
+        let pieceDiceHtml = `<div id='dice9' class="dice show-4 saved-dice locked-dice" data-result="pieces">
+                                        <div class='side' data-face="diamants">
+                                            <img src="assets/img/face_dice/diamond.png" alt="face diamant">
+                                        </div>
+                                        <div class='side' data-face="perroquets">
+                                            <img src="assets/img/face_dice/perroquet.png" alt="face perroquet">
+                                        </div>
+                                        <div class='side' data-face="tetes_de_mort">
+                                            <img src="assets/img/face_dice/tete_de_mort.png" alt="face tete de mort">
+                                        </div>
+                                        <div class='side active' data-face="pieces">
+                                            <img src="assets/img/face_dice/piece.png" alt="face piece">
+                                        </div>
+                                        <div class='side' data-face="epees">
+                                            <img src="assets/img/face_dice/epee.png" alt="face epee">
+                                        </div>
+                                        <div class='side' data-face="singes">
+                                            <img src="assets/img/face_dice/singe.png" alt="face singe">
+                                        </div>
+                                    </div>`;
+        savedDiceContainer.innerHTML += pieceDiceHtml;
     }
 
     addDiamantToSavedDices() {
-        console.log(savedDiceContainer);
+        let pieceDiceHtml = `<div id='dice9' class="dice show-1 saved-dice locked-dice" data-result="diamants">
+                                        <div class='side active' data-face="diamants">
+                                            <img src="assets/img/face_dice/diamond.png" alt="face diamant">
+                                        </div>
+                                        <div class='side' data-face="perroquets">
+                                            <img src="assets/img/face_dice/perroquet.png" alt="face perroquet">
+                                        </div>
+                                        <div class='side' data-face="tetes_de_mort">
+                                            <img src="assets/img/face_dice/tete_de_mort.png" alt="face tete de mort">
+                                        </div>
+                                        <div class='side' data-face="pieces">
+                                            <img src="assets/img/face_dice/piece.png" alt="face piece">
+                                        </div>
+                                        <div class='side' data-face="epees">
+                                            <img src="assets/img/face_dice/epee.png" alt="face epee">
+                                        </div>
+                                        <div class='side' data-face="singes">
+                                            <img src="assets/img/face_dice/singe.png" alt="face singe">
+                                        </div>
+                                    </div>`;
+        savedDiceContainer.innerHTML += pieceDiceHtml;
+    }
+
+    addSkullToSavedDices(skullsNumber) {
+        let index  = 9;
+        let skullDicesHtml = '';
+        for (let i=1; i<=skullsNumber; i++) {
+            console.log("coucou");
+            skullDicesHtml += `<div id='dice${index}' class="dice show-3 saved-dice locked-dice" data-result="tetes_de_mort">
+                                        <div class='side' data-face="diamants">
+                                            <img src="assets/img/face_dice/diamond.png" alt="face diamant">
+                                        </div>
+                                        <div class='side' data-face="perroquets">
+                                            <img src="assets/img/face_dice/perroquet.png" alt="face perroquet">
+                                        </div>
+                                        <div class='side active' data-face="tetes_de_mort">
+                                            <img src="assets/img/face_dice/tete_de_mort.png" alt="face tete de mort">
+                                        </div>
+                                        <div class='side' data-face="pieces">
+                                            <img src="assets/img/face_dice/piece.png" alt="face piece">
+                                        </div>
+                                        <div class='side' data-face="epees">
+                                            <img src="assets/img/face_dice/epee.png" alt="face epee">
+                                        </div>
+                                        <div class='side' data-face="singes">
+                                            <img src="assets/img/face_dice/singe.png" alt="face singe">
+                                        </div>
+                                    </div>`;
+            index++;
+        }
+        savedDiceContainer.innerHTML += skullDicesHtml;
     }
 }
 

@@ -97,9 +97,9 @@ function createGame() {
 }
 
 
-        function addPirate() {
-            const pirateContainer = document.getElementById('pirateContainer');
-            const pirate = document.createElement('div');
-            pirate.className = 'pirate';
-            pirateContainer.appendChild(pirate);
-        }
+function addPirate() {
+    const pirateContainer = document.getElementById('pirateContainer');
+    const pirate = document.createElement('div');
+    pirate.className = 'pirate';
+    pirateContainer.appendChild(pirate);
+}

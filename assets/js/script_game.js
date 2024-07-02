@@ -91,8 +91,6 @@ function drawCard() {
 
     // On définit la carte tirée, et on applique son effet
     playerTour.setCarteTiree(playerCard);
-
-    console.log(playerTour);
 }
 
 
@@ -147,7 +145,6 @@ function closeModal(modalId) {
  Lancement des dés de la zone de relance
  *************************************/
  function rollDice() {
-    console.log(playerTour.getnblancers());
     if (diceContainer.querySelectorAll('.dice').length > 1) {
         rollDiceButton.disabled = true;
 
@@ -181,6 +178,7 @@ function closeModal(modalId) {
 
             // On incrémente le compteur du type de face correspondant à celle obtenue
             dice.dataset.result = dice.querySelector(`.side.active`).dataset.face;
+            console.log(diceTypeCount);
             diceTypeCount[dice.dataset.result]++;
 
             // on fixe un délai pour laisser le temps à l'animation de s'exécuter entièrement avant le tri des dés
@@ -189,7 +187,7 @@ function closeModal(modalId) {
                     // on ajoute automatiquement le dé tête de mort à l'espace de sauvegarde et on le verrouille
                     dice.classList.add('saved-dice', 'locked-dice');
                     savedDiceContainer.appendChild(dice);
-                    console.log(playerTour.getnblancers());
+
                     if (playerTour.getnblancers() > 1){
                         checkSkull();
                     }
@@ -212,10 +210,10 @@ function closeModal(modalId) {
             }, 1500);
         });
 
-
         console.log(diceTypeCount);
-        window.playerTour.mettreAJour(diceTypeCount);
-        console.log(playerTour);
+
+
+        playerTour.mettreAJour(diceTypeCount);
 
         // Vérifie les 4 têtes de mort au premier lancer
         if ( playerTour.getnblancers() === 1) {
@@ -246,12 +244,9 @@ function closeModal(modalId) {
         playerTour.setPieces(diceTypeCount.pieces);
         playerTour.setEpees(diceTypeCount.epees);
 
-        console.log(playerTour);
         // Calcul du score potentiel mis à jour
         playerTour.calculerScorePotentiel();
 
-        // Affichage du score potentiel dans la console
-        console.log("Score potentiel après ce lancer :", playerTour.scorePotentiel);
     } else {
         alert("Vous ne pouvez pas relancer avec un seul dé dans votre zone de relance !")
     }
@@ -268,7 +263,7 @@ function rollDiceDeadIsland(){
  Vérification du nombre de tête de morts dans la zone de sauvegarde
  *************************************/
 function checkSkull() {
-    if (window.playerTour.getTetesDeMort() >= 3) {
+    if (playerTour.getTetesDeMort() >= 3) {
         finishedPlayerTour = true;
         rollDiceButton.disabled = true;
         document.getElementById('messageContainer').classList.add('visible');
@@ -282,7 +277,6 @@ function checkSkull() {
  L'ile de la mort : 4 tête de morts au premier lancer
  *************************************/
  function check4Skull(diceTypeCount) {
-    console.log(diceTypeCount['tetes_de_mort']);
     if (diceTypeCount['tetes_de_mort'] >= 4) {
         // Passe au mode île de la mort
         document.body.style.backgroundColor = 'black';
