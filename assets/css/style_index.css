@@ -1,106 +1,128 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+  background-image: url("../img/bg_index.jpg");
+  /* Remplacez cette URL par l'URL de votre image de fond */
+  background-size: cover;
+  background-position: center;
 }
 
 .container {
-    display: flex;
-    gap: 20px;
-    margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
 }
 
 .box {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    text-align: center;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: center;
 }
 
 h1 {
-    color: #333;
+  color: #333;
 }
 
 input[type="text"],
 input[type="number"] {
-    width: calc(100% - 22px);
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+  width: calc(100% - 22px);
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 button {
-    background-color: #28a745;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
+  background-color: #28a745;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
 }
 
 button:disabled {
-    background-color: #ccc;
+  background-color: #ccc;
 }
 
 ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 
 ul li {
-    position: relative;
-    background-color: #e9ecef;
-    margin: 5px 0;
-    padding: 10px;
-    border-radius: 5px;
+  position: relative;
+  background-color: #e9ecef;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .deletePlayerButton {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    margin: 0;
-    padding: 5px 8px;
-    font-size: 16px;
-    line-height: 1;
-    color: white;
-    background-color: #ff6f61;
-    border-radius: 50%;
-    border: none;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  margin: 0;
+  padding: 5px 8px;
+  font-size: 16px;
+  line-height: 1;
+  color: white;
+  background-color: #ff6f61;
+  border-radius: 50%;
+  border: none;
 }
 
 .points-info {
-    margin-top: 20px;
-    font-size: 1.2em;
-    color: #555;
+  margin-top: 20px;
+  font-size: 1.2em;
+  color: #555;
 }
 
 .title {
-    font-size: 2.5em;
-    color: #333;
-    margin-bottom: 20px;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    padding: 10px 20px;
-    border-radius: 10px;
-    background-color: #ff6f61;
-    color: white;
+  font-size: 2.5em;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: #ff6f61;
+  color: white;
 }
 
 .create-game {
-    margin-top: 20px;
-    background-color: #ff6f61;
-    margin-top: 40px;
+  margin-top: 20px;
+  background-color: #ff6f61;
+  margin-top: 40px;
+}
+
+.pirate-container {
+  position: absolute;
+  bottom: 2%;
+  left: 20%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+.pirate {
+  width: 150px;
+  height: 300px;
+  background-image: url("../img/pirate_index-removebg-preview.png");
+  /* Remplacez cette URL par l'URL de votre image de pirate */
+  background-size: cover;
+  background-position: center;
 }
