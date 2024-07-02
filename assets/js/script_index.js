@@ -1,10 +1,17 @@
 "use strict";
 
+/*************************************
+ Variables globales
+ *************************************/
 const minPlayers = 2;
 const maxPlayers = 5;
 let players = [];
 let maxPoints = 0;
 
+
+/*************************************
+ Ajout de joueur
+ *************************************/
 function addPlayer() {
     const playerNameInput = document.getElementById('playerName');
     const playerName = playerNameInput.value.trim();
@@ -20,6 +27,9 @@ function addPlayer() {
     }
 }
 
+/*************************************
+ Mise à jour de la liste des joueurs
+ *************************************/
 function updatePlayerList() {
     const playerList = document.getElementById('playerList');
     playerList.innerHTML = '';
@@ -38,6 +48,9 @@ function updatePlayerList() {
     });
 }
 
+/*************************************
+ Suppression d'un joueur dans la liste
+ *************************************/
 function deletePlayer(event) {
     const userToDelete = event.target.parentElement;
     const playerName = userToDelete.textContent.slice(0, -1).trim(); // on supprime le 'x' du bouton du contenu textuel
@@ -51,6 +64,9 @@ function deletePlayer(event) {
     }
 }
 
+/*************************************
+ Ajout de l'objectif de points à atteindre
+ *************************************/
 function setMaxPoints() {
     const maxPointsInput = document.getElementById('maxPoints');
     maxPoints = parseInt(maxPointsInput.value);
@@ -62,6 +78,9 @@ function setMaxPoints() {
     }
 }
 
+/*************************************
+Lancement du jeu, sous réserve de validation de tous les prérequis pour jouer (joueurs, score objectif)
+ *************************************/
 function createGame() {
     if (players.length >= minPlayers && maxPoints > 0) {
         const gameData = {

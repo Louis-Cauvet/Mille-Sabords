@@ -1,18 +1,28 @@
 "use strict";
 
-let gameData;
-let scores = [];
-let currentPlayerIndex = 0;
-let diceCount = 0; // Nombre total de dés affichés
+/*************************************
+ Variables globales
+ *************************************/
+const gameData = JSON.parse(localStorage.getItem('gameData'));     // données de la partie (choisies dans la page précédente)
+let scores = [];     // Tableau de gestion des scores
+let currentPlayerIndex = 0;   // Indice du joueur actuel
+let finishedPlayerTour = false;   // Blocage du bouton de lancement des dés
 
-// Afficher les données de partie au chargement de la page
+const diceContainer = document.getElementById('rollingDiceContainer');
+const savedDiceContainer = document.getElementById('savedDiceContainer');
+
+const rollDiceButton = document.getElementById('rollDiceButton');
+
+
+/*************************************
+ Affichage des données de partie au chargement de la page
+ *************************************/
 document.addEventListener('DOMContentLoaded', () => {
-    gameData = JSON.parse(localStorage.getItem('gameData'));
     const maxPointsInfo = document.getElementById('goalNumber');
     const playerList = document.getElementById('playersList');
 
     if (gameData) {
-        maxPointsInfo.textContent = `Points maximum: ${gameData.maxPoints}`;
+        maxPointsInfo.textContent = `Objectif : ${gameData.maxPoints}`;
         gameData.players.forEach(player => {
             scores.push(0);
             const li = document.createElement('li');
@@ -23,13 +33,26 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Les données de la partie n\'ont pas été trouvées');
     }
 
-    highlightActiveUser(currentPlayerIndex);
-
-    insertDices();
+    startPlayerTour();
 });
 
+/*************************************
+ Démarrage du nouveau tour d'un joueur
+ *************************************/
+function startPlayerTour() {
+    window.playerTour = new Tour();     // On ajoute la variable de tour de manière globale (en l'attachant à 'window') pour pouvoir y accéder de partout
 
-// Mettre en avant l'utilisateur en train d'effectuer son tour (passé en paramètres)
+    highlightActiveUser(currentPlayerIndex);
+
+    drawCard();
+
+    insertDices();
+}
+
+
+/*************************************
+ Indication visuelle de l'utilisateur en train de jouer
+ *************************************/
 function highlightActiveUser(index) {
     const playerItems = document.querySelectorAll('#playersList li');
 
@@ -40,28 +63,53 @@ function highlightActiveUser(index) {
     playerItems[index].classList.add('active-user');
 }
 
+/*************************************
+ Tirage d'une carte de manière aléatoire
+ *************************************/
+function drawCard() {
+    const images = [
+        'pirate',
+        'piece',
+        'diamant',
+        'bateau_300',
+        'bateau_500',
+        'bateau_1000',
+        'singe_perroquet',
+        'tete_de_mort_1',
+        'tete_de_mort_2',
+        'tresor',
+        'mage',
+    ];
+    const randomImage = images[Math.floor(Math.random() * images.length)];
+    document.getElementById('randomImage').src = `assets/img/cards/${randomImage}.jpg`;
 
+    playerTour.setCarteTiree(randomImage);
+}
+
+
+/*************************************
+ Génération et affichage des 8 dés pour le premier lancement
+ *************************************/
 // Générer les 8 dés pour le premier lancement
 function insertDices() {
-    const diceContainer=  document.getElementById('rollingDiceContainer');
     for (let i=1; i<=8 ; i++) {
-        let newDiceHtml = `<div id='dice${i}' class="dice dice-one">
-                                        <div class='side' data-face="diamant">
+        let newDiceHtml = `<div id='dice${i}' class="dice">
+                                        <div class='side' data-face="diamants">
                                             <img src="assets/img/face_dice/diamond.png" alt="face diamant">
                                         </div>
-                                        <div class='side' data-face="perroquet">
+                                        <div class='side' data-face="perroquets">
                                             <img src="assets/img/face_dice/perroquet.png" alt="face perroquet">
                                         </div>
-                                        <div class='side' data-face="tete-de-mort">
+                                        <div class='side' data-face="tetes_de_mort">
                                             <img src="assets/img/face_dice/tete_de_mort.png" alt="face tete de mort">
                                         </div>
-                                        <div class='side' data-face="piece">
+                                        <div class='side' data-face="pieces">
                                             <img src="assets/img/face_dice/piece.png" alt="face piece">
                                         </div>
-                                        <div class='side' data-face="epee">
+                                        <div class='side' data-face="epees">
                                             <img src="assets/img/face_dice/epee.png" alt="face epee">
                                         </div>
-                                        <div class='side' data-face="singe">
+                                        <div class='side' data-face="singes">
                                             <img src="assets/img/face_dice/singe.png" alt="face singe">
                                         </div>
                                     </div>`;
@@ -69,277 +117,159 @@ function insertDices() {
     }
 }
 
-// Ouvrir une modale
+
+/*************************************
+ Ouverture d'une modale
+ *************************************/
 function openModal(modalId) {
     document.getElementById(modalId).classList.add('visible');
 }
 
-// Fermer une modale
+
+/*************************************
+ Fermeture d'une modale
+ *************************************/
 function closeModal(modalId) {
     document.getElementById(modalId).classList.remove('visible');
 }
 
-// Lancer les dés
+
+/*************************************
+ Lancement des dés de la zone de relance
+ *************************************/
 function rollDice() {
-    const diceContainer = document.getElementById('rollingDiceContainer');
-    const savedDiceContainer = document.getElementById('rollButton');
 
-    const dicesToRoll = diceContainer.querySelectorAll('.dice');
-    dicesToRoll.forEach(dice => {
-        const rollingIndex = Math.floor((Math.random() * 6) + 1);
+    if (diceContainer.querySelectorAll('.dice').length > 1) {
+        rollDiceButton.disabled = true;
 
-        for (let i = 1; i <= 6; i++) {
-            dice.classList.remove('show-' + i);
-            if (rollingIndex === i) {
-                dice.classList.add('show-' + i);
+        // on initialise un objet pour compter les occurrences de chaque type de dé
+        const diceTypeCount = {
+            diamants: 0,
+            perroquets: 0,
+            tetes_de_mort: 0,
+            pieces: 0,
+            epees: 0,
+            singes: 0
+        };
+
+        const dicesToRoll = diceContainer.querySelectorAll('.dice');
+
+        dicesToRoll.forEach(dice => {
+            // On récupère une face de manière aléatoire pour chaque dé, et on fait en sorte qu'il tombe dessus
+            const rollingIndex = Math.floor((Math.random() * 6) + 1);
+            for (let i = 1; i <= 6; i++) {
+                dice.classList.remove('show-' + i);
+                if (rollingIndex === i) {
+                    dice.classList.add('show-' + i);
+                }
             }
+
+            // On rend actif la face tirée au sort sur chaque dé
+            dice.querySelectorAll('.side').forEach(side => {
+                side.classList.remove('active');
+            })
+            dice.querySelector(`.side:nth-child(${rollingIndex})`).classList.add('active');
+
+            // On incrémente le compteur du type de face correspondant à celle obtenue
+            dice.dataset.result = dice.querySelector(`.side.active`).dataset.face;
+            diceTypeCount[dice.dataset.result]++;
+
+            // on fixe un délai pour laisser le temps à l'animation de s'exécuter entièrement avant le tri des dés
+            setTimeout(function() {
+                if (dice.dataset.result === 'tetes_de_mort') {
+                    // on ajoute automatiquement le dé tête de mort à l'espace de sauvegarde et on le verrouille
+                    dice.classList.add('saved-dice', 'locked-dice');
+                    savedDiceContainer.appendChild(dice);
+
+                    checkSkull();
+                } else if(finishedPlayerTour == false) {
+                    dice.onclick = function () {
+                        // on ajoute le dé choisi par l'utilisateur à l'espace de sauvegarde
+                        if (!dice.classList.contains('saved-dice')) {
+                            saveDice(dice);
+                        } else {
+                            unsaveDice(dice);
+                        }
+                    };
+
+                    diceContainer.appendChild(dice);
+                }
+            }, 1500);
+        });
+
+
+
+        if (finishedPlayerTour === false){
+            rollDiceButton.disabled = false;
         }
 
-        dice.dataset.result = rollingIndex;
-    });
+        const dicestoSave = savedDiceContainer.querySelectorAll('.saved-dice');
+        dicestoSave.forEach(diceSaved => {
+            diceTypeCount[diceSaved.dataset.result]++;
+        });
 
-    // // Images des faces de dés disponibles
-    // const diceFaces = [
-    //     'diamond',
-    //     'singe',
-    //     'piece',
-    //     'tete_de_mort',
-    //     'perroquet',
-    //     'epee'
-    // ];
-    //
-    // // Liste des dés sauvegardés
-    // const savedDice = Array.from(savedDiceContainer.children);
-    //
-    // // Initialiser un objet pour compter les occurrences de chaque type de dé
-    // const diceCount = {
-    //     diamond: 0,
-    //     singe: 0,
-    //     piece: 0,
-    //     tete_de_mort: 0,
-    //     perroquet: 0,
-    //     epee: 0
-    // };
-    //
-    // // Générer et afficher les dés non sauvegardés avec des images aléatoires
-    // for (let i = 0; i < 8 - savedDice.length; i++) {
-    //     const randomIndex = Math.floor(Math.random() * diceFaces.length);
-    //     const diceFace = diceFaces[randomIndex];
-    //
-    //     // Incrémenter le compteur pour ce type de dé
-    //     diceCount[diceFace]++;
-    //
-    //     const diceElement = document.createElement('div');
-    //     diceElement.classList.add('dice');
-    //     diceElement.style.backgroundImage = `url("assets/img/face_dice/${diceFace}.png")`;
-    //
-    //     // Vérifier si le dé est une tête de mort
-    //     if (diceFace.includes('tete_de_mort')) {
-    //         diceElement.classList.add('tete-de-mort-dice'); // Ajouter la classe pour indiquer que le dé est une tête de mort
-    //         diceElement.classList.add('saved-dice', 'locked-dice'); // Verrouiller le dé tête de mort
-    //         savedDiceContainer.appendChild(diceElement); // Ajouter directement au conteneur de dés sauvegardés
-    //     } else {
-    //         diceElement.onclick = function () {
-    //             if (!diceElement.classList.contains('saved-dice')) {
-    //                 saveDice(diceElement);
-    //             } else {
-    //                 unsaveDice(diceElement);
-    //             }
-    //         };
-    //
-    //         diceContainer.appendChild(diceElement);
-    //     }
-    // }
-    //
-    // // Afficher les résultats du comptage dans la console
-    // const MonTour = new Tour();
-    // MonTour.tetesDeMort = diceCount['tete_de_mort'];
-    // MonTour.diamonds = diceCount['diamond'];
-    // MonTour.pieces = diceCount['piece'];
-    // MonTour.singes = diceCount['singe'];
-    // MonTour.perroquets = diceCount['perroquet'];
-    // MonTour.Epee = diceCount['epee'];
-    // console.log(MonTour);
-    //
-    //
-    // // Mettre à jour le nombre total de dés affichés
-    // const totalDiceCount = diceContainer.children.length + savedDice.length;
-    // console.log('Nombre total de dés affichés:', totalDiceCount);
-    //
-    // checkSkull(); // Vérifier s'il y a trois têtes de mort dans les dés sauvegardés après chaque sauvegarde de dé
+        console.log(diceTypeCount);
+    } else {
+        alert("Vous ne pouvez pas relancer avec un seul dé dans votre zone de relance !")
+    }
 }
 
-// function nextTurn() {
-//     const images = [
-//         'pirate',
-//         'piece',
-//         'diamant',
-//         'bateau_300',
-//         'bateau_500',
-//         'bateau_1000',
-//         'singe_perroquet',
-//         'tete_de_mort_1',
-//         'tete_de_mort_2',
-//         'tresor',
-//         'mage',
-//     ];
-//     const randomImage = images[Math.floor(Math.random() * images.length)];
-//     document.getElementById('randomImage').src = `assets/img/${randomImage}.jpg` ;
-//     const pointsToAdd = Math.floor(Math.random() * 10) + 1;
-//     scores[currentPlayerIndex] += pointsToAdd;
-//
-//     const playerListItems = document.querySelectorAll('#playerList li');
-//     playerListItems[currentPlayerIndex].textContent = `${gameData.players[currentPlayerIndex]} - Score: ${scores[currentPlayerIndex]}`;
-//
-//     currentPlayerIndex = (currentPlayerIndex + 1) % gameData.players.length;
-//     highlightActiveUser(currentPlayerIndex);
-//
-//     // Vider les dés
-//     document.getElementById('diceContainer').innerHTML = '';
-//     document.getElementById('savedDiceContainer').innerHTML = '';
-//
-//     checkSkull(); // Vérifier s'il y a trois têtes de mort dans les dés sauvegardés
-// }
-//
-// function saveDice(diceElement) {
-//     const savedDiceContainer = document.getElementById('savedDiceContainer');
-//
-//     // Vérifier si le nombre de dés sauvegardés est inférieur à 8
-//     if (savedDiceContainer.children.length < 8) {
-//         diceElement.classList.add('saved-dice'); // Ajouter la classe pour indiquer que le dé est sauvegardé
-//         savedDiceContainer.appendChild(diceElement); // Déplacer le dé vers le conteneur de dés sauvegardés
-//
-//         checkSkull(); // Vérifier s'il y a trois têtes de mort dans les dés sauvegardés après chaque sauvegarde de dé
-//     }
-// }
-//
-// function unsaveDice(diceElement) {
-//     const diceContainer = document.getElementById('diceContainer');
-//     diceElement.classList.remove('saved-dice'); // Retirer la classe pour indiquer que le dé n'est plus sauvegardé
-//     diceContainer.appendChild(diceElement); // Déplacer le dé vers le conteneur principal de dés
-//
-//     checkSkull(); // Vérifier s'il y a trois têtes de mort dans les dés sauvegardés après chaque dé-sauvegarde de dé
-// }
-//
-// function checkSkull() {
-//     const savedDiceContainer = document.getElementById('savedDiceContainer');
-//     const rollDiceButton = document.querySelector('button[onclick="rollDice()"]');
-//
-//     if (savedDiceContainer.querySelectorAll('.locked-dice').length >= 3) {
-//         document.getElementById('messageContainer').style.display = 'block'; // Afficher le message
-//         rollDiceButton.disabled = true; // Désactiver le bouton de lancer de dés
-//     } else {
-//         document.getElementById('messageContainer').style.display = 'none'; // Masquer le message
-//         rollDiceButton.disabled = false; // Activer le bouton de lancer de dés
-//     }
-// }
-//
-// class Tour {
-//     constructor() {
-//         this.tetesDeMort = 0;
-//         this.singes = 0;
-//         this.perroquets = 0;
-//         this.diamonds = 0;
-//         this.pieces = 0;
-//         this.Epee = 0;
-//         this.vies = 1;
-//         this.banque = 0;
-//         this.objectif = null;
-//         this.multiplier = 1;
-//         this.carteTiree = null;
-//         console.log('ZABI');
-//     }
-//
-//     setCarteTiree(carte) {
-//         this.carteTiree = carte;
-//     }
-//
-//     ajouterTeteDeMort(nombre = 1) {
-//         this.tetesDeMort += nombre;
-//     }
-//
-//     ajouterSinge(nombre = 1) {
-//         this.singes += nombre;
-//     }
-//
-//     ajouterPerroquet(nombre = 1) {
-//         this.perroquets += nombre;
-//     }
-//
-//     ajouterDiamond(nombre = 1) {
-//         this.diamonds += nombre;
-//     }
-//
-//     ajouterPiece(nombre = 1) {
-//         this.pieces += nombre;
-//     }
-//
-//     ajouterVie(nombre = 1) {
-//         this.vies += nombre;
-//     }
-//
-//     appliquerCarte(carte) {
-//         carte.appliquerEffet(this);
-//     }
-//
-//     reset() {
-//         this.tetesDeMort = 0;
-//         this.singes = 0;
-//         this.perroquets = 0;
-//         this.diamonds = 0;
-//         this.pieces = 0;
-//         this.pieces = 0;
-//         this.vies = 1;
-//         this.banque = 0;
-//         this.objectif = null;
-//         this.multiplier = 1;
-//     }
-//
-//     mettreAJour(resultats) {
-//         this.tetesDeMort += resultats['Tete de mort'];
-//         this.singes += resultats['Singe'];
-//         this.perroquets += resultats['Perroquet'];
-//         this.diamonds += resultats['Diamond'];
-//         this.pieces += resultats['Piece'];
-//         this.Epee += resultats['Epee'];
-//     }
-//
-//     getTetesDeMort() {
-//         return this.tetesDeMort;
-//     }
-//
-//     getSinges() {
-//         return this.singes;
-//     }
-//
-//     getPerroquets() {
-//         return this.perroquets;
-//     }
-//
-//     getDiamonds() {
-//         return this.diamonds;
-//     }
-//
-//     getPieces() {
-//         return this.pieces;
-//     }
-//
-//     getVies() {
-//         return this.vies;
-//     }
-//
-//     getBanque() {
-//         return this.banque;
-//     }
-//
-//     getObjectif() {
-//         return this.objectif;
-//     }
-//
-//     getMultiplier() {
-//         return this.multiplier;
-//     }
-// }
+
+/*************************************
+ Vérification du nombre de tête de morts dans la zone de sauvegarde
+ *************************************/
+function checkSkull() {
+    if (savedDiceContainer.querySelectorAll('.locked-dice').length >= 3) {
+        finishedPlayerTour = true;
+        rollDiceButton.disabled = true;
+        document.getElementById('messageContainer').classList.add('visible');
+        document.querySelectorAll('.dice-container .overlay').forEach(overlay => {
+            overlay.classList.add('active');
+        })
+    }
+}
+
+
+/*************************************
+ Ajout d'un dé dans la zone de sauvegarde
+ *************************************/
+function saveDice(diceElement) {
+    if (savedDiceContainer.children.length < 8) {
+        diceElement.classList.add('saved-dice');
+        savedDiceContainer.appendChild(diceElement);
+    }
+}
+
+
+/*************************************
+ Retrait d'un dé dans la zone de sauvegarde, pour le remettre dans la zone de relance
+ *************************************/
+function unsaveDice(diceElement) {
+    if (savedDiceContainer.children.length > 1) {
+        diceElement.classList.remove('saved-dice');
+        diceContainer.appendChild(diceElement); // Déplacer le dé vers le conteneur principal de dés
+    } else {
+        alert('Vous devez toujours avoir au moins 1 dé dans la zone de sauvegarde !');
+    }
+}
+
+/*************************************
+ Passage au tour suivant demandé par le joueur
+ *************************************/
+function nextTurn() {
+    const pointsToAdd = Math.floor(Math.random() * 10) + 1;
+    scores[currentPlayerIndex] += pointsToAdd;
+
+    const playerListItems = document.querySelectorAll('#playersList li');
+    playerListItems[currentPlayerIndex].textContent = `${gameData.players[currentPlayerIndex]} - Score: ${scores[currentPlayerIndex]}`;
+
+    currentPlayerIndex = (currentPlayerIndex + 1) % gameData.players.length;
+    highlightActiveUser(currentPlayerIndex);
+
+    // Vider les dés
+    document.getElementById('savedDiceContainer').innerHTML = '';
+}
+
 //
 //
 // const cartes = {
@@ -414,8 +344,6 @@ function rollDice() {
 //     afficherEtatTour(monTour);
 // }
 //
-//
-// const monTour = new Tour();
 //
 // function appliquerCarte(nomCarte) {
 //     const carte = cartes[nomCarte];

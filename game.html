@@ -18,12 +18,14 @@
     </div>
 
     <div class="dice-container" id="rollingDiceContainer">
+        <div class="overlay"></div>
         <!-- Les dés à lancer seront ajoutés ici -->
     </div>
     <div class="dice-container" id="savedDiceContainer">
+        <div class="overlay"></div>
         <!-- Les dés sauvegardés seront ajoutés ici -->
     </div>
-    <button onclick="rollDice()">Lancer les dés</button>
+    <button id="rollDiceButton" onclick="rollDice()">Lancer les dés</button>
     <div class="image-container">
         <img id="randomImage" src="" alt="Random Image">
     </div>
@@ -58,7 +60,6 @@
     </div>
 
     <script src="assets/js/classes/carte.js" type="text/javascript"></script>
-    <script src="assets/js/classes/de.js" type="text/javascript"></script>
     <script src="assets/js/classes/tour.js" type="text/javascript"></script>
     <script src="assets/js/script_game.js" type="text/javascript"></script>
     <noscript><p>JavaScript est désactivé dans votre navigateur. Veuillez l'activer pour profiter pleinement de notre super jeu !</p></noscript>

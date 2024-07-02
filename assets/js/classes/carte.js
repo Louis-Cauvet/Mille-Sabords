@@ -1,4 +1,5 @@
 "use strict";
+
 class Carte {
     constructor(nom, effet) {
         this.nom = nom;
