@@ -229,7 +229,9 @@ function closeModal(modalId) {
         } else {
             checkSkull();
         }
-
+if (playerTour.getCarteTiree().nom === 'mage') {
+        playerTour.replaceSkullDice(); // Remettre un dé tête de mort dans la zone de non sauvegarde
+    }
         // Incrémente le nombre de lancers
         playerTour.setnblancers(playerTour.getnblancers() + 1);
 
@@ -319,26 +321,30 @@ function unsaveDice(diceElement) {
  Passage au tour suivant demandé par le joueur
  *************************************/
 function nextTurn() {
-    // Calculer le score potentiel actuel du joueur
-    playerTour.calculerScorePotentiel();
+    if (playerTour.tetes_de_mort < 3) {
+        // Ajouter le score potentiel au score total du joueur
+        scores[currentPlayerIndex] += playerTour.scorePotentiel;
+    } else {
+        // Si le joueur a tiré 3 têtes de mort, il perd les points potentiels
+        playerTour.scorePotentiel = 0;
+    }
 
-    // Ajouter le score potentiel au score total du joueur
-    scores[currentPlayerIndex] += playerTour.scorePotentiel;
+    // Remise à zéro du score potentiel
+    playerTour.scorePotentiel = 0;
 
-    // Mettre à jour l'affichage du score total du joueur dans la liste des joueurs
     const playerListItems = document.querySelectorAll('#playersList li');
     playerListItems[currentPlayerIndex].textContent = `${gameData.players[currentPlayerIndex]} - Score: ${scores[currentPlayerIndex]}`;
 
-    // Passage au joueur suivant
     currentPlayerIndex = (currentPlayerIndex + 1) % gameData.players.length;
 
     // Vider les dés
     diceContainer.innerHTML = '';
     savedDiceContainer.innerHTML = '';
 
-    // Démarrer le tour du prochain joueur
     startPlayerTour();
 }
+
+
 
 //
 //

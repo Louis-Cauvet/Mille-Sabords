@@ -156,18 +156,57 @@ class Tour {
         this.calculerScorePotentiel();
     }
 
-    // Méthode pour calculer le score potentiel en fonction des dés actuels
+// Méthode pour calculer le score potentiel en fonction des dés actuels
 calculerScorePotentiel() {
     let score = 0;
 
-    // Calcul basique basé sur le nombre de diamants et pièces
-    score += this.diamants * 100;
-    score += this.pieces * 100;
+    // Vérification des cartes spéciales
+    if (this.carteTiree && (this.carteTiree.nom === 'bateau_300' || this.carteTiree.nom === 'bateau_500' || this.carteTiree.nom === 'bateau_1000')) {
+        // Gérer les règles spécifiques pour chaque carte bateau
+        if (this.carteTiree.nom === 'bateau_300') {
+            if (this.epees >= 2) {
+                score += 300;
+                console.log('Bien joué ! Vous avez gagné 300 points !');
+            } else {
+                score -= 300;
+                console.log('Vous avez perdu 300 points !');
+            }
+        } else if (this.carteTiree.nom === 'bateau_500') {
+            if (this.epees >= 3) {
+                score += 500;
+                console.log('Bien joué ! Vous avez gagné 500 points !');
+            } else {
+                score -= 500;
+                console.log('Vous avez perdu 500 points !');
+            }
+        } else if (this.carteTiree.nom === 'bateau_1000') {
+            if (this.epees >= 4) {
+                score += 1000;
+                console.log('Bien joué ! Vous avez gagné 1000 points !');
+            } else {
+                score -= 1000;
+                console.log('Vous avez perdu 1000 points !');
+            }
+        }
+        score += this.diamants * 100;
+        score += this.pieces * 100;
 
-    // Vérifier s'il y a 3 têtes de mort ou plus
-    if (this.tetes_de_mort >= 3) {
-        this.scorePotentiel = 0; // Mettre le score potentiel à zéro
+        // Calcul des points supplémentaires pour séries de dés
+        const counts = [this.singes, this.perroquets, this.epees, this.diamants, this.pieces];
+
+        counts.forEach(count => {
+            if (count === 3) score += 100;
+            else if (count === 4) score += 200;
+            else if (count === 5) score += 500;
+            else if (count === 6) score += 1000;
+            else if (count === 7) score += 2000;
+            else if (count === 8) score += 4000;
+        });
     } else {
+        // Calcul basique basé sur le nombre de diamants et pièces
+        score += this.diamants * 100;
+        score += this.pieces * 100;
+
         // Calcul des points supplémentaires pour séries de dés
         const counts = [this.singes, this.perroquets, this.epees, this.diamants, this.pieces];
 
@@ -180,9 +219,15 @@ calculerScorePotentiel() {
             else if (count === 8) score += 4000;
         });
 
-        // Attribution du score potentiel calculé à l'attribut de la classe
-        this.scorePotentiel = score;
+        // Vérification si le joueur a tiré 3 têtes de mort ou plus
+        if (this.tetes_de_mort >= 3) {
+            score = 0; // Réinitialisation du score potentiel à 0
+            console.log("Vous avez tiré 3 têtes de mort ou plus, score potentiel est maintenant 0.");
+        }
     }
+
+    // Attribution du score potentiel calculé à l'attribut de la classe
+    this.scorePotentiel = score;
 
     // Affichage du score potentiel dans la console
     console.log("Score potentiel calculé :", this.scorePotentiel);
@@ -195,10 +240,17 @@ calculerScorePotentiel() {
         console.error("L'élément avec l'id scorePotentiel n'a pas été trouvé.");
     }
 }
+ajouterScorePotentielAuScore() {
+    this.score += this.scorePotentiel;
+    this.scorePotentiel = 0; // Réinitialisation du score potentiel après l'ajout
 
-// Méthode pour ajouter le score potentiel au score total
-    ajouterScorePotentielAuScore() {
-        this.score += this.scorePotentiel;
-        this.scorePotentiel = 0; // Réinitialisation du score potentiel après l'ajout
+    // Mettre à jour l'affichage du score total dans l'interface si nécessaire
+    const scoreTotalDiv = document.getElementById('scoreTotal');
+    if (scoreTotalDiv) {
+        scoreTotalDiv.textContent = this.score.toString();
+    } else {
+        console.error("L'élément avec l'id scoreTotal n'a pas été trouvé.");
     }
+}
+
 }
