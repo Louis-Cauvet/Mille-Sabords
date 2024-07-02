@@ -11,11 +11,14 @@
 <body>
     <div class="game-info">
         <h1>Partie Mille - Sabords</h1>
+        <p id="iledelamort"></p>
         <div id="goalNumber"></div>
         <ul id="playersList">
             <!-- Liste des joueurs -->
         </ul>
     </div>
+    <div id="scorePotentiel">0</div>
+
 
     <div class="dice-container" id="rollingDiceContainer">
         <div class="overlay"></div>
@@ -28,6 +31,7 @@
     <button id="rollDiceButton" onclick="rollDice()">Lancer les dés</button>
     <div class="image-container">
         <img id="randomImage" src="" alt="Random Image">
+        <p id="card-description"></p>
     </div>
 
     <div class="photo-buttons">
@@ -41,7 +45,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('leftModal')">&times;</span>
             <p>Left Photo Modal</p>
-<!--            <img src="assets/img/regle.jpg" alt="Left Photo">-->
+            <!--            <img src="assets/img/regle.jpg" alt="Left Photo">-->
         </div>
     </div>
 
@@ -62,7 +66,10 @@
     <script src="assets/js/classes/carte.js" type="text/javascript"></script>
     <script src="assets/js/classes/tour.js" type="text/javascript"></script>
     <script src="assets/js/script_game.js" type="text/javascript"></script>
-    <noscript><p>JavaScript est désactivé dans votre navigateur. Veuillez l'activer pour profiter pleinement de notre super jeu !</p></noscript>
+    <noscript>
+        <p>JavaScript est désactivé dans votre navigateur. Veuillez l'activer pour profiter pleinement de notre super
+            jeu !</p>
+    </noscript>
 </body>
 
 </html>

@@ -6,6 +6,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-x: hidden;
 }
 
 .game-info {
@@ -85,8 +86,8 @@ button {
 
 .dice .side {
   position: absolute;
-  background-color: #ffF;
-  border-radius:5px;
+  background-color: #fff;
+  border-radius: 5px;
   width: 50px;
   height: 50px;
   border: 1px solid #e5e5e5;
@@ -166,7 +167,9 @@ button {
 
 .image-container img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
   border-radius: 10px;
 }
 
@@ -286,7 +289,7 @@ button {
 }
 
 #messageContainer {
-  display:none;
+  display: none;
   color: red;
   font-weight: bold;
   margin-top: 20px;
