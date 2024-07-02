@@ -85,8 +85,8 @@ button {
 
 .dice .side {
   position: absolute;
-  background-color: #ffF;
-  border-radius:5px;
+  background-color: #fff;
+  border-radius: 5px;
   width: 50px;
   height: 50px;
   border: 1px solid #e5e5e5;
@@ -288,7 +288,7 @@ button {
 }
 
 #messageContainer {
-  display:none;
+  display: none;
   color: red;
   font-weight: bold;
   margin-top: 20px;
