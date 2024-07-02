@@ -1,27 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter des Joueurs</title>
+    <title>Mille Sabords - Choix des paramètres de partie</title>
     <link rel="stylesheet" href="assets/css/style_index.css">
 </head>
 
 <body>
     <img src="assets/img/bg_index.jpg" alt="image bg" class="img-bg">
-    <div class="title">Milles - Sabord</div>
+    <div class="title">Mille - Sabords</div>
     <div class="container">
         <div class="box">
             <h1>Ajouter des Joueurs</h1>
             <input type="text" id="playerName" placeholder="Nom du joueur">
-            <button id="addPlayerButton" onclick="addPlayer()">Ajouter Joueur</button>
+            <button id="addPlayerButton" onclick="addPlayer()">Ajouter ce joueur</button>
         </div>
         <div class="box">
-            <h1>Définir les Points de la Partie</h1>
-            <input type="number" id="maxPoints" placeholder="Points maximum" min="1">
-            <button id="setPointsButton" onclick="setMaxPoints()">Définir Points</button>
-            <div class="points-info" id="pointsInfo">Points maximum: Non défini</div>
+            <h1>Définir l'objectif de la partie</h1>
+            <input type="number" id="maxPoints" placeholder="Compris entre 4000 et 10000" min="4000" max="10000" step="1000">
+            <button id="setPointsButton" onclick="setMaxPoints()">Choisir cet objectif</button>
+            <div class="points-info" id="pointsInfo">Score à atteindre : <span>Non défini</span></div>
         </div>
     </div>
     <img src="assets/img/branche-removebg.png" alt="image branche" class="img-branche-joueur">
@@ -31,72 +31,10 @@
     <div class="pirate-container" id="pirateContainer"></div>
     <button class="create-game" id="createGameButton" onclick="createGame()">Créer la partie</button>
 
-    <script>
-        const maxPlayers = 5;
-        let players = [];
-        let maxPoints = 0;
-
-        function addPlayer() {
-            const playerNameInput = document.getElementById('playerName');
-            const playerName = playerNameInput.value.trim();
-
-            if (playerName && players.length < maxPlayers) {
-                players.push(playerName);
-                addPlayerImage(playerName);
-                playerNameInput.value = '';
-            } else if (!playerName) {
-                alert('Veuillez entrer un nom de joueur.');
-            } else {
-                alert('Nombre maximum de joueurs atteint.');
-            }
-
-            if (players.length >= maxPlayers) {
-                document.getElementById('addPlayerButton').disabled = true;
-            }
-        }
-
-        function addPlayerImage(playerName) {
-            const playerImageContainer = document.getElementById('playerImageContainer');
-            const playerDiv = document.createElement('div');
-            playerDiv.className = 'player-image-container-ind';
-
-            const playerImg = document.createElement('img');
-            playerImg.src = 'assets/img/pirate_index-removebg-preview.png'; // Utiliser l'image de pirate fixe
-            playerImg.alt = 'Pirate';
-
-            const playerLabel = document.createElement('div');
-            playerLabel.textContent = playerName;
-
-            playerDiv.appendChild(playerImg);
-            playerDiv.appendChild(playerLabel);
-            playerImageContainer.appendChild(playerDiv);
-        }
-
-        function setMaxPoints() {
-            const maxPointsInput = document.getElementById('maxPoints');
-            maxPoints = parseInt(maxPointsInput.value);
-
-            if (maxPoints > 0) {
-                document.getElementById('pointsInfo').textContent = `Points maximum: ${maxPoints}`;
-                maxPointsInput.value = '';
-            } else {
-                alert('Veuillez entrer un nombre de points valide.');
-            }
-        }
-
-        function createGame() {
-            if (players.length > 0 && maxPoints > 0) {
-                const gameData = {
-                    players: players,
-                    maxPoints: maxPoints
-                };
-                localStorage.setItem('gameData', JSON.stringify(gameData));
-                window.location.href = 'game.html';
-            } else {
-                alert('Veuillez ajouter des joueurs et définir les points de la partie.');
-            }
-        }
-    </script>
+    <script src="assets/js/script_index.js" type="text/javascript"></script>
+    <noscript>
+        <p>JavaScript est désactivé dans votre navigateur. Veuillez l'activer pour profiter pleinement de notre super jeu !</p>
+    </noscript>
 </body>
 
 </html>

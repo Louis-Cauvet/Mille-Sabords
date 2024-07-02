@@ -6,7 +6,7 @@
 const minPlayers = 2;
 const maxPlayers = 5;
 let players = [];
-let maxPoints = 0;
+let maxPoints = null;
 
 
 /*************************************
@@ -18,8 +18,12 @@ function addPlayer() {
 
     if (playerName && players.length < maxPlayers) {
         players.push(playerName);
-        updatePlayerList();
+        addPlayerImage(playerName);
         playerNameInput.value = '';
+    } else if (!playerName) {
+        alert('Veuillez entrer un nom de joueur.');
+    } else {
+        alert('Nombre maximum de joueurs atteint.');
     }
 
     if (players.length >= maxPlayers) {
@@ -49,6 +53,26 @@ function updatePlayerList() {
 }
 
 /*************************************
+ Affichage d'un nouveau joueur dans la liste
+ *************************************/
+function addPlayerImage(playerName) {
+    const playerImageContainer = document.getElementById('playerImageContainer');
+    const playerDiv = document.createElement('div');
+    playerDiv.className = 'player-image-container-ind';
+
+    const playerImg = document.createElement('img');
+    playerImg.src = 'assets/img/pirate_index-removebg-preview.png'; // Utiliser l'image de pirate fixe
+    playerImg.alt = 'Pirate';
+
+    const playerLabel = document.createElement('div');
+    playerLabel.textContent = playerName;
+
+    playerDiv.appendChild(playerImg);
+    playerDiv.appendChild(playerLabel);
+    playerImageContainer.appendChild(playerDiv);
+}
+
+/*************************************
  Suppression d'un joueur dans la liste
  *************************************/
 function deletePlayer(event) {
@@ -69,12 +93,20 @@ function deletePlayer(event) {
  *************************************/
 function setMaxPoints() {
     const maxPointsInput = document.getElementById('maxPoints');
-    maxPoints = parseInt(maxPointsInput.value);
+    const choosenObjectif = parseInt(maxPointsInput.value);
 
-    if (maxPoints > 0) {
-        const objectif = document.querySelector('#pointsInfo span');
-        objectif.textContent = maxPoints;
-        maxPointsInput.value = '';
+    if (choosenObjectif > 4000) {
+        if (choosenObjectif < 10000) {
+            const objectif = document.querySelector('#pointsInfo span');
+            objectif.textContent = choosenObjectif;
+            maxPointsInput.value = '';
+
+            maxPoints = choosenObjectif;
+        } else {
+            alert('Veuillez entrer un objectif de 10000 maximum !')
+        }
+    } else {
+        alert('Veuillez entrer un objectif de 4000 minimum !');
     }
 }
 
@@ -82,24 +114,16 @@ function setMaxPoints() {
 Lancement du jeu, sous réserve de validation de tous les prérequis pour jouer (joueurs, score objectif)
  *************************************/
 function createGame() {
-    if (players.length >= minPlayers && maxPoints > 0) {
+    if (players.length >= minPlayers && maxPoints !== null) {
         const gameData = {
             players: players,
             maxPoints: maxPoints
         };
         localStorage.setItem('gameData', JSON.stringify(gameData));
         window.location.href = 'game.html';
-    } else if(players.length < minPlayers) {
+    } else if (players.length < minPlayers) {
         alert('Il faut au moins 2 joueurs pour participer !');
-    } else if(maxPoints <= 0) {
+    } else if (maxPoints === null) {
         alert('Définissez un score à atteindre pour gagner la partie');
     }
-}
-
-
-function addPirate() {
-    const pirateContainer = document.getElementById('pirateContainer');
-    const pirate = document.createElement('div');
-    pirate.className = 'pirate';
-    pirateContainer.appendChild(pirate);
 }
