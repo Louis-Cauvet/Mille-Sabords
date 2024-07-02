@@ -5,134 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajouter des Joueurs</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-            background-image: url('assets/img/bg_index.jpg');
-            /* Remplacez cette URL par l'URL de votre image de fond */
-            background-size: cover;
-            background-position: center;
-        }
-
-        .container {
-            display: flex;
-            gap: 20px;
-            margin-top: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .box {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            text-align: center;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        input[type="text"],
-        input[type="number"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        button {
-            background-color: #28a745;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        button:disabled {
-            background-color: #ccc;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        ul li {
-            background-color: #e9ecef;
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .points-info {
-            margin-top: 20px;
-            font-size: 1.2em;
-            color: #555;
-        }
-
-        .title {
-            font-size: 2.5em;
-            color: #333;
-            margin-bottom: 20px;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            padding: 10px 20px;
-            border-radius: 10px;
-            background-color: #ff6f61;
-            color: white;
-        }
-
-        .create-game {
-            margin-top: 20px;
-            background-color: #ff6f61;
-            margin-top: 40px;
-        }
-
-        .pirate-container {
-            position: absolute;
-            bottom: 2%;
-            left: 20%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-        }
-
-        .pirate {
-            width: 150px;
-            height: 300px;
-            background-image: url('assets/img/pirate_index-removebg-preview.png');
-            /* Remplacez cette URL par l'URL de votre image de pirate */
-            background-size: cover;
-            background-position: center;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/style_index.css">
 </head>
 
 <body>
+    <img src="assets/img/bg_index.jpg" alt="image bg" class="img-bg">
     <div class="title">Milles - Sabord</div>
     <div class="container">
         <div class="box">
             <h1>Ajouter des Joueurs</h1>
             <input type="text" id="playerName" placeholder="Nom du joueur">
             <button id="addPlayerButton" onclick="addPlayer()">Ajouter Joueur</button>
-            <ul id="playerList"></ul>
         </div>
         <div class="box">
             <h1>Définir les Points de la Partie</h1>
@@ -141,11 +24,14 @@
             <div class="points-info" id="pointsInfo">Points maximum: Non défini</div>
         </div>
     </div>
+    <img src="assets/img/branche-removebg.png" alt="image branche" class="img-branche-joueur">
+    <div class="players-container">
+        <div class="player-image-container" id="playerImageContainer"></div>
+    </div>
     <div class="pirate-container" id="pirateContainer"></div>
     <button class="create-game" id="createGameButton" onclick="createGame()">Créer la partie</button>
 
     <script>
-
         const maxPlayers = 5;
         let players = [];
         let maxPoints = 0;
@@ -156,9 +42,12 @@
 
             if (playerName && players.length < maxPlayers) {
                 players.push(playerName);
-                updatePlayerList();
-                addPirate();
+                addPlayerImage(playerName);
                 playerNameInput.value = '';
+            } else if (!playerName) {
+                alert('Veuillez entrer un nom de joueur.');
+            } else {
+                alert('Nombre maximum de joueurs atteint.');
             }
 
             if (players.length >= maxPlayers) {
@@ -166,21 +55,21 @@
             }
         }
 
-        function updatePlayerList() {
-            const playerList = document.getElementById('playerList');
-            playerList.innerHTML = '';
-            players.forEach(player => {
-                const li = document.createElement('li');
-                li.textContent = player;
-                playerList.appendChild(li);
-            });
-        }
+        function addPlayerImage(playerName) {
+            const playerImageContainer = document.getElementById('playerImageContainer');
+            const playerDiv = document.createElement('div');
+            playerDiv.className = 'player-image-container-ind';
 
-        function addPirate() {
-            const pirateContainer = document.getElementById('pirateContainer');
-            const pirate = document.createElement('div');
-            pirate.className = 'pirate';
-            pirateContainer.appendChild(pirate);
+            const playerImg = document.createElement('img');
+            playerImg.src = 'assets/img/pirate_index-removebg-preview.png'; // Utiliser l'image de pirate fixe
+            playerImg.alt = 'Pirate';
+
+            const playerLabel = document.createElement('div');
+            playerLabel.textContent = playerName;
+
+            playerDiv.appendChild(playerImg);
+            playerDiv.appendChild(playerLabel);
+            playerImageContainer.appendChild(playerDiv);
         }
 
         function setMaxPoints() {
@@ -190,6 +79,8 @@
             if (maxPoints > 0) {
                 document.getElementById('pointsInfo').textContent = `Points maximum: ${maxPoints}`;
                 maxPointsInput.value = '';
+            } else {
+                alert('Veuillez entrer un nombre de points valide.');
             }
         }
 
@@ -205,9 +96,7 @@
                 alert('Veuillez ajouter des joueurs et définir les points de la partie.');
             }
         }
-
     </script>
-
 </body>
 
 </html>
