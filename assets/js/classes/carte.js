@@ -10,3 +10,4 @@ class Carte {
         this.effet(tour);
     }
 }
+

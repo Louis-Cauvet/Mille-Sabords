@@ -137,12 +137,11 @@ function closeModal(modalId) {
 /*************************************
  Lancement des dés de la zone de relance
  *************************************/
-function rollDice() {
-
+ function rollDice() {
+    console.log(playerTour.getnblancers());
     if (diceContainer.querySelectorAll('.dice').length > 1) {
         rollDiceButton.disabled = true;
 
-        // on initialise un objet pour compter les occurrences de chaque type de dé
         const diceTypeCount = {
             diamants: 0,
             perroquets: 0,
@@ -151,6 +150,7 @@ function rollDice() {
             epees: 0,
             singes: 0
         };
+        
 
         const dicesToRoll = diceContainer.querySelectorAll('.dice');
 
@@ -180,8 +180,10 @@ function rollDice() {
                     // on ajoute automatiquement le dé tête de mort à l'espace de sauvegarde et on le verrouille
                     dice.classList.add('saved-dice', 'locked-dice');
                     savedDiceContainer.appendChild(dice);
-
-                    checkSkull();
+                    console.log(playerTour.getnblancers());
+                    if (playerTour.getnblancers() > 1){
+                        checkSkull();
+                    }
                 } else if(finishedPlayerTour == false) {
                     dice.onclick = function () {
                         // on ajoute le dé choisi par l'utilisateur à l'espace de sauvegarde
@@ -194,38 +196,74 @@ function rollDice() {
 
                     diceContainer.appendChild(dice);
                 }
+
+                if (finishedPlayerTour === false){
+                    rollDiceButton.disabled = false;
+                }
             }, 1500);
         });
-
-
-
-        if (finishedPlayerTour === false){
-            rollDiceButton.disabled = false;
+        console.log(diceTypeCount);
+        window.playerTour.mettreAJour(diceTypeCount);
+        console.log(playerTour);
+        
+        // Vérifie les 4 têtes de mort au premier lancer
+        if ( playerTour.getnblancers() === 1) {
+            if( diceTypeCount['tetes_de_mort'] >= 4) {
+                setTimeout(function() {
+                    document.body.style.backgroundColor = 'black';
+                    document.getElementById('iledelamort').innerHTML = 'Ile de la mort !';
+                    rollDiceButton.onclick = rollDiceDeadIsland;
+                }, 1500);
+            }
+        } else {
+            checkSkull();
         }
+        
+        
+        // Incrémente le nombre de lancers
+        playerTour.setnblancers(playerTour.getnblancers() + 1);
 
         const dicestoSave = savedDiceContainer.querySelectorAll('.saved-dice');
         dicestoSave.forEach(diceSaved => {
             diceTypeCount[diceSaved.dataset.result]++;
         });
 
-        console.log(diceTypeCount);
     } else {
         alert("Vous ne pouvez pas relancer avec un seul dé dans votre zone de relance !")
     }
 }
 
+/*************************************
+ Lancement des dès dans l'ile de la mort
+ *************************************/
+function rollDiceDeadIsland(){
+    console.log('test');
+}
 
 /*************************************
  Vérification du nombre de tête de morts dans la zone de sauvegarde
  *************************************/
 function checkSkull() {
-    if (savedDiceContainer.querySelectorAll('.locked-dice').length >= 3) {
+    if (window.playerTour.getTetesDeMort() >= 3) {
         finishedPlayerTour = true;
         rollDiceButton.disabled = true;
         document.getElementById('messageContainer').classList.add('visible');
         document.querySelectorAll('.dice-container .overlay').forEach(overlay => {
             overlay.classList.add('active');
         })
+    }
+}
+
+/*************************************
+ L'ile de la mort : 4 tête de morts au premier lancer
+ *************************************/
+ function check4Skull(diceTypeCount) {
+    console.log(diceTypeCount['tetes_de_mort']);
+    if (diceTypeCount['tetes_de_mort'] >= 4) {
+        // Passe au mode île de la mort
+        document.body.style.backgroundColor = 'black';
+        alert("Vous êtes envoyé sur l'île de la mort !");
+        // Config
     }
 }
 

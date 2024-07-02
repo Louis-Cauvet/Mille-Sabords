@@ -10,11 +10,11 @@ class Tour {
         this.pieces = 0;
         this.epees = 0;
         this.vies = 0;
+        this.nblancers = 1;
         this.objectifBateau = null;
         this.scoreBateau = null;
         this.bonusCapitaine = false;
         this.banque = false;
-        console.log('ZABI');
     }
 
     getCarteTiree() {
@@ -23,6 +23,14 @@ class Tour {
 
     setCarteTiree(carte) {
         this.carteTiree = carte;
+    }
+
+    getnblancers() {
+        return this.nblancers;
+    }
+
+    setnblancers(value) {
+        this.nblancers = value;
     }
 
     getTetesDeMort() {
@@ -118,11 +126,11 @@ class Tour {
     }
 
     mettreAJour(resultats) {
-        this.tetesDeMort += resultats['tete_de_mort'];
-        this.singes += resultats['singe'];
-        this.perroquets += resultats['perroquet'];
-        this.diamants += resultats['diamant'];
-        this.pieces += resultats['piece'];
-        this.epees += resultats['epee'];
+        this.tetes_de_mort += resultats['tetes_de_mort'];
+        this.singes += resultats['singes'];
+        this.perroquets += resultats['perroquets'];
+        this.diamants += resultats['diamants'];
+        this.pieces += resultats['pieces'];
+        this.epees += resultats['epees'];
     }
 }
