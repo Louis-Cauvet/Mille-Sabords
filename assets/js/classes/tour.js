@@ -12,9 +12,10 @@ class Tour {
         this.vies = 0;
         this.objectifBateau = null;
         this.scoreBateau = null;
-        this.bonusCapitaine = false;
+        this.bonusCapitaine = null;
+        this.indiceReduction = 100;
         this.banque = false;
-        console.log('ZABI');
+        this.groupeAnimaux = false;
     }
 
     getCarteTiree() {
@@ -105,6 +106,14 @@ class Tour {
         this.bonusCapitaine = value;
     }
 
+    getIndiceReduction() {
+        return this.indiceReduction;
+    }
+
+    setIndiceReduction(value) {
+        this.indiceReduction = value;
+    }
+
     getBanque() {
         return this.banque;
     }
@@ -113,9 +122,14 @@ class Tour {
         this.banque = value;
     }
 
-    appliquerCarte(carte) {
-        carte.appliquerEffet(this);
+    getGroupeAnimaux() {
+        return this.groupeAnimaux;
     }
+
+    setGroupeAnimaux(value) {
+        this.groupeAnimaux = value;
+    }
+
 
     mettreAJour(resultats) {
         this.tetesDeMort += resultats['tete_de_mort'];

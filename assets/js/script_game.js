@@ -42,6 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
 function startPlayerTour() {
     window.playerTour = new Tour();     // On ajoute la variable de tour de manière globale (en l'attachant à 'window') pour pouvoir y accéder de partout
 
+    document.getElementById('messageContainer').classList.remove('visible');
+    rollDiceButton.disabled = false;
+
     highlightActiveUser(currentPlayerIndex);
 
     drawCard();
@@ -83,7 +86,12 @@ function drawCard() {
     const randomImage = images[Math.floor(Math.random() * images.length)];
     document.getElementById('randomImage').src = `assets/img/cards/${randomImage}.jpg`;
 
-    playerTour.setCarteTiree(randomImage);
+    window.playerCard = new Carte(randomImage);
+
+    // On définit la carte tirée, et on applique son effet
+    playerTour.setCarteTiree(playerCard);
+
+    console.log(playerTour);
 }
 
 
@@ -264,10 +272,12 @@ function nextTurn() {
     playerListItems[currentPlayerIndex].textContent = `${gameData.players[currentPlayerIndex]} - Score: ${scores[currentPlayerIndex]}`;
 
     currentPlayerIndex = (currentPlayerIndex + 1) % gameData.players.length;
-    highlightActiveUser(currentPlayerIndex);
 
     // Vider les dés
-    document.getElementById('savedDiceContainer').innerHTML = '';
+    diceContainer.innerHTML = '';
+    savedDiceContainer.innerHTML = '';
+
+    startPlayerTour();
 }
 
 //
