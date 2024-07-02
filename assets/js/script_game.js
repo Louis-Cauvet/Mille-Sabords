@@ -44,6 +44,7 @@ function startPlayerTour() {
 
     document.getElementById('messageContainer').classList.remove('visible');
     rollDiceButton.disabled = false;
+    finishedPlayerTour = false;
 
     highlightActiveUser(currentPlayerIndex);
 
@@ -90,8 +91,6 @@ function drawCard() {
 
     // On définit la carte tirée, et on applique son effet
     playerTour.setCarteTiree(playerCard);
-
-    console.log(playerTour);
 }
 
 
@@ -202,21 +201,18 @@ function rollDice() {
 
                     diceContainer.appendChild(dice);
                 }
+
+                if (finishedPlayerTour === false){
+                    rollDiceButton.disabled = false;
+                }
             }, 1500);
         });
-
-
-
-        if (finishedPlayerTour === false){
-            rollDiceButton.disabled = false;
-        }
 
         const dicestoSave = savedDiceContainer.querySelectorAll('.saved-dice');
         dicestoSave.forEach(diceSaved => {
             diceTypeCount[diceSaved.dataset.result]++;
         });
 
-        console.log(diceTypeCount);
     } else {
         alert("Vous ne pouvez pas relancer avec un seul dé dans votre zone de relance !")
     }
