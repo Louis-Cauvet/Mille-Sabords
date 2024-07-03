@@ -6,12 +6,15 @@ class Carte {
         this.appliquerEffet();
     }
 
+    /*************************************
+     Application de l'effet de la carte tirée par l'utilisateur et écriture de sa description
+     *************************************/
     appliquerEffet() {
         let textDescription = '';
         switch (this.nom) {
             case 'pirate':
-                playerTour.setBonusCapitaine(2);
-                playerTour.setIndiceReduction(200);
+                playerTour.setBonusCapitaine(true);
+                playerTour.setIndiceReduction(-200);
                 textDescription =
                     'Tous les points obtenus durant ce tour sont doublés. Si le joueur doit se rendre sur l\île de La ' +
                     'Tête-de-Mort, ses adversaires perdent 200 points pour chaque tête de mort révélée';
@@ -37,9 +40,8 @@ class Carte {
                     'Le joueur doit obtenir, au minimum, autant de sabres avec les dés que le nombre de symboles sur la ' +
                     'carte. S\'il y parvient, en plus de son résultat aux dés, il reçoit le bonus indiqué en bas de la ' +
                     'carte. Dans le cas contraire, le joueur obtient zéro point quelque soit son résultat aux dés, et ' +
-                    'on lui retire de son score la valeur indiquée sur la carte. Celui qui découvre un bâteau pirate ' +
-                    'ne peut pas aller sur l\île de la Tête-de-Mort :un joueur qui obtiendrait 4 têtes de mort ou plus ' +
-                    'lors de son premier lancer perdrait donc immédiatement son tour.';
+                    'on lui retire de son score la valeur indiquée sur la carte. Celui qui tire cette carte et qui ' +
+                    'obtient 4 têtes de mort ou plus lors de son premier lancer perd immédiatement son tour.';
                 break;
             case 'bateau_500':
                 playerTour.setObjectifBateau(3);
@@ -48,9 +50,8 @@ class Carte {
                     'Le joueur doit obtenir, au minimum, autant de sabres avec les dés que le nombre de symboles sur la ' +
                     'carte. S\'il y parvient, en plus de son résultat aux dés, il reçoit le bonus indiqué en bas de la ' +
                     'carte. Dans le cas contraire, le joueur obtient zéro point quelque soit son résultat aux dés, et ' +
-                    'on lui retire de son score la valeur indiquée sur la carte. Celui qui découvre un bâteau pirate ' +
-                    'ne peut pas aller sur l\île de la Tête-de-Mort :un joueur qui obtiendrait 4 têtes de mort ou plus ' +
-                    'lors de son premier lancer perdrait donc immédiatement son tour.';
+                    'on lui retire de son score la valeur indiquée sur la carte. <br> Celui qui tire cette carte et qui ' +
+                    'obtient 4 têtes de mort ou plus lors de son premier lancer perd immédiatement son tour.';
                 break;
             case 'bateau_1000':
                 playerTour.setObjectifBateau(4);
@@ -59,9 +60,8 @@ class Carte {
                     'Le joueur doit obtenir, au minimum, autant de sabres avec les dés que le nombre de symboles sur la ' +
                     'carte. S\'il y parvient, en plus de son résultat aux dés, il reçoit le bonus indiqué en bas de la ' +
                     'carte. Dans le cas contraire, le joueur obtient zéro point quelque soit son résultat aux dés, et ' +
-                    'on lui retire de son score la valeur indiquée sur la carte. Celui qui découvre un bâteau pirate ' +
-                    'ne peut pas aller sur l\île de la Tête-de-Mort :un joueur qui obtiendrait 4 têtes de mort ou plus ' +
-                    'lors de son premier lancer perdrait donc immédiatement son tour.';
+                    'on lui retire de son score la valeur indiquée sur la carte. Celui qui tire cette carte et qui ' +
+                    'obtient 4 têtes de mort ou plus lors de son premier lancer perd immédiatement son tour.';
                 break;
             case 'singe_perroquet':
                 playerTour.setGroupeAnimaux(true);
@@ -98,82 +98,63 @@ class Carte {
         this.setCardDescription(textDescription);
     }
 
+    /*************************************
+     Ajout de la description de la carte dans son dos
+     *************************************/
     setCardDescription(description) {
         document.getElementById('card-description').innerHTML = description
     }
 
+    /*************************************
+     Ajout d'un dé pièce automatiquement dans la zone de sauvegarde si le joueur tire la carte 'Pièce'
+     *************************************/
     addPieceToSavedDices() {
         let pieceDiceHtml = `<div id='dice9' class="dice show-4 saved-dice locked-dice" data-result="pieces">
-                                        <div class='side' data-face="diamants">
-                                            <img src="assets/img/face_dice/diamond.png" alt="face diamant">
-                                        </div>
-                                        <div class='side' data-face="perroquets">
-                                            <img src="assets/img/face_dice/perroquet.png" alt="face perroquet">
-                                        </div>
-                                        <div class='side' data-face="tetes_de_mort">
-                                            <img src="assets/img/face_dice/tete_de_mort.png" alt="face tete de mort">
-                                        </div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
                                         <div class='side active' data-face="pieces">
                                             <img src="assets/img/face_dice/piece.png" alt="face piece">
                                         </div>
-                                        <div class='side' data-face="epees">
-                                            <img src="assets/img/face_dice/epee.png" alt="face epee">
-                                        </div>
-                                        <div class='side' data-face="singes">
-                                            <img src="assets/img/face_dice/singe.png" alt="face singe">
-                                        </div>
+                                        <div></div>
+                                        <div></div>
                                     </div>`;
         savedDiceContainer.innerHTML += pieceDiceHtml;
     }
 
+    /*************************************
+     Ajout d'un dé diamant automatiquement dans la zone de sauvegarde si le joueur tire la carte 'Diamant'
+     *************************************/
     addDiamantToSavedDices() {
         let pieceDiceHtml = `<div id='dice9' class="dice show-1 saved-dice locked-dice" data-result="diamants">
                                         <div class='side active' data-face="diamants">
                                             <img src="assets/img/face_dice/diamond.png" alt="face diamant">
                                         </div>
-                                        <div class='side' data-face="perroquets">
-                                            <img src="assets/img/face_dice/perroquet.png" alt="face perroquet">
-                                        </div>
-                                        <div class='side' data-face="tetes_de_mort">
-                                            <img src="assets/img/face_dice/tete_de_mort.png" alt="face tete de mort">
-                                        </div>
-                                        <div class='side' data-face="pieces">
-                                            <img src="assets/img/face_dice/piece.png" alt="face piece">
-                                        </div>
-                                        <div class='side' data-face="epees">
-                                            <img src="assets/img/face_dice/epee.png" alt="face epee">
-                                        </div>
-                                        <div class='side' data-face="singes">
-                                            <img src="assets/img/face_dice/singe.png" alt="face singe">
-                                        </div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
                                     </div>`;
         savedDiceContainer.innerHTML += pieceDiceHtml;
     }
 
+    /*************************************
+     Ajout d'un ou plusieurs dé(s) tête de mort automatiquement dans la zone de sauvegarde si le joueur tire la carte 'Tête de mort'
+     *************************************/
     addSkullToSavedDices(skullsNumber) {
         let index  = 9;
         let skullDicesHtml = '';
         for (let i=1; i<=skullsNumber; i++) {
-            console.log("coucou");
             skullDicesHtml += `<div id='dice${index}' class="dice show-3 saved-dice locked-dice" data-result="tetes_de_mort">
-                                        <div class='side' data-face="diamants">
-                                            <img src="assets/img/face_dice/diamond.png" alt="face diamant">
-                                        </div>
-                                        <div class='side' data-face="perroquets">
-                                            <img src="assets/img/face_dice/perroquet.png" alt="face perroquet">
-                                        </div>
+                                        <div></div>
+                                        <div></div>
                                         <div class='side active' data-face="tetes_de_mort">
                                             <img src="assets/img/face_dice/tete_de_mort.png" alt="face tete de mort">
                                         </div>
-                                        <div class='side' data-face="pieces">
-                                            <img src="assets/img/face_dice/piece.png" alt="face piece">
-                                        </div>
-                                        <div class='side' data-face="epees">
-                                            <img src="assets/img/face_dice/epee.png" alt="face epee">
-                                        </div>
-                                        <div class='side' data-face="singes">
-                                            <img src="assets/img/face_dice/singe.png" alt="face singe">
-                                        </div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
                                     </div>`;
             index++;
         }

@@ -29,14 +29,21 @@
         <!-- Les dés sauvegardés seront ajoutés ici -->
     </div>
     <button id="rollDiceButton" onclick="rollDice()">Lancer les dés</button>
-    <div class="image-container">
-        <img id="randomImage" src="" alt="Random Image">
-        <p id="card-description"></p>
+    <div class="card-container">
+        <div class="card">
+            <div class="card-front">
+                <img id="randomImage" src="" alt="Random Image">
+            </div>
+            <div class="card-back">
+                <img class="bg-image" src="assets/img/cards/dos_carte.jpg" alt="Image de fond">
+                <p id="card-description"></p>
+            </div>
+        </div>
     </div>
 
     <div class="photo-buttons">
         <button class="photo-button" onclick="openModal('leftModal')">Photo</button>
-        <button class="next-turn-button" onclick="nextTurn()">Changer de tour</button>
+        <button class="next-turn-button" onclick="nextTurn()">Terminer le tour</button>
         <button class="photo-button" onclick="openModal('rightModal')">Photo</button>
     </div>
 
@@ -68,8 +75,7 @@
     <script src="assets/js/classes/tour.js" type="text/javascript"></script>
     <script src="assets/js/script_game.js" type="text/javascript"></script>
     <noscript>
-        <p>JavaScript est désactivé dans votre navigateur. Veuillez l'activer pour profiter pleinement de notre super
-            jeu !</p>
+        <p>JavaScript est désactivé dans votre navigateur. Veuillez l'activer pour profiter pleinement de notre super jeu !</p>
     </noscript>
 </body>
 

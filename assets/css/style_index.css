@@ -10,7 +10,7 @@ body {
   flex-direction: column;
 }
 
-body .img-bg {
+.background {
   position: fixed;
   top: 0;
   left: 0;
@@ -20,17 +20,41 @@ body .img-bg {
   z-index: -1;
 }
 
-body .img-branche-joueur {
-  z-index: -1;
+main {
+  position: relative;
+  width: 100%;
+}
+
+main .params-choices{
+  position: relative;
+  display: flex;
+  align-content: center;
+  margin-left: 10%;
+  width: 50%;
+  z-index: 2;
+}
+
+main .params-choices .choice-box {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 50%;
+  text-align: center;
+}
+
+main .players-display {
   position: absolute;
-  transform: translateY(-50%);
-  top: 50%;
-  right: 0px;
-  width: 60%;
+  right: 0;
+  top: -80px;
+}
+
+main .players-display .players-table {
+  width: 700px;
   height: auto;
 }
 
-.container {
+.params-choices {
   display: flex;
   gap: 20px;
   margin-top: 20px;
@@ -39,14 +63,6 @@ body .img-branche-joueur {
   border-radius: 10px;
 }
 
-.box {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  text-align: center;
-}
 
 h1 {
   color: #333;

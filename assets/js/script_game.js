@@ -13,14 +13,18 @@ const savedDiceContainer = document.getElementById('savedDiceContainer');
 
 const rollDiceButton = document.getElementById('rollDiceButton');
 
+const potentialScore = document.getElementById('scorePotentiel');
+
+const nextTurnButton = document.querySelector(".next-turn-button");
 
 /*************************************
- Affichage des données de partie au chargement de la page
+ Affichage des données de la partie au chargement de la page
  *************************************/
 document.addEventListener('DOMContentLoaded', () => {
     const maxPointsInfo = document.getElementById('goalNumber');
     const playerList = document.getElementById('playersList');
 
+    // on affiche les noms des joueurs et leurs scores, ainsi que l'objectif de points à atteindre
     if (gameData) {
         maxPointsInfo.textContent = `Objectif : ${gameData.maxPoints}`;
         gameData.players.forEach(player => {
@@ -33,18 +37,24 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Les données de la partie n\'ont pas été trouvées');
     }
 
+    // on démarre le tour du premier joueur
     startPlayerTour();
 });
+
 
 /*************************************
  Démarrage du nouveau tour d'un joueur
  *************************************/
 function startPlayerTour() {
-    window.playerTour = new Tour();     // On ajoute la variable de tour de manière globale (en l'attachant à 'window') pour pouvoir y accéder de partout
+    // On ajoute la variable de tour de manière globale (en l'attachant à 'window') pour pouvoir y accéder de partout
+    window.playerTour = new Tour();
 
+    // on réinitalise les informations qui ont pu apparaître durant le tour précédent
     document.getElementById('messageContainer').classList.remove('visible');
+    potentialScore.textContent = '0';
     rollDiceButton.disabled = false;
     finishedPlayerTour = false;
+
 
     highlightActiveUser(currentPlayerIndex);
 
@@ -67,26 +77,53 @@ function highlightActiveUser(index) {
     playerItems[index].classList.add('active-user');
 }
 
+
 /*************************************
  Tirage d'une carte de manière aléatoire
  *************************************/
 function drawCard() {
     const images = [
         'pirate',
+        'pirate',
+        'pirate',
+        'pirate',
+        'piece',
+        'piece',
+        'piece',
         'piece',
         'diamant',
+        'diamant',
+        'diamant',
+        'diamant',
+        'bateau_300',
         'bateau_300',
         'bateau_500',
+        'bateau_500',
+        'bateau_1000',
         'bateau_1000',
         'singe_perroquet',
+        'singe_perroquet',
+        'singe_perroquet',
+        'singe_perroquet',
+        'tete_de_mort_1',
+        'tete_de_mort_1',
         'tete_de_mort_1',
         'tete_de_mort_2',
+        'tete_de_mort_2',
+        'tresor',
+        'tresor',
+        'tresor',
         'tresor',
         'mage',
+        'mage',
+        'mage',
+        'mage',
     ];
+    // On tire au sort une carte
     const randomImage = images[Math.floor(Math.random() * images.length)];
     document.getElementById('randomImage').src = `assets/img/cards/${randomImage}.jpg`;
 
+    // On ajoute la variable de carte de manière globale (en l'attachant à 'window') pour pouvoir y accéder de partout
     window.playerCard = new Carte(randomImage);
 
     // On définit la carte tirée, et on applique son effet
@@ -145,7 +182,13 @@ function closeModal(modalId) {
  Lancement des dés de la zone de relance
  *************************************/
  function rollDice() {
+
+    // on vérifie qu'il y a plus d'un dé dans la zone de relance
     if (diceContainer.querySelectorAll('.dice').length > 1) {
+        // on incrémente le nombre de lancers de 1
+        playerTour.setNbLancers(playerTour.getNbLancers() + 1);
+
+        // on bloque le clic du bouton pendant le lancement
         rollDiceButton.disabled = true;
 
         // on initialise un objet pour compter les occurrences de chaque type de dé
@@ -161,7 +204,7 @@ function closeModal(modalId) {
         const dicesToRoll = diceContainer.querySelectorAll('.dice');
 
         dicesToRoll.forEach(dice => {
-            // On récupère une face de manière aléatoire pour chaque dé, et on fait en sorte qu'il tombe dessus
+            // On récupère une face de manière aléatoire pour chaque dé, et on fait en sorte qu'il tombe dessus (avec la classe 'show-*')
             const rollingIndex = Math.floor((Math.random() * 6) + 1);
             for (let i = 1; i <= 6; i++) {
                 dice.classList.remove('show-' + i);
@@ -176,19 +219,27 @@ function closeModal(modalId) {
             });
             dice.querySelector(`.side:nth-child(${rollingIndex})`).classList.add('active');
 
-            // On incrémente le compteur du type de face correspondant à celle obtenue
+            // On incrémente le compteur du type de face correspondant à celle obtenue pour les dés de la zone de relance
             dice.dataset.result = dice.querySelector(`.side.active`).dataset.face;
-            console.log(diceTypeCount);
             diceTypeCount[dice.dataset.result]++;
+
+            diceTypeCount["tetes_de_mort"] += 3; // TODO : A enlever
 
             // on fixe un délai pour laisser le temps à l'animation de s'exécuter entièrement avant le tri des dés
             setTimeout(function() {
                 if (dice.dataset.result === 'tetes_de_mort') {
                     // on ajoute automatiquement le dé tête de mort à l'espace de sauvegarde et on le verrouille
                     dice.classList.add('saved-dice', 'locked-dice');
-                    savedDiceContainer.appendChild(dice);
-
-                    if (playerTour.getnblancers() > 1){
+                    savedDiceContainer.appendChild(dice)
+;
+                    // On vérifie si le joueur à obtenu au moins 4 têtes de morts au premier lancer, et on passe en mode 'Ile de la Tête de Mort' si c'est le cas
+                    if (playerTour.getNbLancers() === 1) {
+                        if(diceTypeCount['tetes_de_mort'] >= 4 && !playerTour.getCarteTiree().nom.includes("bateau")) {
+                            goToDeadIsland();
+                        } else {
+                            checkSkull();
+                        }
+                    } else {
                         checkSkull();
                     }
                 } else if(finishedPlayerTour == false) {
@@ -210,35 +261,18 @@ function closeModal(modalId) {
             }, 1500);
         });
 
-        console.log(diceTypeCount);
-
-
-        playerTour.mettreAJour(diceTypeCount);
-
-        // Vérifie les 4 têtes de mort au premier lancer
-        if ( playerTour.getnblancers() === 1) {
-            if( diceTypeCount['tetes_de_mort'] >= 4) {
-                setTimeout(function() {
-                    document.body.style.backgroundColor = 'black';
-                    document.getElementById('iledelamort').innerHTML = 'Ile de la mort !';
-                    rollDiceButton.onclick = rollDiceDeadIsland;
-                }, 1500);
-            }
-        } else {
-            checkSkull();
+        // Si le joueur a pioché la carte du Mage, on lui accorde une change supplémentaire
+        if (playerTour.getVies() > 0) {
+            playerTour.replaceSkullDice();
         }
-if (playerTour.getCarteTiree().nom === 'mage') {
-        playerTour.replaceSkullDice(); // Remettre un dé tête de mort dans la zone de non sauvegarde
-    }
-        // Incrémente le nombre de lancers
-        playerTour.setnblancers(playerTour.getnblancers() + 1);
 
-        const dicestoSave = savedDiceContainer.querySelectorAll('.saved-dice');
-        dicestoSave.forEach(diceSaved => {
+        // On incrémente le compteur du type de face correspondant à celle obtenue pour les dés de la zone de sauvegarde
+        const dicesToSave = savedDiceContainer.querySelectorAll('.saved-dice');
+        dicesToSave.forEach(diceSaved => {
             diceTypeCount[diceSaved.dataset.result]++;
         });
 
-        // Mise à jour de playerTour avec diceTypeCount
+        // On met à jour les données des dés du tour pour le calcul du score potentiel
         playerTour.setTetesDeMort(diceTypeCount.tetes_de_mort);
         playerTour.setSinges(diceTypeCount.singes);
         playerTour.setPerroquets(diceTypeCount.perroquets);
@@ -246,19 +280,11 @@ if (playerTour.getCarteTiree().nom === 'mage') {
         playerTour.setPieces(diceTypeCount.pieces);
         playerTour.setEpees(diceTypeCount.epees);
 
-        // Calcul du score potentiel mis à jour
+        // On calcule le score potentiel du joueur si il s'arrête à ce lancer
         playerTour.calculerScorePotentiel();
-
     } else {
         alert("Vous ne pouvez pas relancer avec un seul dé dans votre zone de relance !")
     }
-}
-
-/*************************************
- Lancement des dès dans l'ile de la mort
- *************************************/
-function rollDiceDeadIsland(){
-    console.log('test');
 }
 
 /*************************************
@@ -266,27 +292,22 @@ function rollDiceDeadIsland(){
  *************************************/
 function checkSkull() {
     if (playerTour.getTetesDeMort() >= 3) {
+        // si l'utilisateur a cumulé plus de 3 dés têtes de mort, on force son tour à s'achever
         finishedPlayerTour = true;
         rollDiceButton.disabled = true;
+
+        // Si l'utilisateur n'a pas tiré la carte 'Trésor' et qu'il n'a pas un score négatif, on repasse à son score potentiel à 0
+        if (playerTour.getBanque() === false || playerTour.getScorePotentiel() > 0) {
+            playerTour.setScorePotentiel(0);
+            potentialScore.textContent = playerTour.scorePotentiel.toString();
+        }
+
         document.getElementById('messageContainer').classList.add('visible');
         document.querySelectorAll('.dice-container .overlay').forEach(overlay => {
             overlay.classList.add('active');
         })
     }
 }
-
-/*************************************
- L'ile de la mort : 4 tête de morts au premier lancer
- *************************************/
- function check4Skull(diceTypeCount) {
-    if (diceTypeCount['tetes_de_mort'] >= 4) {
-        // Passe au mode île de la mort
-        document.body.style.backgroundColor = 'black';
-        alert("Vous êtes envoyé sur l'île de la mort !");
-        // Config
-    }
-}
-
 
 /*************************************
  Ajout d'un dé dans la zone de sauvegarde
@@ -315,112 +336,201 @@ function unsaveDice(diceElement) {
  Passage au tour suivant demandé par le joueur
  *************************************/
 function nextTurn() {
-    if (playerTour.tetes_de_mort < 3) {
-        // Ajouter le score potentiel au score total du joueur
-        scores[currentPlayerIndex] += playerTour.scorePotentiel;
-    } else {
-        // Si le joueur a tiré 3 têtes de mort, il perd les points potentiels
-        playerTour.scorePotentiel = 0;
+    // On ajoute le score potentiel du lancer au score total du joueur
+    scores[currentPlayerIndex] += playerTour.scorePotentiel;
+
+    // On remet le score à 0 si il est sensé être négatif
+    if (scores[currentPlayerIndex]<0) {
+        scores[currentPlayerIndex] = 0;
     }
 
-    // Remise à zéro du score potentiel
+    // On remet à zéro le score potentiel
     playerTour.scorePotentiel = 0;
 
+    // On met à jour l'affichage du score du joueur
     const playerListItems = document.querySelectorAll('#playersList li');
     playerListItems[currentPlayerIndex].textContent = `${gameData.players[currentPlayerIndex]} - Score: ${scores[currentPlayerIndex]}`;
 
+    // On passe au joueur suivant dans la liste
     currentPlayerIndex = (currentPlayerIndex + 1) % gameData.players.length;
 
-    // Vider les dés
+    // On vide les zones à dés
     diceContainer.innerHTML = '';
     savedDiceContainer.innerHTML = '';
 
+    // Démarrer le tour du prochain joueur
     startPlayerTour();
 }
 
+/***************************************************************************************************************************************************
+ DEAD ISLAND / L'ile de la mort
+ ****************************************************************************************************************************************************/
+
+/*************************************
+L'ile de la mort : 4 tête de morts au premier lancer
+*************************************/
+function goToDeadIsland() {
+    document.getElementById("iledelamort").innerHTML = "Ile de la mort !";
+    // On change la fonction du bouton de relance des dés
+    rollDiceButton.onclick = rollDiceDeadIsland;
+
+    // On cache le bouton de fin de tour pour éviter que l'utilisateur arrête son tour alors qu'il est sur l'île de la Tête de Mort, et on change sa fonction
+    nextTurnButton.style.display = "none";
+    nextTurnButton.onclick = nextTurnDeadIsland;
+
+    // On empêche le clic sur les zones de sauvegarde et de relance
+    document.querySelectorAll(".dice-container .overlay").forEach((overlay) => {
+        overlay.classList.add("active");
+    });
+
+    calculateNegativePoints(playerTour.getTetesDeMort());
+}
+
+/*************************************
+ Calcul et affichage des points négatifs dans le mode Ile de la Tête de Mort
+ *************************************/
+function calculateNegativePoints(nbTetesMort) {
+    let pointsmoins = nbTetesMort * playerTour.getIndiceReduction();
+    playerTour.setScorePotentiel(pointsmoins);
+    potentialScore.textContent = playerTour.scorePotentiel.toString() + " (pour les autres joueurs)";
+}
+
+/*************************************
+ Lancement des dés dans le mode Ile de la Tête de Mort
+ *************************************/
+function rollDiceDeadIsland() {
+  // Jeu de l'île de la mort
+  const diceTypeCount = {
+    diamants: 0,
+    perroquets: 0,
+    tetes_de_mort: 0,
+    pieces: 0,
+    epees: 0,
+    singes: 0,
+  };
+
+  const dicesToRoll = diceContainer.querySelectorAll(".dice");
+
+  dicesToRoll.forEach((dice) => {
+    // On récupère une face de manière aléatoire pour chaque dé, et on fait en sorte qu'il tombe dessus
+    const rollingIndex = Math.floor(Math.random() * 6 + 1);
+    for (let i = 1; i <= 6; i++) {
+      dice.classList.remove("show-" + i);
+      if (rollingIndex === i) {
+        dice.classList.add("show-" + i);
+      }
+    }
+
+    // On rend actif la face tirée au sort sur chaque dé
+    dice.querySelectorAll(".side").forEach((side) => {
+      side.classList.remove("active");
+    });
+    dice
+      .querySelector(`.side:nth-child(${rollingIndex})`)
+      .classList.add("active");
+
+    // On incrémente le compteur du type de face correspondant à celle obtenue
+    dice.dataset.result = dice.querySelector(`.side.active`).dataset.face;
+    diceTypeCount[dice.dataset.result]++;
+
+    // on fixe un délai pour laisser le temps à l'animation de s'exécuter entièrement avant le tri des dés
+    setTimeout(function () {
+      if (dice.dataset.result === "tetes_de_mort") {
+        // on ajoute automatiquement le dé tête de mort à l'espace de sauvegarde et on le verrouille
+        dice.classList.add("saved-dice", "locked-dice");
+        savedDiceContainer.appendChild(dice);
+      } else if (finishedPlayerTour == false) {
+        dice.onclick = function () {
+          // on ajoute le dé choisi par l'utilisateur à l'espace de sauvegarde
+          if (!dice.classList.contains("saved-dice")) {
+            saveDice(dice);
+          } else {
+            unsaveDice(dice);
+          }
+        };
+
+        diceContainer.appendChild(dice);
+      }
+    }, 1100);
+  });
+
+  // Vérifier si aucune tête de mort n'est obtenue et arrêter le tour si c'est le cas
+  if (diceTypeCount["tetes_de_mort"] === 0 || diceTypeCount["tetes_de_mort"] === 8) {
+    setTimeout(function () {
+        let message = '';
+        switch (diceTypeCount["tetes_de_mort"]) {
+            case 0:
+                message = 'Votre tour est terminé, vous n\'avez pas obtenu de tête de mort sur ce lancer !';
+                break;
+            case 8:
+                message = 'La chance, vous avez eu toutes les têtes de mort !';
+                break;
+        }
+      document.getElementById("messageContainer").textContent = message;
+      document.getElementById("messageContainer").style.display = "block";
+      nextTurnButton.style.display = "block";
+      rollDiceButton.disabled = true;
+    }, 1100);
+  } else {
+    rollDiceButton.disabled = false;
+  }
+
+  setTimeout(function () {
+      const nbTetesMort = savedDiceContainer.querySelectorAll('div[data-result="tetes_de_mort"]').length;
+      calculateNegativePoints(nbTetesMort);
+  }, 1100);
+}
+
+/*************************************
+ Passage au tour suivant demandé par le joueur dans le mode Ile de la Tete de Mort
+ *************************************/
+function nextTurnDeadIsland() {
+    const pointsMoins = parseInt(potentialScore.textContent, 10);
+
+    // On parcourt la liste des joueurs pour tous leur retirer des points excepté le joueur actuel
+    for (let i = 0; i < scores.length; i++) {
+        // on vérifie si l'index courant n'est pas celui du joueur en cours
+        if (i !== currentPlayerIndex) {
+            // on soustrait le montant spécifié aux scores des autres joueurs
+            scores[i] += pointsMoins;
+
+            // On passe le score à 0 si il était sensé passer dans les négatifs
+            if (scores[i] <0) {
+                scores[i] = 0;
+            }
+        }
+    }
+
+    // on met à jour l'affichage du score total du joueur dans la liste des joueurs
+    const playerListItems = document.querySelectorAll("#playersList li");
+    for (let i = 0; i < gameData.players.length; i++) {
+        playerListItems[i].textContent = `${gameData.players[i]} - Score: ${scores[i]}`;
+    }
+
+    // on vide l'affichage du score
+    potentialScore.textContent = "";
+
+    // on vide la zone des dés
+    diceContainer.innerHTML = "";
+    savedDiceContainer.innerHTML = "";
+
+    // on passe au joueur suivant
+    currentPlayerIndex = (currentPlayerIndex + 1) % gameData.players.length;
+
+    outOfDeadIsland();
+    startPlayerTour();
+}
+
+/*************************************
+Sortie du mode Ile de la Tête de Mort
+ *************************************/
+function outOfDeadIsland() {
+    // on rétablit les fonctions par défaut pour les boutons
+    rollDiceButton.onclick = rollDice;
+    nextTurnButton.onclick = nextTurn;
 
 
-//
-//
-// const cartes = {
-//     teteDeMort: new Carte("Tête de Mort", (tour) => tour.ajouterTeteDeMort(1)),
-//     teteDeMort2: new Carte("Tête de Mort 2", (tour) => tour.ajouterTeteDeMort(2)),
-//     piece: new Carte("Pièce", (tour) => tour.ajouterPiece(1)),
-//     diamant: new Carte("Diamant", (tour) => tour.ajouterDiamond(1)),
-//     gardienne: new Carte("Gardienne", (tour) => tour.ajouterVie(1)),
-//     bateau: new Carte("Bateau", (tour) => tour.objectif = "Atteindre un objectif"),
-//     pirate: new Carte("Pirate", (tour) => tour.multiplier *= 2),
-//     ileAuTresor: new Carte("L'île au Trésor", (tour) => tour.banque += tour.getPieces() + tour.getDiamonds()),
-// };
-//
-// function lancerDe() {
-//     const de = new De();
-//     return de.lancer();
-// }
-//
-// function lancer8Des() {
-//     const de = new De();
-//     const resultats = {
-//         Singe: 0,
-//         Diamond: 0,
-//         Piece: 0,
-//         'Tete de mort': 0,
-//         Perroquet: 0,
-//         Epee: 0
-//     };
-//
-//     for (let i = 0; i < 8; i++) {
-//         const resultat = de.lancer();
-//         resultats[resultat]++;
-//     }
-//
-//     return resultats;
-// }
-//
-// function afficherResultatsDes(resultats) {
-//     const resultatsDiv = document.getElementById('resultatsDes');
-//     resultatsDiv.innerHTML = '<h2>Résultats des Dés</h2>';
-//     for (const [face, count] of Object.entries(resultats)) {
-//         resultatsDiv.innerHTML += <span>${face}: ${count}</span>;
-//     }
-// }
-//
-// function afficherEtatTour(tour) {
-//     const etatTourDiv = document.getElementById('etatTour');
-//     etatTourDiv.innerHTML = '<h2>État du Tour</h2>';
-//     etatTourDiv.innerHTML += <span>Têtes de Mort: ${tour.getTetesDeMort()}</span>;
-//     etatTourDiv.innerHTML += <span>Singes: ${tour.getSinges()}</span>;
-//     etatTourDiv.innerHTML += <span>Perroquets: ${tour.getPerroquets()}</span>;
-//     etatTourDiv.innerHTML += <span>Diamants: ${tour.getDiamonds()}</span>;
-//     etatTourDiv.innerHTML += <span>Pièces: ${tour.getPieces()}</span>;
-//     etatTourDiv.innerHTML += <span>Vies: ${tour.getVies()}</span>;
-//     etatTourDiv.innerHTML += <span>Banque: ${tour.getBanque()}</span>;
-//     etatTourDiv.innerHTML += <span>Objectif: ${tour.getObjectif() ? tour.getObjectif() : 'Aucun'}</span>;
-//     etatTourDiv.innerHTML += <span>Multiplicateur: x${tour.getMultiplier()}</span>;
-//     etatTourDiv.innerHTML += <span>Carte Tirée: ${tour.carteTiree ? tour.carteTiree.nom : 'Aucune'}</span>; // Afficher la carte tirée
-// }
-//
-//
-// function lancerDes() {
-//     const resultats = lancer8Des();
-//     afficherResultatsDes(resultats);
-//     monTour.mettreAJour(resultats);
-//
-//     const carteTiree = tirerCarteAleatoire();
-//     carteTiree.appliquerEffet(monTour);
-//     monTour.setCarteTiree(carteTiree); // Mettre à jour la carte tirée
-//     afficherCarteTiree(carteTiree);
-//
-//     afficherEtatTour(monTour);
-// }
-//
-//
-// function appliquerCarte(nomCarte) {
-//     const carte = cartes[nomCarte];
-//     if (carte) {
-//         monTour.appliquerCarte(carte);
-//         afficherEtatTour(monTour);
-//     } else {
-//         alert('Carte non trouvée!');
-//     }
-// }
+    document.getElementById("iledelamort").textContent = "";
+    document.getElementById("messageContainer").style.display = "none";
+    document.getElementById("messageContainer").textContent = "Vous avez perdu ! Au suivant !";
+}
