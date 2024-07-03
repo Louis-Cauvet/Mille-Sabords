@@ -185,8 +185,6 @@ class Tour {
         // Attribution du score potentiel calculé à l'attribut de la classe
         this.scorePotentiel = score;
 
-
-        console.log(this.scorePotentiel.toString());
         setTimeout( ()=> {
             // Affichage du score potentiel dans le div avec l'id scorePotentiel (avec un décalage d'1,2 seconde pour attendre la fin du lancer)
             const scorePotentielArea = document.getElementById('scorePotentiel');
@@ -279,10 +277,10 @@ class Tour {
             }
         });
         if ((this.pieces === 0 || this.pieces > 0) &&
-            (this.tetes_de_mort === 0)
-            (this.diamants === 0 || this.diamants >= 0) &&
-            (this.singesEtPerroquets >= 3 || this.singesEtPerroquets === 0)&&
-            (this.epees >= 3 || this.epees === 0)) {
+        (this.tetes_de_mort === 0) &&
+        (this.diamants === 0 || this.diamants >= 0) &&
+        (singesEtPerroquets >= 3 || singesEtPerroquets === 0) &&
+        (this.epees >= 3 || this.epees === 0)) {
             scorePotentiel += 500;
         }
         return scorePotentiel;
