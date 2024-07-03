@@ -20,6 +20,22 @@ body {
   z-index: -1;
 }
 
+
+.title {
+  font-size: 2.5em;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: #ff6f61;
+  color: white;
+  z-index: 2;
+}
+
 main {
   position: relative;
   width: 100%;
@@ -46,12 +62,23 @@ main .params-choices .choice-box {
 main .players-display {
   position: absolute;
   right: 0;
-  top: -80px;
+  top: -130px;
 }
 
 main .players-display .players-table {
-  width: 700px;
+  width: 785px;
   height: auto;
+}
+
+main .players-display .players-container {
+  position: absolute;
+  left: 360px;
+  top: 255px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 15px;
+  background-color: red;
 }
 
 .params-choices {
@@ -61,11 +88,6 @@ main .players-display .players-table {
   background-color: rgba(255, 255, 255, 0.8);
   padding: 20px;
   border-radius: 10px;
-}
-
-
-h1 {
-  color: #333;
 }
 
 input[type="text"],
@@ -97,31 +119,10 @@ button:disabled {
   color: #555;
 }
 
-.title {
-  font-size: 2.5em;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  padding: 10px 20px;
-  border-radius: 10px;
-  background-color: #ff6f61;
-  color: white;
-}
-
 .create-game {
   margin-top: 20px;
   background-color: #ff6f61;
   margin-top: 40px;
-}
-
-.players-container {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 20px;
 }
 
 .player-image-container {
