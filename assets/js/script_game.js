@@ -285,9 +285,9 @@ function checkSkull() {
         finishedPlayerTour = true;
         rollDiceButton.disabled = true;
 
-        // Si l'utilisateur n'a pas tiré la carte 'Trésor', on repasse à son score potentiel à 0
-        if (playerTour.getBanque() === false) {
-            playerTour.scorePotentiel = 0;
+        // Si l'utilisateur n'a pas tiré la carte 'Trésor' et qu'il n'a pas un score négatif, on repasse à son score potentiel à 0
+        if (playerTour.getBanque() === false || playerTour.getScorePotentiel() > 0) {
+            playerTour.setScorePotentiel(0);
             potentialScore.textContent = playerTour.scorePotentiel.toString();
         }
 

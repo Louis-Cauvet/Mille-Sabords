@@ -29,9 +29,16 @@
         <!-- Les dés sauvegardés seront ajoutés ici -->
     </div>
     <button id="rollDiceButton" onclick="rollDice()">Lancer les dés</button>
-    <div class="image-container">
-        <img id="randomImage" src="" alt="Random Image">
-        <p id="card-description"></p>
+    <div class="card-container">
+        <div class="card">
+            <div class="card-front">
+                <img id="randomImage" src="" alt="Random Image">
+            </div>
+            <div class="card-back">
+                <img class="bg-image" src="assets/img/cards/dos_carte.jpg" alt="Image de fond">
+                <p id="card-description"></p>
+            </div>
+        </div>
     </div>
 
     <div class="photo-buttons">
