@@ -455,10 +455,18 @@ function rollDiceDeadIsland() {
   });
 
   // Vérifier si aucune tête de mort n'est obtenue et arrêter le tour si c'est le cas
-  if (diceTypeCount["tetes_de_mort"] === 0) {
+  if (diceTypeCount["tetes_de_mort"] === 0 || diceTypeCount["tetes_de_mort"] === 8) {
     setTimeout(function () {
-      document.getElementById("messageContainer").textContent =
-        "Tour terminé, vous n'avez obtenu aucune tête de mort !";
+        let message = '';
+        switch (diceTypeCount["tetes_de_mort"]) {
+            case 0:
+                message = 'Tour terminé, vous n\'avez obtenu aucune tête de mort !';
+                break;
+            case 8:
+                message = 'La chance, vous avez eu toutes les têtes de mort !';
+                break;
+        }
+      document.getElementById("messageContainer").textContent = message;
       document.getElementById("messageContainer").style.display = "block";
       nextTurnButton.style.display = "block";
       rollDiceButton.disabled = true;
