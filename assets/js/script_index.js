@@ -95,8 +95,8 @@ function setMaxPoints() {
     const maxPointsInput = document.getElementById('maxPoints');
     const choosenObjectif = parseInt(maxPointsInput.value);
 
-    if (choosenObjectif > 4000) {
-        if (choosenObjectif < 10000) {
+    if (choosenObjectif >= 2000) {
+        if (choosenObjectif <= 10000) {
             const objectif = document.querySelector('#pointsInfo span');
             objectif.textContent = choosenObjectif;
             maxPointsInput.value = '';
@@ -106,7 +106,7 @@ function setMaxPoints() {
             alert('Veuillez entrer un objectif de 10000 maximum !')
         }
     } else {
-        alert('Veuillez entrer un objectif de 4000 minimum !');
+        alert('Veuillez entrer un objectif de 2000 minimum !');
     }
 }
 
