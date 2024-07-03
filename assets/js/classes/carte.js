@@ -6,6 +6,9 @@ class Carte {
         this.appliquerEffet();
     }
 
+    /*************************************
+     Application de l'effet de la carte tirée par l'utilisateur et écriture de sa description
+     *************************************/
     appliquerEffet() {
         let textDescription = '';
         switch (this.nom) {
@@ -98,82 +101,63 @@ class Carte {
         this.setCardDescription(textDescription);
     }
 
+    /*************************************
+     Ajout de la description de la carte dans son dos
+     *************************************/
     setCardDescription(description) {
         document.getElementById('card-description').innerHTML = description
     }
 
+    /*************************************
+     Ajout d'un dé pièce automatiquement dans la zone de sauvegarde si le joueur tire la carte 'Pièce'
+     *************************************/
     addPieceToSavedDices() {
         let pieceDiceHtml = `<div id='dice9' class="dice show-4 saved-dice locked-dice" data-result="pieces">
-                                        <div class='side' data-face="diamants">
-                                            <img src="assets/img/face_dice/diamond.png" alt="face diamant">
-                                        </div>
-                                        <div class='side' data-face="perroquets">
-                                            <img src="assets/img/face_dice/perroquet.png" alt="face perroquet">
-                                        </div>
-                                        <div class='side' data-face="tetes_de_mort">
-                                            <img src="assets/img/face_dice/tete_de_mort.png" alt="face tete de mort">
-                                        </div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
                                         <div class='side active' data-face="pieces">
                                             <img src="assets/img/face_dice/piece.png" alt="face piece">
                                         </div>
-                                        <div class='side' data-face="epees">
-                                            <img src="assets/img/face_dice/epee.png" alt="face epee">
-                                        </div>
-                                        <div class='side' data-face="singes">
-                                            <img src="assets/img/face_dice/singe.png" alt="face singe">
-                                        </div>
+                                        <div></div>
+                                        <div></div>
                                     </div>`;
         savedDiceContainer.innerHTML += pieceDiceHtml;
     }
 
+    /*************************************
+     Ajout d'un dé diamant automatiquement dans la zone de sauvegarde si le joueur tire la carte 'Diamant'
+     *************************************/
     addDiamantToSavedDices() {
         let pieceDiceHtml = `<div id='dice9' class="dice show-1 saved-dice locked-dice" data-result="diamants">
                                         <div class='side active' data-face="diamants">
                                             <img src="assets/img/face_dice/diamond.png" alt="face diamant">
                                         </div>
-                                        <div class='side' data-face="perroquets">
-                                            <img src="assets/img/face_dice/perroquet.png" alt="face perroquet">
-                                        </div>
-                                        <div class='side' data-face="tetes_de_mort">
-                                            <img src="assets/img/face_dice/tete_de_mort.png" alt="face tete de mort">
-                                        </div>
-                                        <div class='side' data-face="pieces">
-                                            <img src="assets/img/face_dice/piece.png" alt="face piece">
-                                        </div>
-                                        <div class='side' data-face="epees">
-                                            <img src="assets/img/face_dice/epee.png" alt="face epee">
-                                        </div>
-                                        <div class='side' data-face="singes">
-                                            <img src="assets/img/face_dice/singe.png" alt="face singe">
-                                        </div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
                                     </div>`;
         savedDiceContainer.innerHTML += pieceDiceHtml;
     }
 
+    /*************************************
+     Ajout d'un ou plusieurs dé(s) tête de mort automatiquement dans la zone de sauvegarde si le joueur tire la carte 'Tête de mort'
+     *************************************/
     addSkullToSavedDices(skullsNumber) {
         let index  = 9;
         let skullDicesHtml = '';
         for (let i=1; i<=skullsNumber; i++) {
-            console.log("coucou");
             skullDicesHtml += `<div id='dice${index}' class="dice show-3 saved-dice locked-dice" data-result="tetes_de_mort">
-                                        <div class='side' data-face="diamants">
-                                            <img src="assets/img/face_dice/diamond.png" alt="face diamant">
-                                        </div>
-                                        <div class='side' data-face="perroquets">
-                                            <img src="assets/img/face_dice/perroquet.png" alt="face perroquet">
-                                        </div>
+                                        <div></div>
+                                        <div></div>
                                         <div class='side active' data-face="tetes_de_mort">
                                             <img src="assets/img/face_dice/tete_de_mort.png" alt="face tete de mort">
                                         </div>
-                                        <div class='side' data-face="pieces">
-                                            <img src="assets/img/face_dice/piece.png" alt="face piece">
-                                        </div>
-                                        <div class='side' data-face="epees">
-                                            <img src="assets/img/face_dice/epee.png" alt="face epee">
-                                        </div>
-                                        <div class='side' data-face="singes">
-                                            <img src="assets/img/face_dice/singe.png" alt="face singe">
-                                        </div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
                                     </div>`;
             index++;
         }
