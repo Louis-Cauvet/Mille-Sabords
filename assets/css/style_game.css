@@ -291,6 +291,10 @@ button {
   object-fit: cover;
 }
 
+div#modalLeft {
+  margin-top: 2000px;
+}
+
 .close {
   color: #aaa;
   float: right;
