@@ -1,17 +1,77 @@
+@font-face {
+  font-family: 'Freebooter';
+  src: url('../fonts/Freebooter.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@keyframes rollingSwitch {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+:root {
+  --primary-color : #774935;
+  --primary-dark-color: #57321f;
+
+  --primary-font : Freebooter, sans-serif;
+
+  --shadow : 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  font-family: var(--primary-font);
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
-  flex-direction: column;
+  color: white;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--primary-color);
+  font-family: var(--primary-font);
+  font-size: 22px;
+  cursor: pointer;
+  color: white;
+}
+
+button:hover {
+  background-color: var(--primary-dark-color);
+}
+
+button:disabled {
+  background-color: #8a8888;
+  cursor: not-allowed;
 }
 
 .background {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -20,42 +80,92 @@ body {
   z-index: -1;
 }
 
-
-.title {
-  font-size: 2.5em;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  padding: 10px 20px;
-  border-radius: 10px;
-  background-color: #ff6f61;
-  color: white;
-  z-index: 2;
+.inner-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px 0;
+  box-sizing: border-box;
+  min-height: inherit;
 }
 
 main {
   width: 100%;
 }
 
-main .params-choices{
+main .left-part {
   position: relative;
   display: flex;
-  align-content: center;
+  flex-direction: column;
+  padding: 10px 20px 20px;
   margin-left: 5%;
   width: 50%;
   z-index: 2;
+  border-radius: 15px;
+}
+
+main .left-part .background {
+  object-position: top;
+  opacity: .8;
+  border-radius: inherit;
+}
+
+.inner-page .left-part .title {
+  margin: 0;
+  font-size: 50px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: var(--shadow);
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: white;
+  z-index: 2;
+}
+
+main .left-part .game-description{
+  font-size: 24px;
+  margin: 12px 0;
+  text-shadow: var(--shadow);
+}
+
+main .params-choices {
+  position: relative;
+  display: flex;
+  align-content: center;
+  gap: 25px;
+  width: 100%;
+  z-index: 2;
+  box-sizing: border-box;
 }
 
 main .params-choices .choice-box {
-  background-color: #fff;
-  padding: 20px;
+  padding: 0;
+  margin-top: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 50%;
   text-align: center;
+}
+
+main .params-choices .choice-box input {
+  padding: 10px;
+  margin: 10px 0;
+  width: 90%;
+  font-size: 22px;
+  font-family: var(--primary-font);
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+}
+
+main .params-choices .choice-box :focus {
+  outline-color: var(--primary-dark-color);
+}
+
+main .params-choices .choice-box h2 {
+  font-size: 30px;
+  margin: 0;
+  text-shadow: var(--shadow);
 }
 
 main .players-display {
@@ -64,29 +174,122 @@ main .players-display {
   top: -40px;
 }
 
-main .players-display .players-table {
+.players-display .switch {
+  position: absolute;
+  left: 605px;
+  top: 240px;
+  display: inline-block;
+  width: 125px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.players-display .switch:hover {
+  animation: .5s ease-in-out rollingSwitch;
+}
+
+.players-display .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.players-display .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.players-display .slider:before {
+  position: absolute;
+  content: "";
+  height: 42px;
+  aspect-ratio:  1/1;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.players-display .round {
+  border-radius: 34px;
+}
+
+.players-display .round:before {
+  border-radius: 50%;
+}
+
+.players-display input:checked + .slider {
+  background-color: var(--primary-dark-color);
+}
+
+.players-display input:checked + .slider:before {
+  -webkit-transform: translateX(72px);
+  -ms-transform: translateX(72px);
+  transform: translateX(72px);
+}
+
+.players-display .switch p {
+  position: absolute;
+  top: 3px;
+  margin: 0;
+  width: min-content;
+  text-align: center;
+  font-size: 22px;
+  transition: opacity .3s ease-in-out, visibility .3s ease-in-out;
+}
+
+.players-display .switch .textToggleOff {
+  right: 54px;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.players-display.as--animals .switch .textToggleOff {
+  opacity: 1;
+  visibility: visible;
+}
+
+.players-display .switch .textToggleOn {
+  right: 14px;
+}
+
+.players-display.as--animals .switch .textToggleOn {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.players-display .players-table {
   width: 950px;
   height: auto;
 }
 
-main .players-display .players-container {
+.players-display .players-container {
   position: absolute;
   left: 455px;
-  top: 350px;
+  top: 330px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
 }
 
-main .players-display .player-image-container {
+.players-display .player-image-container {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 15px;
 }
 
 .players-display .player-image-container-ind {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   max-width: 70px;
 }
@@ -95,93 +298,95 @@ main .players-display .player-image-container {
   width: 80px;
   aspect-ratio: 1/1;
   background-size: cover;
+  background-position: top;
+}
+
+.players-display .player-image-container-ind p {
+  margin: 10px 0;
+  font-size: 24px;
+  white-space: break-spaces;
+  text-align: center;
+}
+
+.players-display .player-image-container-ind .delete-player-button {
+  padding: 8px 13px;
+  font-size: 16px;
+  border-radius: 50%;
+  font-family: Arial, sans-serif;
 }
 
 .players-display .player-image-container-ind:nth-child(1) .player-image {
   background-image: url("../img/perso/homme_pirate.png");
 }
 
+.players-display.as--animals .player-image-container-ind:nth-child(1) .player-image {
+  background-image: url("../img/perso/elephant_pirate.png");
+}
+
 .players-display .player-image-container-ind:nth-child(2) .player-image {
   background-image: url("../img/perso/femme_pirate2.png");
+}
+
+.players-display.as--animals .player-image-container-ind:nth-child(2) .player-image {
+  background-image: url("../img/perso/grenouille_pirate.png");
 }
 
 .players-display .player-image-container-ind:nth-child(3) .player-image {
   background-image: url("../img/perso/homme_pirate2.png");
 }
 
+.players-display.as--animals .player-image-container-ind:nth-child(3) .player-image {
+  background-image: url("../img/perso/souris_pirate.png");
+}
+
 .players-display .player-image-container-ind:nth-child(4) .player-image {
   background-image: url("../img/perso/femme_pirate.png");
+}
+
+.players-display.as--animals .player-image-container-ind:nth-child(4) .player-image {
+  background-image: url("../img/perso/girafe_pirate.png");
 }
 
 .players-display .player-image-container-ind:nth-child(5) .player-image {
   background-image: url("../img/perso/homme_pirate3.png");
 }
 
-
-.params-choices {
-  display: flex;
-  gap: 20px;
-  margin-top: 20px;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 20px;
-  border-radius: 10px;
+.players-display.as--animals .player-image-container-ind:nth-child(5) .player-image {
+  background-image: url("../img/perso/poisson_pirate.png");
 }
 
-input[type="text"],
-input[type="number"] {
-  width: calc(100% - 22px);
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+.inner-page .create-game {
+  font-size: 30px;
+  margin-top: 60px;
 }
 
-button {
-  background-color: #28a745;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px;
+footer {
+  position: relative;
+  padding: 5px 0;
+  text-align: center;
+  font-size: 20px;
 }
 
-button:disabled {
-  background-color: #ccc;
+footer pre {
+  font-family: var(--primary-font);
 }
 
-.points-info {
-  margin-top: 20px;
-  font-size: 1.2em;
-  color: #555;
+@media screen and (max-width: 1325px) {
+  main .left-part {
+    width: 42%;
+  }
+
+  main .params-choices .choice-box h2 {
+    font-size: 24px;
+  }
+
+  main .players-display {
+    top: 40px;
+  }
 }
 
-.create-game {
-  margin-top: 20px;
-  background-color: #ff6f61;
-  margin-top: 40px;
-}
-
-.player-image-container img {
-  height: 100px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 5px;
-}
-
-.pirate-container {
-  position: absolute;
-  bottom: 2%;
-  left: 20%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 10px;
-}
-
-.pirate {
-  width: 150px;
-  height: 300px;
-  background-image: url("assets/img/pirate_index-removebg-preview.png");
-  background-size: cover;
-  background-position: center;
+@media screen and (max-width: 1090px) {
+  main .left-part {
+    width: 40%;
+  }
 }
