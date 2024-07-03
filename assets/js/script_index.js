@@ -60,11 +60,12 @@ function addPlayerImage(playerName) {
     const playerDiv = document.createElement('div');
     playerDiv.className = 'player-image-container-ind';
 
-    const playerImg = document.createElement('img');
-    playerImg.src = 'assets/img/pirate_index-removebg-preview.png'; // Utiliser l'image de pirate fixe
-    playerImg.alt = 'Pirate';
+    const playerImg = document.createElement('div');
+    playerImg.className = 'player-image';
+    // playerImg.src = 'assets/img/pirate_index-removebg-preview.png'; // Utiliser l'image de pirate fixe
+    // playerImg.alt = 'Pirate';
 
-    const playerLabel = document.createElement('div');
+    const playerLabel = document.createElement('p');
     playerLabel.textContent = playerName;
 
     playerDiv.appendChild(playerImg);

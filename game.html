@@ -9,6 +9,23 @@
 </head>
 
 <body>
+    <div id="modalCongrats" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalCongrats')">&times;</span>
+            <h2>Bien joué !</h2>
+            <p>Félicitations, vous avez atteint l'objectif !</p>
+        </div>
+    </div>
+
+    <!-- Modal Gagnant -->
+    <div id="modalWinner" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalWinner')">&times;</span>
+            <h2>Bravo !</h2>
+            <p>Nous avons un gagnant !</p>
+            <p id="winnerName"></p>
+        </div>
+    </div>
     <div class="game-info">
         <h1>Partie Mille - Sabords</h1>
         <p id="iledelamort"></p>

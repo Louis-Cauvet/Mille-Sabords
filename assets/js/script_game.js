@@ -17,6 +17,10 @@ const potentialScore = document.getElementById('scorePotentiel');
 
 const nextTurnButton = document.querySelector(".next-turn-button");
 
+let extraTurns = false;
+let playerWhoReachedGoal = -1;
+let extraTurnsCount = 0;
+
 /*************************************
  Affichage des données de la partie au chargement de la page
  *************************************/
@@ -223,7 +227,7 @@ function closeModal(modalId) {
             dice.dataset.result = dice.querySelector(`.side.active`).dataset.face;
             diceTypeCount[dice.dataset.result]++;
 
-            diceTypeCount["tetes_de_mort"] += 3; // TODO : A enlever
+            // diceTypeCount["tetes_de_mort"] += 3; // TODO : A enlever
 
             // on fixe un délai pour laisser le temps à l'animation de s'exécuter entièrement avant le tri des dés
             setTimeout(function() {
@@ -336,27 +340,50 @@ function unsaveDice(diceElement) {
  Passage au tour suivant demandé par le joueur
  *************************************/
 function nextTurn() {
-    // On ajoute le score potentiel du lancer au score total du joueur
     scores[currentPlayerIndex] += playerTour.scorePotentiel;
-
-    // On remet le score à 0 si il est sensé être négatif
-    if (scores[currentPlayerIndex]<0) {
+    if (scores[currentPlayerIndex] < 0) {
         scores[currentPlayerIndex] = 0;
     }
-
-    // On remet à zéro le score potentiel
     playerTour.scorePotentiel = 0;
-
-    // On met à jour l'affichage du score du joueur
     const playerListItems = document.querySelectorAll('#playersList li');
     playerListItems[currentPlayerIndex].textContent = `${gameData.players[currentPlayerIndex]} - Score: ${scores[currentPlayerIndex]}`;
 
-    // On passe au joueur suivant dans la liste
-    currentPlayerIndex = (currentPlayerIndex + 1) % gameData.players.length;
+    const maxPoints = gameData.maxPoints;
+    const currentPlayerScore = scores[currentPlayerIndex];
+    if (currentPlayerScore >= maxPoints && !extraTurns) {
+        openModal('modalCongrats');
+        extraTurns = true;
+        playerWhoReachedGoal = currentPlayerIndex;
+        extraTurnsCount++;
+    }
 
-    // On vide les zones à dés
+    let isLastExtraTurn = ((currentPlayerIndex + 1) % gameData.players.length) === playerWhoReachedGoal;
+    if (extraTurns && isLastExtraTurn) {
+        let highestScore = -1;
+        let winnerIndex = -1;
+        let anotherPlayerReachedGoal = false;
+        for (let i = 0; i < gameData.players.length; i++) {
+            if (scores[i] > highestScore) {
+                highestScore = scores[i];
+                winnerIndex = i;
+            }
+            if (i !== playerWhoReachedGoal && scores[i] >= maxPoints) {
+                anotherPlayerReachedGoal = true;
+            }
+        }
+        if (!anotherPlayerReachedGoal || highestScore >= maxPoints) {
+            openModal('modalWinner');
+            document.getElementById('winnerName').textContent = gameData.players[winnerIndex];
+            extraTurns = false;
+            playerWhoReachedGoal = -1;
+            extraTurnsCount = 0;
+        }
+    }
+
     diceContainer.innerHTML = '';
     savedDiceContainer.innerHTML = '';
+
+    currentPlayerIndex = (currentPlayerIndex + 1) % gameData.players.length;
 
     // Démarrer le tour du prochain joueur
     startPlayerTour();
