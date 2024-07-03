@@ -18,6 +18,8 @@ class Tour {
         this.banque = false;
         this.groupeAnimaux = false;
         this.scorePotentiel = 0;
+                this.mageUtilise = false; // Nouveau attribut pour suivre l'utilisation de la capacité de la carte mage
+
     }
 
     getCarteTiree() {
@@ -175,6 +177,10 @@ class Tour {
         if (this.getBonusCapitaine() === true) {
             score = score*2;
         }
+        if (this.carteTiree && this.carteTiree.nom === 'singe_perroquet') {
+            score = this.calculerTourAnimauxPoints();
+        }
+
 
         // Attribution du score potentiel calculé à l'attribut de la classe
         this.scorePotentiel = score;
@@ -227,6 +233,78 @@ class Tour {
             }
         });
 
+        if ((this.pieces === 0 || this.pieces > 0) &&
+            (this.diamants === 0 || this.diamants >= 0) &&
+            (this.singes >= 3 || this.singes === 0)&&
+            (this.perroquets >= 3 || this.perroquets === 0) &&
+            (this.epees >= 3 || this.epees === 0)) {
+            scorePotentiel += 500;
+        }
         return scorePotentiel;
+    }
+
+    calculerTourAnimauxPoints() {
+        let scorePotentiel = 0;
+
+        // Calcul des points liés aux dés pièces et diamants
+        scorePotentiel += this.pieces * 100;
+        scorePotentiel += this.diamants * 100;
+
+        // Calcul des points liés au cumul de dés de type identique
+        let singesEtPerroquets = this.singes + this.perroquets;
+        const counts = [singesEtPerroquets, this.epees, this.diamants, this.pieces];
+
+        counts.forEach(count => {
+            switch (count) {
+                case 3:
+                    scorePotentiel += 100;
+                    break;
+                case 4:
+                    scorePotentiel += 200;
+                    break;
+                case 5:
+                    scorePotentiel += 500;
+                    break;
+                case 6:
+                    scorePotentiel += 1000;
+                    break;
+                case 7:
+                    scorePotentiel += 2000;
+                    break;
+                case 8:
+                    scorePotentiel += 4000;
+                    break;
+                default:
+                    scorePotentiel += 0;
+            }
+        });
+        if ((this.pieces === 0 || this.pieces > 0) &&
+            (this.tetes_de_mort === 0)
+            (this.diamants === 0 || this.diamants >= 0) &&
+            (this.singesEtPerroquets >= 3 || this.singesEtPerroquets === 0)&&
+            (this.epees >= 3 || this.epees === 0)) {
+            scorePotentiel += 500;
+        }
+        return scorePotentiel;
+    }
+
+
+    replaceSkullDice() {
+        if (this.vies > 0 && !this.mageUtilise) {
+            const savedDice = document.querySelectorAll('.saved-dice');
+            for (let dice of savedDice) {
+                if (dice.classList.contains('show-3')) { 
+                    unsaveDice(dice);
+                    this.tetes_de_mort -= 1;
+                    this.vies -= 1;
+                    this.mageUtilise = true;
+                    console.log("Un dé tête de mort a été replacé et une vie a été retirée.");
+                    return;
+                }
+            }
+            console.log("Aucun dé tête de mort à replacer.");
+        } else {
+            console.log("Aucune vie disponible ou capacité mage déjà utilisée.");
+        }
     }
 }

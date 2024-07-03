@@ -82,15 +82,39 @@ function highlightActiveUser(index) {
 function drawCard() {
     const images = [
         'pirate',
+        'pirate',
+        'pirate',
+        'pirate',
+        'piece',
+        'piece',
+        'piece',
         'piece',
         'diamant',
+        'diamant',
+        'diamant',
+        'diamant',
+        'bateau_300',
         'bateau_300',
         'bateau_500',
+        'bateau_500',
+        'bateau_1000',
         'bateau_1000',
         'singe_perroquet',
+        'singe_perroquet',
+        'singe_perroquet',
+        'singe_perroquet',
+        'tete_de_mort_1',
+        'tete_de_mort_1',
         'tete_de_mort_1',
         'tete_de_mort_2',
+        'tete_de_mort_2',
         'tresor',
+        'tresor',
+        'tresor',
+        'tresor',
+        'mage',
+        'mage',
+        'mage',
         'mage',
     ];
     // On tire au sort une carte
@@ -263,7 +287,7 @@ function closeModal(modalId) {
 
         // On calcule le score potentiel du joueur si il s'arrête à ce lancer
         playerTour.calculerScorePotentiel();
-
+        console.log(playerTour);
     } else {
         alert("Vous ne pouvez pas relancer avec un seul dé dans votre zone de relance !")
     }
@@ -316,9 +340,7 @@ function unsaveDice(diceElement) {
     if (savedDiceContainer.children.length > 1) {
         diceElement.classList.remove('saved-dice');
         diceContainer.appendChild(diceElement);
-    } else {
-        alert('Vous devez toujours avoir au moins 1 dé dans la zone de sauvegarde !');
-    }
+    } 
 }
 
 /*************************************
