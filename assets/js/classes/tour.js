@@ -10,15 +10,16 @@ class Tour {
         this.pieces = 0;
         this.epees = 0;
         this.vies = 0;
-        this.nbLancers = 1;
+        this.nbLancers = 0;
         this.objectifBateau = null;
         this.scoreBateau = null;
         this.bonusCapitaine = false;
-        this.indiceReduction = 100;
+        this.indiceReduction = -100;
         this.banque = false;
         this.groupeAnimaux = false;
         this.scorePotentiel = 0;
         this.mageUtilise = false;
+        this.modeTeteDeMort = false;
     }
 
     getCarteTiree() {
@@ -310,7 +311,6 @@ class Tour {
                     return;
                 }
             }
-            console.log("Aucun dé tête de mort à replacer.");
         } else {
             console.log("Aucune vie disponible ou capacité mage déjà utilisée.");
         }

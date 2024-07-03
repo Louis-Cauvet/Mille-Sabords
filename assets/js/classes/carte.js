@@ -14,7 +14,7 @@ class Carte {
         switch (this.nom) {
             case 'pirate':
                 playerTour.setBonusCapitaine(true);
-                playerTour.setIndiceReduction(200);
+                playerTour.setIndiceReduction(-200);
                 textDescription =
                     'Tous les points obtenus durant ce tour sont doublés. Si le joueur doit se rendre sur l\île de La ' +
                     'Tête-de-Mort, ses adversaires perdent 200 points pour chaque tête de mort révélée';
