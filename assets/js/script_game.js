@@ -460,7 +460,7 @@ function rollDiceDeadIsland() {
         let message = '';
         switch (diceTypeCount["tetes_de_mort"]) {
             case 0:
-                message = 'Tour terminé, vous n\'avez obtenu aucune tête de mort !';
+                message = 'Votre tour est terminé, vous n\'avez pas obtenu de tête de mort sur ce lancer !';
                 break;
             case 8:
                 message = 'La chance, vous avez eu toutes les têtes de mort !';
