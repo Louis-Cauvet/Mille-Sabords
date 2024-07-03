@@ -18,8 +18,7 @@ class Tour {
         this.banque = false;
         this.groupeAnimaux = false;
         this.scorePotentiel = 0;
-                this.mageUtilise = false; // Nouveau attribut pour suivre l'utilisation de la capacité de la carte mage
-
+        this.mageUtilise = false;
     }
 
     getCarteTiree() {
@@ -149,6 +148,17 @@ class Tour {
     setScorePotentiel(value) {
         this.scorePotentiel = value;
     }
+
+  mettreAJour(diceTypeCount) {
+    this.diamants = diceTypeCount.diamants || 0;
+    this.pieces = diceTypeCount.pieces || 0;
+    this.singes = diceTypeCount.singes || 0;
+    this.perroquets = diceTypeCount.perroquets || 0;
+    this.epees = diceTypeCount.epees || 0;
+
+    // Calcul du score potentiel à chaque mise à jour des dés
+    this.calculerScorePotentiel();
+  }
 
 
     /*************************************
@@ -291,7 +301,7 @@ class Tour {
         if (this.vies > 0 && !this.mageUtilise) {
             const savedDice = document.querySelectorAll('.saved-dice');
             for (let dice of savedDice) {
-                if (dice.classList.contains('show-3')) { 
+                if (dice.classList.contains('show-3')) {
                     unsaveDice(dice);
                     this.tetes_de_mort -= 1;
                     this.vies -= 1;
