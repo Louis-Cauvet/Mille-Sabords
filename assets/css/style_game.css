@@ -155,6 +155,10 @@ button {
   background-color: #ffc107 !important;
 }
 
+.overlay{
+  display: block;
+}
+
 .card-container {
   position: fixed;
   top: 20px;
