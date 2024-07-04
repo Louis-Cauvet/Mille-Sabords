@@ -12,22 +12,22 @@ let maxPoints = null;
  Gestion de la musique en arrière plan
  *************************************/
 document.addEventListener('DOMContentLoaded', function() {
-      var audio = document.getElementById('sound');
+    var audio = document.getElementById('sound');
 
-      // Écouter les interactions utilisateur
-      document.addEventListener('click', function() {
+    // Écouter les interactions utilisateur
+    document.addEventListener('click', function() {
         if (audio.paused) {
-          audio.play();
+            audio.play();
         }
-      });
+    });
 
-      document.addEventListener('keydown', function(event) {
+    document.addEventListener('keydown', function(event) {
         // Lancer l'audio si une touche spécifique est pressée
         if (event.key === 'Enter' && audio.paused) {
-          audio.play();
+            audio.play();
         }
-      });
     });
+});
 
 /*************************************
  Ajout du joueur dans la liste
@@ -80,7 +80,6 @@ function addPlayerImage(playerName) {
  Suppression d'un joueur dans la liste
  *************************************/
 function deletePlayer(event) {
-
     const userToDelete = event.target.parentElement;
     const playerName = userToDelete.querySelector('p').textContent;
 
@@ -99,8 +98,6 @@ function deletePlayer(event) {
 function updatePlayerList() {
     const playerList = document.querySelector('.player-image-container');
     playerList.innerHTML = '';
-
-    console.log(playerList);
 
     players.forEach(player => {
         addPlayerImage(player);
@@ -122,24 +119,49 @@ function createGame() {
     const maxPointsInput = document.getElementById('maxPoints');
     const choosenObjectif = parseInt(maxPointsInput.value);
 
-    if (choosenObjectif >= 2000) {
-        if (choosenObjectif <= 10000) {
-            maxPoints = choosenObjectif;
+    if (choosenObjectif >= 2000 && choosenObjectif <= 10000) {
+        const gameTypeRadios = document.getElementsByName('gameType');
+        let gameTypeValue = null;
+
+        for (let i = 0; i < gameTypeRadios.length; i++) {
+            if (gameTypeRadios[i].checked) {
+                gameTypeValue = gameTypeRadios[i].value;
+                break;
+            }
+        }
+
+        if (!gameTypeValue) {
+            alert('Veuillez choisir le type de partie.');
+            return;
+        }
+
+        let url, scriptUrl;
+
+        if (gameTypeValue === 'dematerialiser') {
+            url = 'game.html';
+        } else if (gameTypeValue === 'physique') {
+            url = 'game_physique.html';
+        }
+
+        if (players.length >= minPlayers) {
+            const gameData = {
+                players: players,
+                maxPoints: choosenObjectif
+            };
+            localStorage.setItem('gameData', JSON.stringify(gameData));
+            window.location.href = url;
+            loadScript(scriptUrl);
         } else {
-            alert('Veuillez entrer un objectif de 10000 maximum !')
+            alert('Il faut au moins 2 joueurs pour participer !');
         }
     } else {
-        alert('Veuillez entrer un objectif de 2000 minimum !');
+        alert('Veuillez entrer un objectif compris entre 2000 et 10000.');
     }
+}
 
-    if (players.length >= minPlayers && maxPoints !== null) {
-        const gameData = {
-            players: players,
-            maxPoints: maxPoints
-        };
-        localStorage.setItem('gameData', JSON.stringify(gameData));
-        window.location.href = 'game.html';
-    } else if (players.length < minPlayers) {
-        alert('Il faut au moins 2 joueurs pour participer !');
-    }
+function loadScript(scriptUrl) {
+    const script = document.createElement('script');
+    script.src = scriptUrl;
+    script.async = true;
+    document.head.appendChild(script);
 }

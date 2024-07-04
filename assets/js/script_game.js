@@ -219,17 +219,6 @@ function closeModal(modalId) {
     document.getElementById(modalId).classList.remove('visible');
 }
 
-function rejouerPartie() {
-    // Insérez ici la logique pour recommencer une partie avec le même joueur
-    alert('Début de la nouvelle partie avec les même joueur !');
-    window.location.reload(); 
-}
-
-// Fonction pour refaire une partie en changeant de joueur
-function rejouerAutreJoueur() {
-    localStorage.clear(); 
-    window.location.href = 'index.html'; // Adapter l'URL selon votre structure de fichiers
-}
 
 /*************************************
  Lancement des dés de la zone de relance
@@ -355,7 +344,6 @@ function rollDice() {
 
         // On calcule le score potentiel du joueur si il s'arrête à ce lancer
         playerTour.calculerScorePotentiel();
-        
     } else {
         alert("Vous ne pouvez pas relancer avec un seul dé dans votre zone de relance !")
     }
@@ -521,6 +509,17 @@ function afficherModalGagnant() {
     }
 }
 
+function rejouerPartie() {
+    // Insérez ici la logique pour recommencer une partie avec le même joueur
+    alert('Début de la nouvelle partie avec les même joueur !');
+    window.location.reload(); 
+}
+
+// Fonction pour refaire une partie en changeant de joueur
+function rejouerAutreJoueur() {
+    localStorage.clear(); 
+    window.location.href = 'index.html'; // Adapter l'URL selon votre structure de fichiers
+}
 
 
 /***************************************************************************************************************************************************

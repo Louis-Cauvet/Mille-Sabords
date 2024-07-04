@@ -252,7 +252,8 @@ class Tour {
             (this.diamants === 0 || this.diamants >= 0) &&
             (this.singes >= 3 || this.singes === 0)&&
             (this.perroquets >= 3 || this.perroquets === 0) &&
-            (this.epees >= 3 || this.epees === 0)) {
+            (this.epees >= 3 || this.epees === 0) &&
+            (this.tetes_de_mort <= 0)) {
             scorePotentiel += 500;
         }
         return scorePotentiel;
