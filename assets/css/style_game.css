@@ -10,7 +10,7 @@ body {
   background-size: cover;
   transition: background-image 1s ease;
 }
-
+/*test*/
 .game-info {
   position: absolute;
   top: 20px;
