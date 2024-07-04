@@ -185,7 +185,13 @@ function closeModal(modalId) {
 /*************************************
  Lancement des dés de la zone de relance
  *************************************/
- function rollDice() {
+function rollDice() {
+    // Vérifier si le joueur a déjà obtenu 3 têtes de mort
+    if (playerTour.getTetesDeMort() >= 3) {
+        alert("Vous avez déjà obtenu 3 têtes de mort. Vous ne pouvez pas relancer les dés.");
+        nextTurn();
+        return;
+    }
 
     // on vérifie qu'il y a plus d'un dé dans la zone de relance
     if (diceContainer.querySelectorAll('.dice').length > 1) {
@@ -194,6 +200,7 @@ function closeModal(modalId) {
 
         // on bloque le clic du bouton pendant le lancement
         rollDiceButton.disabled = true;
+        nextTurnButton.disabled = true;
 
         // on initialise un objet pour compter les occurrences de chaque type de dé
         const diceTypeCount = {
@@ -206,6 +213,7 @@ function closeModal(modalId) {
         };
 
         const dicesToRoll = diceContainer.querySelectorAll('.dice');
+        let diceAnimationCount = 0; // Compteur pour suivre le nombre de dés dont l'animation est terminée
 
         dicesToRoll.forEach(dice => {
             // On récupère une face de manière aléatoire pour chaque dé, et on fait en sorte qu'il tombe dessus (avec la classe 'show-*')
@@ -232,11 +240,12 @@ function closeModal(modalId) {
                 if (dice.dataset.result === 'tetes_de_mort') {
                     // on ajoute automatiquement le dé tête de mort à l'espace de sauvegarde et on le verrouille
                     dice.classList.add('saved-dice', 'locked-dice');
-                    savedDiceContainer.appendChild(dice)
-;
+                    savedDiceContainer.appendChild(dice);
+                    checkVictoryCondition();
+
                     // On vérifie si le joueur à obtenu au moins 4 têtes de morts au premier lancer, et on passe en mode 'Ile de la Tête de Mort' si c'est le cas
                     if (playerTour.getNbLancers() === 1) {
-                        if(diceTypeCount['tetes_de_mort'] >= 4 && !playerTour.getCarteTiree().nom.includes("bateau")) {
+                        if (diceTypeCount['tetes_de_mort'] >= 4 && !playerTour.getCarteTiree().nom.includes("bateau")) {
                             goToDeadIsland();
                         } else {
                             CheckMage();
@@ -246,7 +255,7 @@ function closeModal(modalId) {
                         CheckMage();
                         checkSkull();
                     }
-                } else if(finishedPlayerTour == false) {
+                } else if(!finishedPlayerTour) {
                     dice.onclick = function () {
                         // on ajoute le dé choisi par l'utilisateur à l'espace de sauvegarde
                         if (!dice.classList.contains('saved-dice')) {
@@ -259,10 +268,15 @@ function closeModal(modalId) {
                     diceContainer.appendChild(dice);
                 }
 
-                if (finishedPlayerTour === false){
-                    rollDiceButton.disabled = false;
+                // Compteur pour suivre le nombre de dés dont l'animation est terminée
+                diceAnimationCount++;
+
+                // Vérifier si tous les dés ont fini leur animation
+                if (diceAnimationCount === dicesToRoll.length) {
+                    rollDiceButton.disabled = false; // Débloquer le bouton "Lancer les dés"
+                    nextTurnButton.disabled = false; // Débloquer le bouton "Prochain tour"
                 }
-            }, 1200);
+            }, 1500);
         });
 
         // On incrémente le compteur du type de face correspondant à celle obtenue pour les dés de la zone de sauvegarde
@@ -281,8 +295,6 @@ function closeModal(modalId) {
 
         // On calcule le score potentiel du joueur si il s'arrête à ce lancer
         playerTour.calculerScorePotentiel();
-
-        // Si le joueur a pioché la carte du Mage, on lui accorde une change supplémentaire
     } else {
         alert("Vous ne pouvez pas relancer avec un seul dé dans votre zone de relance !")
     }
@@ -309,6 +321,8 @@ function checkSkull() {
         })
     }
 }
+
+
 /*************************************
  Vérification et application de la carte mage
  *************************************/
@@ -414,6 +428,35 @@ function nextTurn() {
     // Démarrer le tour du prochain joueur
     startPlayerTour();
 }
+
+/*************************************
+ Vérification de la condition de victoire immédiate (si plus de 9 dés identiques)
+ *************************************/
+function checkVictoryCondition() {
+    if (playerTour.getDiamants() >= 9 || playerTour.getPieces() >= 9 || playerTour.getTetesDeMort() >= 9) {
+        afficherModalGagnant();
+    }
+}
+
+/*************************************
+ Affichage de la modale annonçant le gagnant
+ *************************************/
+function afficherModalGagnant() {
+    const modal = document.getElementById('modalWinner');
+    const winnerNameElement = document.getElementById('winnerName');
+
+    // On identifie le joueur actuel comme étant le gagnant de la partie
+    const winnerName = gameData.players[currentPlayerIndex];
+
+    //On met à jour le nom du gagnant
+    winnerNameElement.textContent = winnerName;
+
+    if (modal) {
+        modal.style.display = 'block';
+    }
+}
+
+
 
 /***************************************************************************************************************************************************
  DEAD ISLAND / L'ile de la mort

@@ -457,12 +457,19 @@ footer pre {
 }
 
 @media screen and (max-width: 600px) {
-  main .params-choices .choice-box h2 {
-    font-size: 20px;
+  main .params-choices {
+    flex-direction: column;
+    gap: 0;
   }
 
-  main .params-choices .choice-box input::placeholder {
-    opacity: 0;
+  main .params-choices .choice-box {
+    width: 100%;
+  }
+
+  main .params-choices .choice-box h2 {
+    font-size: 28px;
+    text-align: start;
+    margin-left: 15px;
   }
 
   main .players-display {
@@ -496,7 +503,7 @@ footer pre {
     max-width: 100%;
   }
 
-  .inner-page .create-game {
-    margin-top: 30px;
-  }
+  /*.inner-page .create-game {*/
+  /*  margin-top: 30px;*/
+  /*}*/
 }

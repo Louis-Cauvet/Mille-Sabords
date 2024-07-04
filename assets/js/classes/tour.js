@@ -162,6 +162,12 @@ class Tour {
   }
 
 
+   /*************************************
+    Verifie si 9 donne identique
+    *************************************/
+
+
+
     /*************************************
      Calcul du score potentiel selon les dés obtenus et la carte tirée
      *************************************/
