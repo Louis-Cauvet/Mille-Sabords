@@ -45,6 +45,24 @@ document.addEventListener('DOMContentLoaded', () => {
     startPlayerTour();
 });
 
+/*************************************
+ Gestion de la musique en arrière plan
+ *************************************/
+document.addEventListener('DOMContentLoaded', function() {
+      var audio = document.getElementById('sound');
+
+      // Écouter les interactions utilisateur
+      document.addEventListener('click', function() {
+          audio.play();
+      });
+
+      document.addEventListener('keydown', function(event) {
+        // Lancer l'audio si une touche spécifique est pressée
+        if (event.key === 'Enter') {
+          audio.play();
+        }
+      });
+    });
 
 /*************************************
  Démarrage du nouveau tour d'un joueur
@@ -123,9 +141,29 @@ function drawCard() {
         'mage',
         'mage',
     ];
+
+     // Ajouter une correspondance entre les cartes et les backgrounds
+    const backgroundImages = {
+        pirate: 'assets/img/bg_game/bg_game_pirate.jpg',
+        piece: 'assets/img/bg_game/bg_game_piece.jpg',
+        diamant: 'assets/img/bg_game/bg_game_diamond.jpg',
+        bateau_300: 'assets/img/bg_game/bg_game_bateau.jpg',
+        bateau_500: 'assets/img/bg_game/bg_game_bateau.jpg',
+        bateau_1000: 'assets/img/bg_game/bg_game_bateau.jpg',
+        singe_perroquet: 'assets/img/bg_game/bg_game_animaux.jpg',
+        tete_de_mort_1: 'assets/img/bg_game/bg_game_1tetedemort.jpg',
+        tete_de_mort_2: 'assets/img/bg_game/bg_game_2tetedemort.jpg',
+        tresor: 'assets/img/bg_game/bg_game_tresor.jpg',
+        mage: 'assets/img/bg_game/bg_game_mage.jpg',
+    };
+
     // On tire au sort une carte
     const randomImage = images[Math.floor(Math.random() * images.length)];
     document.getElementById('randomImage').src = `assets/img/cards/${randomImage}.jpg`;
+
+    // Modifier le background en fonction de la carte tirée
+    const backgroundUrl = backgroundImages[randomImage];
+    document.body.style.backgroundImage = `url(${backgroundUrl})`;
 
     // On ajoute la variable de carte de manière globale (en l'attachant à 'window') pour pouvoir y accéder de partout
     window.playerCard = new Carte(randomImage);
@@ -186,6 +224,10 @@ function closeModal(modalId) {
  Lancement des dés de la zone de relance
  *************************************/
  function rollDice() {
+
+    // Jouer le son
+    var diceRollSound = document.getElementById('diceRollSound');
+    diceRollSound.play();
 
     // on vérifie qu'il y a plus d'un dé dans la zone de relance
     if (diceContainer.querySelectorAll('.dice').length > 1) {
@@ -340,6 +382,11 @@ function unsaveDice(diceElement) {
  Passage au tour suivant demandé par le joueur
  *************************************/
 function nextTurn() {
+
+ // Jouer le son
+    var CardSound = document.getElementById('CardSound');
+    CardSound.play();
+
     scores[currentPlayerIndex] += playerTour.scorePotentiel;
     if (scores[currentPlayerIndex] < 0) {
         scores[currentPlayerIndex] = 0;
@@ -397,6 +444,20 @@ function nextTurn() {
 L'ile de la mort : 4 tête de morts au premier lancer
 *************************************/
 function goToDeadIsland() {
+
+    // Jouer le son
+    var TetedemortSound = document.getElementById('TetedemortSound');
+    TetedemortSound.play();
+
+    var audio = document.getElementById('sound');
+    audio.pause();
+
+    var horreur = document.getElementById('horreur');
+    audio.play();
+
+    // Changer l'image de fond
+    document.body.style.backgroundImage = "url('assets/img/bg_game/bg_game_iledelamort.jpg')";
+    
     document.getElementById("iledelamort").innerHTML = "Ile de la mort !";
     // On change la fonction du bouton de relance des dés
     rollDiceButton.onclick = rollDiceDeadIsland;
