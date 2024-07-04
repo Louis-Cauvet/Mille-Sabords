@@ -182,7 +182,7 @@ function closeModal(modalId) {
  Lancement des dés de la zone de relance
  *************************************/
  function rollDice() {
-
+    console.log(playerTour);
     // on vérifie qu'il y a plus d'un dé dans la zone de relance
     if (diceContainer.querySelectorAll('.dice').length > 1) {
         // on incrémente le nombre de lancers de 1
@@ -223,7 +223,7 @@ function closeModal(modalId) {
             dice.dataset.result = dice.querySelector(`.side.active`).dataset.face;
             diceTypeCount[dice.dataset.result]++;
 
-            diceTypeCount["tetes_de_mort"] += 3; // TODO : A enlever
+            //diceTypeCount["tetes_de_mort"] += 3; // TODO : A enlever
 
             // on fixe un délai pour laisser le temps à l'animation de s'exécuter entièrement avant le tri des dés
             setTimeout(function() {
@@ -258,13 +258,8 @@ function closeModal(modalId) {
                 if (finishedPlayerTour === false){
                     rollDiceButton.disabled = false;
                 }
-            }, 1500);
+            }, 1200);
         });
-
-        // Si le joueur a pioché la carte du Mage, on lui accorde une change supplémentaire
-        if (playerTour.getVies() > 0) {
-            playerTour.replaceSkullDice();
-        }
 
         // On incrémente le compteur du type de face correspondant à celle obtenue pour les dés de la zone de sauvegarde
         const dicesToSave = savedDiceContainer.querySelectorAll('.saved-dice');
@@ -282,6 +277,26 @@ function closeModal(modalId) {
 
         // On calcule le score potentiel du joueur si il s'arrête à ce lancer
         playerTour.calculerScorePotentiel();
+
+        setTimeout(function() {
+            const diceHeadDead = document.getElementById('savedDiceContainer').querySelectorAll('div[data-result="tetes_de_mort"]').length;
+            if (playerTour.getVies() > 0 && diceHeadDead > 0) {
+                
+                const diceElement = document.getElementById('savedDiceContainer').querySelector('div[data-result="tetes_de_mort"]');
+                const activeDice = diceElement.querySelector('.active');
+                
+                if (diceElement) { // Vérifiez si l'élément existe
+                    activeDice.style.backgroundColor = 'white';
+                    diceElement.classList.remove('locked-dice','saved-dice');
+                    diceContainer.appendChild(diceElement)
+                } else {
+                    console.warn('Element not found!');
+                }
+            
+                playerTour.setVies(0);
+            }
+        }, 1800);
+        // Si le joueur a pioché la carte du Mage, on lui accorde une change supplémentaire
     } else {
         alert("Vous ne pouvez pas relancer avec un seul dé dans votre zone de relance !")
     }
@@ -291,7 +306,7 @@ function closeModal(modalId) {
  Vérification du nombre de tête de morts dans la zone de sauvegarde
  *************************************/
 function checkSkull() {
-    if (playerTour.getTetesDeMort() >= 3) {
+    if (playerTour.getTetesDeMort() >= 3 && playerTour.getVies === 0) {
         // si l'utilisateur a cumulé plus de 3 dés têtes de mort, on force son tour à s'achever
         finishedPlayerTour = true;
         rollDiceButton.disabled = true;
