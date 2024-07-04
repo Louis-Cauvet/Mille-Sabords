@@ -166,18 +166,7 @@ class Tour {
     Verifie si 9 donne identique
     *************************************/
 
-      checkVictoryCondition() {
-        if (this.diamants >= 9 || this.pieces >= 9 || this.tetes_de_mort >= 9) {
-            this.afficherModalGagnant();
-        }
-    }
 
-    afficherModalGagnant() {
-        const modal = document.getElementById('modalWinner');
-        if (modal) {
-            modal.style.display = 'block';
-        }
-    }
 
     /*************************************
      Calcul du score potentiel selon les dés obtenus et la carte tirée
