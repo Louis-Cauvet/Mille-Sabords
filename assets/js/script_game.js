@@ -237,9 +237,11 @@ function closeModal(modalId) {
                         if(diceTypeCount['tetes_de_mort'] >= 4 && !playerTour.getCarteTiree().nom.includes("bateau")) {
                             goToDeadIsland();
                         } else {
+                            CheckMage();    
                             checkSkull();
                         }
                     } else {
+                        CheckMage();
                         checkSkull();
                     }
                 } else if(finishedPlayerTour == false) {
@@ -278,24 +280,6 @@ function closeModal(modalId) {
         // On calcule le score potentiel du joueur si il s'arrête à ce lancer
         playerTour.calculerScorePotentiel();
 
-        setTimeout(function() {
-            const diceHeadDead = document.getElementById('savedDiceContainer').querySelectorAll('div[data-result="tetes_de_mort"]').length;
-            if (playerTour.getVies() > 0 && diceHeadDead > 0) {
-                
-                const diceElement = document.getElementById('savedDiceContainer').querySelector('div[data-result="tetes_de_mort"]');
-                const activeDice = diceElement.querySelector('.active');
-                
-                if (diceElement) { // Vérifiez si l'élément existe
-                    activeDice.style.backgroundColor = 'white';
-                    diceElement.classList.remove('locked-dice','saved-dice');
-                    diceContainer.appendChild(diceElement)
-                } else {
-                    console.warn('Element not found!');
-                }
-            
-                playerTour.setVies(0);
-            }
-        }, 1800);
         // Si le joueur a pioché la carte du Mage, on lui accorde une change supplémentaire
     } else {
         alert("Vous ne pouvez pas relancer avec un seul dé dans votre zone de relance !")
@@ -306,7 +290,7 @@ function closeModal(modalId) {
  Vérification du nombre de tête de morts dans la zone de sauvegarde
  *************************************/
 function checkSkull() {
-    if (playerTour.getTetesDeMort() >= 3 && playerTour.getVies === 0) {
+    if (playerTour.getTetesDeMort() >= 3 && playerTour.getVies() === 0) {
         // si l'utilisateur a cumulé plus de 3 dés têtes de mort, on force son tour à s'achever
         finishedPlayerTour = true;
         rollDiceButton.disabled = true;
@@ -323,6 +307,27 @@ function checkSkull() {
         })
     }
 }
+/*************************************
+ Vérification et application de la carte mage
+ *************************************/
+function CheckMage() {
+    const diceHeadDead = document.getElementById('savedDiceContainer').querySelectorAll('div[data-result="tetes_de_mort"]').length;
+    if (playerTour.getVies() > 0 && diceHeadDead > 0) {
+        
+        const diceElement = document.getElementById('savedDiceContainer').querySelector('div[data-result="tetes_de_mort"]');
+        const activeDice = diceElement.querySelector('.active');
+        
+        if (diceElement) { 
+            activeDice.style.backgroundColor = 'white';
+            diceElement.classList.remove('locked-dice','saved-dice');
+            diceContainer.appendChild(diceElement)
+        } else {
+            console.warn('Element not found!');
+        }
+    
+        playerTour.setVies(0);
+    }
+};
 
 /*************************************
  Ajout d'un dé dans la zone de sauvegarde
