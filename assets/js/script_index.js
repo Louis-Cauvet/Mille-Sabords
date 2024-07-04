@@ -8,9 +8,29 @@ const maxPlayers = 5;
 let players = [];
 let maxPoints = null;
 
+/*************************************
+ Gestion de la musique en arrière plan
+ *************************************/
+document.addEventListener('DOMContentLoaded', function() {
+      var audio = document.getElementById('sound');
+
+      // Écouter les interactions utilisateur
+      document.addEventListener('click', function() {
+        if (audio.paused) {
+          audio.play();
+        }
+      });
+
+      document.addEventListener('keydown', function(event) {
+        // Lancer l'audio si une touche spécifique est pressée
+        if (event.key === 'Enter' && audio.paused) {
+          audio.play();
+        }
+      });
+    });
 
 /*************************************
- Ajout de joueur
+ Ajout du joueur dans la liste
  *************************************/
 function addPlayer() {
     const playerNameInput = document.getElementById('playerName');
@@ -32,44 +52,27 @@ function addPlayer() {
 }
 
 /*************************************
- Mise à jour de la liste des joueurs
- *************************************/
-function updatePlayerList() {
-    const playerList = document.getElementById('playerList');
-    playerList.innerHTML = '';
-    players.forEach(player => {
-        const playerName = document.createElement('li');
-        playerName.textContent = player;
-
-        const deletePlayerButton = document.createElement('button');
-        deletePlayerButton.className = 'deletePlayerButton';
-        deletePlayerButton.textContent = "x";
-        deletePlayerButton.onclick = deletePlayer;
-
-        playerName.appendChild(deletePlayerButton);
-        playerList.appendChild(playerName);
-
-    });
-}
-
-/*************************************
- Affichage d'un nouveau joueur dans la liste
+ Affichage du nouveau joueur à l'écran
  *************************************/
 function addPlayerImage(playerName) {
-    const playerImageContainer = document.getElementById('playerImageContainer');
+    const playerImageContainer = document.querySelector('.player-image-container');
     const playerDiv = document.createElement('div');
     playerDiv.className = 'player-image-container-ind';
 
     const playerImg = document.createElement('div');
     playerImg.className = 'player-image';
-    // playerImg.src = 'assets/img/pirate_index-removebg-preview.png'; // Utiliser l'image de pirate fixe
-    // playerImg.alt = 'Pirate';
 
     const playerLabel = document.createElement('p');
     playerLabel.textContent = playerName;
 
+    const playerDeleteButton = document.createElement('button');
+    playerDeleteButton.className = 'delete-player-button';
+    playerDeleteButton.textContent = 'x';
+    playerDeleteButton.onclick = deletePlayer;
+
     playerDiv.appendChild(playerImg);
     playerDiv.appendChild(playerLabel);
+    playerDiv.appendChild(playerDeleteButton);
     playerImageContainer.appendChild(playerDiv);
 }
 
@@ -77,8 +80,9 @@ function addPlayerImage(playerName) {
  Suppression d'un joueur dans la liste
  *************************************/
 function deletePlayer(event) {
+
     const userToDelete = event.target.parentElement;
-    const playerName = userToDelete.textContent.slice(0, -1).trim(); // on supprime le 'x' du bouton du contenu textuel
+    const playerName = userToDelete.querySelector('p').textContent;
 
     players = players.filter(player => player !== playerName);
 
@@ -90,18 +94,36 @@ function deletePlayer(event) {
 }
 
 /*************************************
- Ajout de l'objectif de points à atteindre
+ Mise à jour de la liste des joueurs
  *************************************/
-function setMaxPoints() {
+function updatePlayerList() {
+    const playerList = document.querySelector('.player-image-container');
+    playerList.innerHTML = '';
+
+    console.log(playerList);
+
+    players.forEach(player => {
+        addPlayerImage(player);
+    });
+}
+
+/*************************************
+ Passage du mode Humain au mode Animaux et inversement pour les personnages
+ *************************************/
+function switchPersosMode() {
+    const playersDisplay = document.querySelector('.players-display');
+    playersDisplay.classList.toggle('as--animals');
+}
+
+/*************************************
+Lancement du jeu, sous réserve de validation de tous les prérequis pour jouer (joueurs, score objectif)
+ *************************************/
+function createGame() {
     const maxPointsInput = document.getElementById('maxPoints');
     const choosenObjectif = parseInt(maxPointsInput.value);
 
     if (choosenObjectif >= 2000) {
         if (choosenObjectif <= 10000) {
-            const objectif = document.querySelector('#pointsInfo span');
-            objectif.textContent = choosenObjectif;
-            maxPointsInput.value = '';
-
             maxPoints = choosenObjectif;
         } else {
             alert('Veuillez entrer un objectif de 10000 maximum !')
@@ -109,12 +131,7 @@ function setMaxPoints() {
     } else {
         alert('Veuillez entrer un objectif de 2000 minimum !');
     }
-}
 
-/*************************************
-Lancement du jeu, sous réserve de validation de tous les prérequis pour jouer (joueurs, score objectif)
- *************************************/
-function createGame() {
     if (players.length >= minPlayers && maxPoints !== null) {
         const gameData = {
             players: players,
@@ -124,7 +141,5 @@ function createGame() {
         window.location.href = 'game.html';
     } else if (players.length < minPlayers) {
         alert('Il faut au moins 2 joueurs pour participer !');
-    } else if (maxPoints === null) {
-        alert('Définissez un score à atteindre pour gagner la partie');
     }
 }
