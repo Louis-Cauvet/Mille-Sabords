@@ -178,6 +178,13 @@ function drawCard() {
  *************************************/
 // Générer les 8 dés pour le premier lancement
 function insertDices() {
+
+    let initialRollingContent = `<div class="overlay" id="overlayrolling"></div>`;
+    diceContainer.innerHTML = initialRollingContent;
+
+    let initialSavedContent = `<div class="overlay" id="overlaysaved"></div>`;
+    savedDiceContainer.innerHTML = initialSavedContent;
+
     for (let i=1; i<=8 ; i++) {
         let newDiceHtml = `<div id='dice${i}' class="dice">
                                         <div class='side' data-face="diamants">
@@ -325,11 +332,6 @@ function rollDice() {
 
         // On calcule le score potentiel du joueur si il s'arrête à ce lancer
         playerTour.calculerScorePotentiel();
-
-        console.log(playerTour.getTetesDeMort());
-        console.log(playerTour.getNbLancers());
-        console.log(diceTypeCount['tetes_de_mort']);
-        console.log(!playerTour.getCarteTiree().nom.includes("bateau"));
 
         setTimeout(() => {
             if (playerTour.getTetesDeMort() >= 3) {
@@ -543,8 +545,9 @@ function goToDeadIsland() {
     nextTurnButton.style.display = "none";
     nextTurnButton.onclick = nextTurnDeadIsland;
 
-    // On empêche le clic sur les zones de sauvegarde et de relance
-    document.querySelectorAll('.dice-container .overlay').forEach((overlay) => {
+    const overlays = document.querySelectorAll('.dice-container .overlay');
+    console.log('Overlays found:', overlays); // Pour vérifier si les éléments sont trouvés
+    overlays.forEach((overlay) => {
         overlay.classList.add('active');
     });
 
