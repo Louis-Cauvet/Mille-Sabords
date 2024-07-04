@@ -351,3 +351,31 @@ div#modalLeft {
   object-fit: cover;
   z-index: -1;
 }
+
+.modalwinner {
+  display: none;
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent noir */
+  justify-content: center;
+  align-items: center;
+  padding-top: 250px; /* Ajustement pour centrer verticalement */
+  box-sizing: border-box; /* Assure que padding ne modifie pas la taille globale du modal */
+  background-image: url("assets/img/bg-parchemin.jpg"); /* Image de fond */
+  background-size: cover; /* Couvrir toute la modal avec l'image */
+  background-position: center; /* Centrer l'image de fond */
+}
+
+.modal-contentwinner {
+  background-image: url("../img/bg-parchemin.jpg"); /* Image de fond */
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
+}
