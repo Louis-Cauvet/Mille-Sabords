@@ -16,22 +16,22 @@ class Carte {
                 playerTour.setBonusCapitaine(true);
                 playerTour.setIndiceReduction(-200);
                 textDescription =
-                    'Tous les points obtenus durant ce tour sont doublés. Si le joueur doit se rendre sur l\île de La ' +
-                    'Tête-de-Mort, ses adversaires perdent 200 points pour chaque tête de mort révélée';
+                    'Tous les points obtenus durant ce tour sont doublés. Si le joueur doit se rendre sur l\'île de La ' +
+                    'Tête-de-Mort, ses adversaires perdent 200 points pour chaque tête de mort révélée.';
                 break;
             case 'piece':
                 playerTour.setPieces(1);
                 this.addPieceToSavedDices();
                 textDescription =
                     'Le joueur commence son tour avec un symbole pièce d\'or. Cette dernière rapporte des points à la ' +
-                    'fois dans une combinaison de dés mais aussi comme simple pièce, soit 100 points';
+                    'fois dans une combinaison de dés mais aussi comme simple pièce, soit 100 points.';
                 break;
             case 'diamant':
                 playerTour.setDiamants(1);
                 this.addDiamantToSavedDices();
                 textDescription =
                     'Le joueur commence son tour avec un symbole diamant. Ce dernier rapporte des points à la ' +
-                    'fois dans une combinaison de dés mais aussi comme simple diamant, soit 100 points';
+                    'fois dans une combinaison de dés mais aussi comme simple diamant, soit 100 points.';
                 break;
             case 'bateau_300':
                 playerTour.setObjectifBateau(2);
@@ -40,7 +40,7 @@ class Carte {
                     'Le joueur doit obtenir, au minimum, autant de sabres avec les dés que le nombre de symboles sur la ' +
                     'carte. S\'il y parvient, en plus de son résultat aux dés, il reçoit le bonus indiqué en bas de la ' +
                     'carte. Dans le cas contraire, le joueur obtient zéro point quelque soit son résultat aux dés, et ' +
-                    'on lui retire de son score la valeur indiquée sur la carte. Celui qui tire cette carte et qui ' +
+                    'on lui retire de son score la valeur indiquée sur la carte. <br>  Celui qui tire cette carte et qui ' +
                     'obtient 4 têtes de mort ou plus lors de son premier lancer perd immédiatement son tour.';
                 break;
             case 'bateau_500':
@@ -60,7 +60,7 @@ class Carte {
                     'Le joueur doit obtenir, au minimum, autant de sabres avec les dés que le nombre de symboles sur la ' +
                     'carte. S\'il y parvient, en plus de son résultat aux dés, il reçoit le bonus indiqué en bas de la ' +
                     'carte. Dans le cas contraire, le joueur obtient zéro point quelque soit son résultat aux dés, et ' +
-                    'on lui retire de son score la valeur indiquée sur la carte. Celui qui tire cette carte et qui ' +
+                    'on lui retire de son score la valeur indiquée sur la carte. <br>  Celui qui tire cette carte et qui ' +
                     'obtient 4 têtes de mort ou plus lors de son premier lancer perd immédiatement son tour.';
                 break;
             case 'singe_perroquet':

@@ -8,6 +8,26 @@ const maxPlayers = 5;
 let players = [];
 let maxPoints = null;
 
+/*************************************
+ Gestion de la musique en arrière plan
+ *************************************/
+document.addEventListener('DOMContentLoaded', function() {
+      var audio = document.getElementById('sound');
+
+      // Écouter les interactions utilisateur
+      document.addEventListener('click', function() {
+        if (audio.paused) {
+          audio.play();
+        }
+      });
+
+      document.addEventListener('keydown', function(event) {
+        // Lancer l'audio si une touche spécifique est pressée
+        if (event.key === 'Enter' && audio.paused) {
+          audio.play();
+        }
+      });
+    });
 
 /*************************************
  Ajout du joueur dans la liste
