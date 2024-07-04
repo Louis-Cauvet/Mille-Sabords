@@ -327,6 +327,11 @@ div#modalLeft {
   /* Fond en jaune pour indiquer les dés sauvegardés */
 }
 
+.mage-dice {
+  border: 2px solid blue;
+  pointer-events: all;
+}
+
 .locked-dice .active {
   border: 2px solid red; /* Exemple: bordure rouge pour les dés verrouillés */
   pointer-events: none; /* Empêche les événements de clic sur les dés verrouillés */

@@ -227,8 +227,6 @@ function closeModal(modalId) {
             dice.dataset.result = dice.querySelector(`.side.active`).dataset.face;
             diceTypeCount[dice.dataset.result]++;
 
-            // diceTypeCount["tetes_de_mort"] += 3; // TODO : A enlever
-
             // on fixe un délai pour laisser le temps à l'animation de s'exécuter entièrement avant le tri des dés
             setTimeout(function() {
                 if (dice.dataset.result === 'tetes_de_mort') {
@@ -241,9 +239,11 @@ function closeModal(modalId) {
                         if(diceTypeCount['tetes_de_mort'] >= 4 && !playerTour.getCarteTiree().nom.includes("bateau")) {
                             goToDeadIsland();
                         } else {
+                            CheckMage();
                             checkSkull();
                         }
                     } else {
+                        CheckMage();
                         checkSkull();
                     }
                 } else if(finishedPlayerTour == false) {
@@ -262,13 +262,8 @@ function closeModal(modalId) {
                 if (finishedPlayerTour === false){
                     rollDiceButton.disabled = false;
                 }
-            }, 1500);
+            }, 1200);
         });
-
-        // Si le joueur a pioché la carte du Mage, on lui accorde une change supplémentaire
-        if (playerTour.getVies() > 0) {
-            playerTour.replaceSkullDice();
-        }
 
         // On incrémente le compteur du type de face correspondant à celle obtenue pour les dés de la zone de sauvegarde
         const dicesToSave = savedDiceContainer.querySelectorAll('.saved-dice');
@@ -286,6 +281,8 @@ function closeModal(modalId) {
 
         // On calcule le score potentiel du joueur si il s'arrête à ce lancer
         playerTour.calculerScorePotentiel();
+
+        // Si le joueur a pioché la carte du Mage, on lui accorde une change supplémentaire
     } else {
         alert("Vous ne pouvez pas relancer avec un seul dé dans votre zone de relance !")
     }
@@ -295,7 +292,7 @@ function closeModal(modalId) {
  Vérification du nombre de tête de morts dans la zone de sauvegarde
  *************************************/
 function checkSkull() {
-    if (playerTour.getTetesDeMort() >= 3) {
+    if (playerTour.getTetesDeMort() >= 3 && playerTour.getVies() === 0) {
         // si l'utilisateur a cumulé plus de 3 dés têtes de mort, on force son tour à s'achever
         finishedPlayerTour = true;
         rollDiceButton.disabled = true;
@@ -312,6 +309,27 @@ function checkSkull() {
         })
     }
 }
+/*************************************
+ Vérification et application de la carte mage
+ *************************************/
+function CheckMage() {
+    const diceHeadDead = document.getElementById('savedDiceContainer').querySelectorAll('div[data-result="tetes_de_mort"]').length;
+    if (playerTour.getVies() > 0 && diceHeadDead > 0) {
+
+        const diceElement = document.getElementById('savedDiceContainer').querySelector('div[data-result="tetes_de_mort"]');
+        const activeDice = diceElement.querySelector('.active');
+
+        if (diceElement) {
+            activeDice.style.backgroundColor = 'white';
+            diceElement.classList.remove('locked-dice','saved-dice');
+            diceContainer.appendChild(diceElement)
+        } else {
+            console.warn('Element not found!');
+        }
+
+        playerTour.setVies(0);
+    }
+};
 
 /*************************************
  Ajout d'un dé dans la zone de sauvegarde
@@ -340,11 +358,18 @@ function unsaveDice(diceElement) {
  Passage au tour suivant demandé par le joueur
  *************************************/
 function nextTurn() {
+    // On ajoute le score potentiel du lancer au score total du joueur
     scores[currentPlayerIndex] += playerTour.scorePotentiel;
-    if (scores[currentPlayerIndex] < 0) {
+
+    // On remet le score à 0 si il est sensé être négatif
+    if (scores[currentPlayerIndex]<0) {
         scores[currentPlayerIndex] = 0;
     }
+
+    // On remet à zéro le score potentiel
     playerTour.scorePotentiel = 0;
+
+    // On met à jour l'affichage du score du joueur
     const playerListItems = document.querySelectorAll('#playersList li');
     playerListItems[currentPlayerIndex].textContent = `${gameData.players[currentPlayerIndex]} - Score: ${scores[currentPlayerIndex]}`;
 
@@ -383,6 +408,7 @@ function nextTurn() {
     diceContainer.innerHTML = '';
     savedDiceContainer.innerHTML = '';
 
+    // On passe au joueur suivant
     currentPlayerIndex = (currentPlayerIndex + 1) % gameData.players.length;
 
     // Démarrer le tour du prochain joueur
