@@ -56,6 +56,15 @@ document.addEventListener('DOMContentLoaded', () => {
     startPlayerTour();
 });
 
+
+document.getElementById('flipCardButton').addEventListener('click', () => {
+    const card = document.querySelector('.card');
+    card.classList.add('clicked');
+    setTimeout(() => {
+        card.classList.remove('clicked');
+    }, 1500);
+});
+
 /*************************************
  Gestion de la musique en arrière plan
  *************************************/
@@ -189,7 +198,9 @@ function insertDices() {
 
     // On tire au sort une carte
     const randomImage = images[Math.floor(Math.random() * images.length)];
-    document.getElementById('randomImage').src = `assets/img/cards/${randomImage}.jpg`;
+    setTimeout(() => {
+        document.getElementById('randomImage').src = `assets/img/cards/${randomImage}.jpg`;
+    }, 650)
 
     // Modifier le background en fonction de la carte tirée
     const backgroundUrl = backgroundImages[randomImage];
@@ -539,6 +550,14 @@ function rejouerAutreJoueur() {
 L'ile de la mort : 4 tête de morts au premier lancer
 *************************************/
 function goToDeadIsland() {
+
+    document.querySelector('body').classList.add("deathmode");
+    setTimeout(()=>{
+        document.querySelector('body').classList.remove("deathmode");
+    }, 700);
+
+    playerTour.setModeTeteDeMort(true);
+
     // Jouer le son
     let TetedemortSound = document.getElementById('TetedemortSound');
     TetedemortSound.play();
@@ -583,6 +602,9 @@ function calculateNegativePoints(nbTetesMort) {
  Lancement des dés dans le mode Ile de la Tête de Mort
  *************************************/
 function rollDiceDeadIsland() {
+    let diceRollSound = document.getElementById('diceRollSound');
+    diceRollSound.play();
+
   // Jeu de l'île de la mort
   const diceTypeCount = {
     diamants: 0,
@@ -721,6 +743,8 @@ function nextTurnDeadIsland() {
 Sortie du mode Ile de la Tête de Mort
  *************************************/
 function outOfDeadIsland() {
+    playerTour.setModeTeteDeMort(false);
+
     // on rétablit les fonctions par défaut pour les boutons
     rollDiceButton.onclick = rollDice;
     nextTurnButton.onclick = nextTurn;

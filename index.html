@@ -26,6 +26,13 @@
                     Allez-vous risquer le tout pour le tout, ou choisir de sécuriser vos gains ? la décision vous
                     appartient !</p>
                 <div class="params-choices">
+                    <div class="choice-box inline">
+                        <h2>Type de partie</h2>
+                        <div>
+                            <label><input type="radio" name="gameType" value="dematerialiser" checked> Partie dématérialisée</label>
+                            <label><input type="radio" name="gameType" value="physique"> Partie physique</label>
+                        </div>
+                    </div>
                     <div class="choice-box">
                         <h2>Définir l'objectif de la partie</h2>
                         <input type="number" id="maxPoints" placeholder="Compris entre 2000 et 10000" min="2000"
@@ -36,13 +43,6 @@
                         <input type="text" id="playerName" placeholder="Nom du joueur">
                         <button id="addPlayerButton" onclick="addPlayer()">Ajouter ce joueur</button>
                     </div>
-                    <div class="choice-box">
-                        <h2>Type de partie</h2>
-                        <label><input type="radio" name="gameType" value="physique" checked> Partie physique</label>
-                        <label><input type="radio" name="gameType" value="dematerialiser"> Dématérialiser</label>
-                    </div>
-
-
                 </div>
             </div>
             <div class="players-display">

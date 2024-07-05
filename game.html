@@ -15,6 +15,8 @@
     <audio id="sound" autoplay loop src="assets/audio/musique_fond.mp3" type="audio/mp3" preload="auto"></audio>
     <audio id="horreur" loop src="assets/audio/horreur.mp3" type="audio/mp3" preload="auto"></audio>
 
+    <div class="overlaydeath"></div>
+
     <div id="modalCongrats" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('modalCongrats')">&times;</span>
@@ -84,7 +86,7 @@
                             </div>
                         </div>
 
-                        <button class="next-turn-button" onclick="nextTurn()">Terminer le tour</button>
+                        <button id="flipCardButton" class="next-turn-button" onclick="nextTurn()">Terminer le tour</button>
                     </div>
                 </div>
             </section>

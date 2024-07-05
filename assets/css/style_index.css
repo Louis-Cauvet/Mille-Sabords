@@ -135,7 +135,8 @@ main .params-choices {
   position: relative;
   display: flex;
   align-content: center;
-  gap: 25px;
+  flex-wrap: wrap;
+  gap: 0 25px;
   width: 100%;
   z-index: 2;
   box-sizing: border-box;
@@ -145,8 +146,60 @@ main .params-choices .choice-box {
   padding: 0;
   margin-top: 20px;
   border-radius: 10px;
-  width: 50%;
+  width: calc(50% - 12.5px);
   text-align: center;
+}
+
+main .params-choices .choice-box.inline {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100% !important;
+}
+
+main .params-choices .choice-box.inline h2 {
+  margin-bottom: 5px;
+}
+
+.params-choices .choice-box.inline input[type="radio"] {
+  position: relative;
+  visibility: hidden;
+}
+
+.params-choices .choice-box.inline input[type="radio"]::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: -1px;
+  width: 20px;
+  aspect-ratio: 1/1;
+  background-color: white;
+  border-radius: 50%;
+  border: 1px solid var(--primary-color);
+  visibility: visible;
+}
+
+.params-choices .choice-box.inline input[type="radio"]:checked::after {
+  content: "";
+  position: absolute;
+  left: -7.4px;
+  top: 2px;
+  width: 16px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  visibility: visible;
+}
+
+
+main .params-choices .choice-box.inline label {
+  font-size: 24px;
+  margin-right: 40px;
+  cursor: pointer;
+}
+
+main .params-choices .choice-box.inline input {
+  width: fit-content;
 }
 
 main .params-choices .choice-box input {

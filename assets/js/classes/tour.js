@@ -150,6 +150,14 @@ class Tour {
         this.scorePotentiel = value;
     }
 
+    getModeTeteDeMort() {
+        return this.modeTeteDeMort;
+    }
+
+    setModeTeteDeMort(value) {
+        this.modeTeteDeMort = value;
+    }
+
 
     /*************************************
      Calcul du score potentiel selon les dés obtenus et la carte tirée

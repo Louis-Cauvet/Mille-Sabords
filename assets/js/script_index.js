@@ -127,6 +127,8 @@ function createGame() {
     const maxPointsInput = document.getElementById('maxPoints');
     const choosenObjectif = parseInt(maxPointsInput.value);
 
+    let url;
+
     if (choosenObjectif >= 2000) {
         if (choosenObjectif <= 10000) {
             maxPoints = choosenObjectif;
@@ -145,8 +147,6 @@ function createGame() {
                 alert('Veuillez choisir le type de partie.');
                 return;
             }
-
-            let url, scriptUrl;
 
             if (gameTypeValue === 'dematerialiser') {
                 url = 'game.html';
