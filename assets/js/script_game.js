@@ -103,7 +103,7 @@ function highlightActiveUser(index) {
 /*************************************
  Tirage d'une carte de manière aléatoire
  *************************************/
-function drawCard() {
+ function drawCard() {
     const images = [
         'pirate',
         'pirate',
@@ -315,6 +315,8 @@ function rollDice() {
                 }
             }, 1500);
         });
+
+        console.log(playerTour);
 
         // On incrémente le compteur du type de face correspondant à celle obtenue pour les dés de la zone de sauvegarde
         const dicesToSave = savedDiceContainer.querySelectorAll('.saved-dice');
