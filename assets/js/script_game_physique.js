@@ -3,7 +3,6 @@
 /*************************************
  Variables globales
  *************************************/
-
 const gameData = JSON.parse(localStorage.getItem('gameData'));
 let scores = [];
 let currentPlayerIndex = 0;
@@ -151,7 +150,8 @@ function highlightActiveUser(index) {
  *************************************/
 function calculateAndUpdateScore() {
     const diceInputs = document.querySelectorAll('.dice-input');
-checkVictoryCondition()
+    checkVictoryCondition();
+
     // Vérifier le total des dés en fonction de la carte tirée
     let expectedTotal;
     switch (playerTour.getCarteTiree().nom) {
@@ -180,7 +180,7 @@ checkVictoryCondition()
     });
 
     if (!allInputsFilled || total !== expectedTotal) {
-        alert(`Vous devez renseigner exactement ${expectedTotal} dés pour calculer le score potentiel.`);
+        alert(`Vous devez renseigner exactement ${expectedTotal} dés pour calculer le score potentiel. (Pensez à rajouter les têtes de mort/pièce/diamant des cartes)`);
         return;
     }
 
@@ -192,7 +192,8 @@ checkVictoryCondition()
         Un: parseInt(document.getElementById('input-dice1').value, 10),
         Cinq: parseInt(document.getElementById('input-dice5').value, 10),
         Trois: parseInt(document.getElementById('input-dice3').value, 10),
-        Quatre: parseInt(document.getElementById('input-dice4').value, 10)
+        Quatre: parseInt(document.getElementById('input-dice4').value, 10),
+        Six: parseInt(document.getElementById('input-dice6').value, 10) // Ajouté pour inclure le dé Six
     };
 
     updatePlayerTour('input-dice2', diceTypeCount.Deux);
@@ -200,11 +201,21 @@ checkVictoryCondition()
     updatePlayerTour('input-dice5', diceTypeCount.Cinq);
     updatePlayerTour('input-dice3', diceTypeCount.Trois);
     updatePlayerTour('input-dice4', diceTypeCount.Quatre);
+    updatePlayerTour('input-dice6', diceTypeCount.Six);
+
+    // Vérifier le nombre de têtes de mort
+    const totalTetesDeMort = diceTypeCount.Six;
+
+    if (totalTetesDeMort === 3) {
+        alert('Il y a 3 têtes de mort ou plus !!!');
+        return; // Terminer la fonction après le changement de tour
+    }
 
     // Recalculer le score potentiel et mettre à jour l'affichage
     if (window.playerTour) {
         playerTour.calculerScorePotentiel();
-        savedDiceContainer.textContent = "Score potentiel : " + playerTour.getScorePotentiel().toString();
+        savedDiceContainer.textContent = playerTour.getScorePotentiel().toString();
+        console.log('Score potentiel :', playerTour.getScorePotentiel());
     } else {
         console.error('playerTour n\'est pas défini ou est null.');
     }
@@ -244,16 +255,46 @@ function getPropertyNameForDiceNumber(diceNumber) {
 
 
 function nextTurn() {
-if (!checkTotalDiceInputs()) {
-        alert('Vous devez renseigner exactement 8 dés avant de terminer votre tour.');
+    const diceInputs = document.querySelectorAll('.dice-input'); // Déclaration de diceInputs
+
+    let expectedTotal;
+    switch (playerTour.getCarteTiree().nom) {
+        case 'piece':
+        case 'diamant':
+        case 'tete_de_mort_1':
+            expectedTotal = 9;
+            break;
+        case 'tete_de_mort_2':
+            expectedTotal = 10;
+            break;
+        default:
+            expectedTotal = 8;
+    }
+
+    // Vérifier le total des dés
+    let total = 0;
+    let allInputsFilled = true;
+    diceInputs.forEach(input => {
+        const inputValue = parseInt(input.value, 10);
+        if (isNaN(inputValue)) {
+            allInputsFilled = false;
+        } else {
+            total += inputValue;
+        }
+    });
+
+    if (!allInputsFilled || total !== expectedTotal) {
+        alert(`Vous devez renseigner exactement ${expectedTotal} dés pour calculer le score potentiel. (Pensez à rajouter les têtes de mort/piece/diamant des cartes)`);
         return;
     }
 
     // Jouer le son
     let CardSound = document.getElementById('CardSound');
     CardSound.play();
-    checkVictoryCondition()
+
+    checkVictoryCondition(); // Appel de la fonction pour vérifier la condition de victoire
     calculateAndUpdateScore();
+
     // On ajoute le score potentiel du lancer au score total du joueur
     scores[currentPlayerIndex] += playerTour.scorePotentiel;
 
@@ -301,14 +342,13 @@ if (!checkTotalDiceInputs()) {
         }
     }
 
-
-
     // On passe au joueur suivant
     currentPlayerIndex = (currentPlayerIndex + 1) % gameData.players.length;
 
     // Démarrer le tour du prochain joueur
     startPlayerTour();
 }
+
 function resetDiceInputs() {
     const diceInputs = document.querySelectorAll('.dice-input');
     diceInputs.forEach(input => {
@@ -329,7 +369,18 @@ function closeModal(modalId) {
 }
 
 function checkVictoryCondition() {
-    if (playerTour.getDeux() >= 9 || playerTour.getUn() >= 9 || playerTour.getSix() >= 9) {
+    // Récupérer les valeurs des dés depuis playerTour
+    const un = playerTour.getUn();
+    const deux = playerTour.getDeux();
+    const trois = playerTour.getTrois();
+    const quatre = playerTour.getQuatre();
+    const cinq = playerTour.getCinq();
+    const six = playerTour.getSix();
+
+    // Vérifier les conditions de victoire
+    if ((un >= 9 && deux <= 0 && trois <= 0 && quatre <= 0 && cinq <= 0 && six >= 0) ||
+        (un <= 0 && deux >= 9 && trois <= 0 && quatre <= 0 && cinq <= 0 && six >= 0) ||
+        (un <= 0 && deux <= 0 && trois <= 0 && quatre <= 0 && cinq <= 0 && six >= 9)) {
         afficherModalGagnant();
     }
 }
