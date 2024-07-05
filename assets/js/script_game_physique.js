@@ -3,6 +3,7 @@
 /*************************************
  Variables globales
  *************************************/
+
 const gameData = JSON.parse(localStorage.getItem('gameData'));
 let scores = [];
 let currentPlayerIndex = 0;
@@ -20,8 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const maxPointsInfo = document.getElementById('goalNumber');
     const playerList = document.getElementById('playersList');
     savedDiceContainer = document.getElementById('scorePotentiel'); // Assignation de savedDiceContainer ici
-
-    const rollDiceButton = document.getElementById('rollDiceButton'); // Supposant que cela est défini quelque part dans votre HTML
 
     if (gameData) {
         maxPointsInfo.textContent = `Objectif : ${gameData.maxPoints}`;
@@ -43,10 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
  *************************************/
 function startPlayerTour() {
     window.playerTour = new Tour();
-    document.getElementById('messageContainer').classList.remove('visible');
     savedDiceContainer.textContent = '0'; // Utilisation de savedDiceContainer ici
     resetDiceInputs(); // Réinitialiser les valeurs des inputs des dés à zéro
-    rollDiceButton.disabled = false;
     finishedPlayerTour = false;
     highlightActiveUser(currentPlayerIndex);
     drawCard();
@@ -58,16 +55,6 @@ function startPlayerTour() {
             const inputValue = parseInt(event.target.value, 10);
             // Mettre à jour l'objet Tour en fonction des changements d'entrée
             updatePlayerTour(inputId, inputValue);
-
-            // Vérifier si le total des inputs est correct en fonction de la carte tirée
-            if (checkTotalDiceInputs()) {
-                console.log('Le total des inputs est correct.');
-                console.log(playerTour.getCarteTiree().nom);
-            } else {
-                console.log('Le total des inputs n\'est pas correct.');
-                                console.log(playerTour.getCarteTiree().nom);
-
-            }
         });
     });
 }
@@ -217,8 +204,7 @@ checkVictoryCondition()
     // Recalculer le score potentiel et mettre à jour l'affichage
     if (window.playerTour) {
         playerTour.calculerScorePotentiel();
-        savedDiceContainer.textContent = playerTour.getScorePotentiel().toString();
-        console.log('Score potentiel :', playerTour.getScorePotentiel());
+        savedDiceContainer.textContent = "Score potentiel : " + playerTour.getScorePotentiel().toString();
     } else {
         console.error('playerTour n\'est pas défini ou est null.');
     }

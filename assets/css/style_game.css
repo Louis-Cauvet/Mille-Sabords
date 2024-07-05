@@ -687,42 +687,108 @@ footer pre {
   font-family: var(--primary-font);
 }
 
+.physical-game .turn-area .rolling-area {
+  width: 500px;
+}
+
+.physical-game .rolling-area .dice-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: fit-content;
+  padding: 20px;
+  width: 100%;
+}
+
+.physical-game .rolling-area .background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 20px;
+  opacity: .75;
+}
+
+.physical-game .dice-container #scorePotentiel {
+  margin-bottom: 10px;
+}
+
+.physical-game .rolling-area .container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.physical-game .dice-container .input-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  max-width: 130px;
+}
+
+.physical-game .locked-dice {
+  display: none;
+}
+
+.physical-game .dice-container .input-area input {
+  max-width: 100px;
+  font-size: var(--primary-font);
+  border-radius: 5px;
+  border: none;
+}
+
+.physical-game .dice-container .input-area input:focus {
+  outline-color: var(--primary-color);
+}
+
+.physical-game .dice-container img {
+  width: 50px;
+  aspect-ratio: 1/1;
+}
+
 /************************
 ** STYLE HUGO
  *************************/
-.modalwinner {
-    display: none;
-    position: fixed;
-    z-index: 2;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent noir */
-    justify-content: center;
-    align-items: center;
-    padding-top: 250px; /* Ajustement pour centrer verticalement */
-    box-sizing: border-box; /* Assure que padding ne modifie pas la taille globale du modal */
-    background-image: url("assets/img/bg-parchemin.jpg"); /* Image de fond */
-    background-size: cover; /* Couvrir toute la modal avec l'image */
-    background-position: center; /* Centrer l'image de fond */
-}
+/*.modalwinner {*/
+/*    display: none;*/
+/*    position: fixed;*/
+/*    z-index: 2;*/
+/*    left: 0;*/
+/*    top: 0;*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    overflow: auto;*/
+/*    background-color: rgba(0, 0, 0, 0.5); !* Fond semi-transparent noir *!*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    padding-top: 250px; !* Ajustement pour centrer verticalement *!*/
+/*    box-sizing: border-box; !* Assure que padding ne modifie pas la taille globale du modal *!*/
+/*    background-image: url("assets/img/bg-parchemin.jpg"); !* Image de fond *!*/
+/*    background-size: cover; !* Couvrir toute la modal avec l'image *!*/
+/*    background-position: center; !* Centrer l'image de fond *!*/
+/*}*/
 
-.modal-contentwinner {
-    background-image: url("../img/bg-parchemin.jpg"); /* Image de fond */
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 500px;
-    text-align: center;
-}
+/*.modal-contentwinner {*/
+/*    background-image: url("../img/bg-parchemin.jpg"); !* Image de fond *!*/
+/*    padding: 20px;*/
+/*    border-radius: 10px;*/
+/*    width: 80%;*/
+/*    max-width: 500px;*/
+/*    text-align: center;*/
+/*}*/
 
-.dice-input {
-    width: 50px;
-    text-align: center;
-    margin-top: 10px;
-}
+/*.dice-input {*/
+/*    width: 50px;*/
+/*    text-align: center;*/
+/*    margin-top: 10px;*/
+/*}*/
 
 /************************
 ** FIN STYLE HUGO

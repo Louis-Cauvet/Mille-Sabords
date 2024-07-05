@@ -4,138 +4,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mille Sabords - Partie en cours</title>
-    <link rel="stylesheet" href="assets/css/style_game_physique.css">
+    <title>Mille Sabords - Partie physique</title>
+    <link rel="stylesheet" href="assets/css/style_game.css">
 </head>
 
-<body>
-    <iframe src="audio.html" style="display:none;" id="audioIframe"></iframe>
+<body class="physical-game">
+<audio id="diceRollSound" src="assets/audio/dés.mp3" preload="auto"></audio>
+<audio id="CardSound" src="assets/audio/tirer_carte.mp3" preload="auto"></audio>
+<audio id="TetedemortSound" src="assets/audio/tete_de_mort.mp3" preload="auto"></audio>
+<audio id="sound" autoplay loop src="assets/audio/musique_fond.mp3" type="audio/mp3" preload="auto"></audio>
+<audio id="horreur" loop src="assets/audio/horreur.mp3" type="audio/mp3" preload="auto"></audio>
 
+<div class="overlaydeath"></div>
 
-    <div id="modalCongrats" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('modalCongrats')">&times;</span>
-            <h2>Bien joué !</h2>
-            <p>Félicitations, vous avez atteint l'objectif !</p>
-        </div>
+<div id="modalCongrats" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modalCongrats')">&times;</span>
+        <h2>Bien joué !</h2>
+        <p>Félicitations, vous avez atteint l'objectif !</p>
     </div>
+</div>
 
-    <!-- Modal Gagnant -->
-    <div id="modalWinner" class="modal">
-        <div class="modal-content">
-            <img src="assets/img/bg_index.jpg" alt="image bg" class="background">
-            <span class="close" onclick="closeModal('modalWinner')">&times;</span>
-            <h2>Bravo !</h2>
-            <p>Nous avons un gagnant !</p>
-            <p id="winnerName"></p>
-            <div class="button-container">
-                <button onclick="rejouerPartie()">Refaire une partie</button>
-                <button onclick="rejouerAutreJoueur()">Refaire une partie en changeant de joueur</button>
-            </div>
-        </div>
-    </div>
-    <div class="game-info">
+<!-- Modal Gagnant -->
+<div id="modalWinner" class="modal">
+    <div class="modal-content">
         <img src="assets/img/bg_index.jpg" alt="image bg" class="background">
-        <h1>Partie Mille - Sabords</h1>
-        <p id="iledelamort"></p>
-        <div id="goalNumber"></div>
-        <ul id="playersList">
-            <!-- Liste des joueurs -->
-        </ul>
-    </div>
-    <div id="scorePotentiel">0</div>
-    <div class="dice-container">
-        <div class="dice">
-            <img src="assets/img/face_dice/piece.png" alt="Dé face 1" id="dice1">
-            <input type="number" id="input-dice1" class="dice-input" min="0" value="0">
-        </div>
-        <div class="dice">
-            <img src="assets/img/face_dice/diamond.png" alt="Dé face 2" id="dice2">
-            <input type="number" id="input-dice2" class="dice-input" min="0" value="0">
-        </div>
-        <div class="dice">
-            <img src="assets/img/face_dice/perroquet.png" alt="Dé face 3" id="dice3">
-            <input type="number" id="input-dice3" class="dice-input" min="0" value="0">
-        </div>
-        <div class="dice">
-            <img src="assets/img/face_dice/epee.png" alt="Dé face 4" id="dice4">
-            <input type="number" id="input-dice4" class="dice-input" min="0" value="0">
-        </div>
-        <div class="dice">
-            <img src="assets/img/face_dice/singe.png" alt="Dé face 5" id="dice5">
-            <input type="number" id="input-dice5" class="dice-input" min="0" value="0">
-        </div>
-        <div class="dice">
-            <img src="assets/img/face_dice/tete_de_mort.png" alt="Dé face 6" id="dice6">
-            <input type="number" id="input-dice6" class="dice-input" min="0" value="0">
+        <span class="close" onclick="closeModal('modalWinner')">&times;</span>
+        <h2>Bravo !</h2>
+        <p>Nous avons un gagnant !</p>
+        <p id="winnerName"></p>
+        <div class="button-container">
+            <button onclick="rejouerPartie()">Refaire une partie</button>
+            <button onclick="rejouerAutreJoueur()">Refaire une partie en changeant de joueur</button>
         </div>
     </div>
+</div>
 
-    <button id="rollDiceButton" onclick="rollDice()">Re lancer les dés</button>
-    <br><br>
-    <button id="calculateButton" onclick="calculateAndUpdateScore()">Calculer Score Potentiel</button>
+<div class="inner-page">
+    <h1 class="title">Mille Sabords</h1>
 
-    <div class="card-container">
-        <div class="card">
-            <div class="card-front">
-                <img id="randomImage" src="" alt="Random Image">
+    <main>
+        <button class="open-modal-button" onclick="openModal('leftModal')" title="Règles du jeu"><i>i</i></button>
+
+        <div id="leftModal" class="modal">
+            <div class="overlay-modal"></div>
+            <div class="modal-content" id="modalLeft">
+                <span class="close" onclick="closeModal('leftModal')">&times;</span>
+                <h3 class="modal-title">Règles du jeu pour les nouveaux moussaillons !</h3>
+                <img src="assets/img/regle1.jpg" alt="Left Photo 1">
+                <img src="assets/img/regle2.jpg" alt="Left Photo 2">
             </div>
-            <div class="card-back">
-                <div class="editor-img">
-                    <img class="bg-image" src="assets/img/cards/dos_carte.jpg" alt="Image de fond">
+        </div>
+
+        <section class="left-part">
+            <div class="game-info">
+                <img src="assets/img/bg-parchemin.jpg" alt="image bg" class="background">
+                <p id="goalNumber"></p>
+                <ul id="playersList">
+                    <!-- La liste des joueurs sera ajoutée ici -->
+                </ul>
+            </div>
+            <div class="turn-area">
+                <div class="rolling-area">
+                    <div class="dice-container">
+                        <img src="assets/img/tapis-jeu.png" alt="image bg" class="background">
+                        <div id="scorePotentiel">Votre score potentiel : <span>0</span></div>
+                        <div class="container">
+                            <div class="input-area">
+                                <img src="assets/img/face_dice/dice-1.png" alt="Dé face 1" id="dice1">
+                                <input type="number" id="input-dice1" class="dice-input" min="0" value="0">
+                            </div>
+                            <div class="input-area">
+                                <img src="assets/img/face_dice/dice-2.png" alt="Dé face 2" id="dice2">
+                                <input type="number" id="input-dice2" class="dice-input" min="0" value="0">
+                            </div>
+                            <div class="input-area">
+                                <img src="assets/img/face_dice/dice-3.png" alt="Dé face 3" id="dice3">
+                                <input type="number" id="input-dice3" class="dice-input" min="0" value="0">
+                            </div>
+                            <div class="input-area">
+                                <img src="assets/img/face_dice/dice-4.png" alt="Dé face 4" id="dice4">
+                                <input type="number" id="input-dice4" class="dice-input" min="0" value="0">
+                            </div>
+                            <div class="input-area">
+                                <img src="assets/img/face_dice/dice-5.png" alt="Dé face 5" id="dice5">
+                                <input type="number" id="input-dice5" class="dice-input" min="0" value="0">
+                            </div>
+                            <div class="input-area">
+                                <img src="assets/img/face_dice/dice-6.png" alt="Dé face 6" id="dice6">
+                                <input type="number" id="input-dice6" class="dice-input" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="controls-buttons">
+                            <button id="calculateButton" onclick="calculateAndUpdateScore()">Calculer Score Potentiel</button>
+                            <button id="flipCardButton" class="next-turn-button" onclick="nextTurn()">Terminer le tour</button>
+                        </div>
+                    </div>
                 </div>
-                <p id="card-description"></p>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <div class="photo-buttons">
-        <button class="photo-button" onclick="openModal('leftModal')">Photo</button>
-        <button class="next-turn-button" onclick="nextTurn()">Terminer le tour</button>
-        <button class="photo-button" onclick="openModal('rightModal')">Photo</button>
-    </div>
+        <section class="right-part">
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-front">
+                        <img id="randomImage" src="" alt="Random Image">
+                    </div>
+                    <div class="card-back">
+                        <div class="editor-img">
+                            <img class="bg-image" src="assets/img/cards/dos_carte.jpg" alt="Image de fond">
+                        </div>
+                        <p id="card-description">
+                            <!-- La description de chaque carte sera ajoutée ici-->
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-    <!-- Left Modal -->
-    <div id="leftModal" class="modal">
-        <div class="modal-content" id="modalLeft">
-            <span class="close" onclick="closeModal('leftModal')">&times;</span>
-            <p>Left Photo Modal</p>
-            <img src="assets/img/regle1.jpg" alt="Left Photo 1">
-            <img src="assets/img/regle2.jpg" alt="Left Photo 2">
-        </div>
-    </div>
+            <div class="points-listing">
+                <img src="assets/img/point_detail.jpg" alt="Liste de détail des points">
+            </div>
+        </section>
+    </main>
+</div>
 
-    <!-- Right Modal -->
-    <div id="rightModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('rightModal')">&times;</span>
-            <p>Right Photo Modal</p>
-            <img src="assets/img/point_detail.jpg" alt="Right Photo">
-        </div>
-    </div>
+<footer>
+    <img src="assets/img/bg-parchemin.jpg" alt="image bg" class="background">
+    <pre>2024     ©     <a href="https://github.com/Hrivaux" target="_blank">Hugo Rivaux</a>  -  <a href="https://github.com/SouhailCherif42" target="_blank">Souhail Cherif</a>  -  <a href="https://github.com/YoYoDaa" target="_blank">Yoann Vincent</a>  -  <a href="https://github.com/Louis-Cauvet" target="_blank">Louis Cauvet</a>   (B3 IW ESGI)</pre>
+</footer>
 
-    <!-- Message Container -->
-    <div id="messageContainer">
-        Vous avez perdu ! Au suivant !
-    </div>
-
-    <audio id="diceRollSound" src="assets/audio/dés.mp3" preload="auto"></audio>
-    <audio id="CardSound" src="assets/audio/tirer_carte.mp3" preload="auto"></audio>
-    <audio id="TetedemortSound" src="assets/audio/tete_de_mort.mp3" preload="auto"></audio>
-    <audio id="sound" autoplay loop>
-        <source src="assets/audio/musique_fond.mp3" type="audio/mp3" preload="auto">
-    </audio>
-    <audio id="horreur" autoplay loop>
-        <source src="assets/audio/horreur.mp3" type="audio/mp3" preload="auto">
-    </audio>
-
-    <script src="assets/js/classes/carte_physique.js" type="text/javascript"></script>
-    <script src="assets/js/classes/tour_physique.js" type="text/javascript"></script>
-    <script src="assets/js/script_game_physique.js" type="text/javascript"></script>
-    <noscript>
-        <p>JavaScript est désactivé dans votre navigateur. Veuillez l'activer pour profiter pleinement de notre super
-            jeu !</p>
-    </noscript>
+<script src="assets/js/classes/carte.js" type="text/javascript"></script>
+<script src="assets/js/classes/tour.js" type="text/javascript"></script>
+<script src="assets/js/script_game_physique.js" type="text/javascript"></script>
+<noscript>
+    <p>JavaScript est désactivé dans votre navigateur. Veuillez l'activer pour profiter pleinement de notre super
+        jeu !</p>
+</noscript>
 
 </body>
 
