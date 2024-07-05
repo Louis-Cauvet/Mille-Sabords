@@ -191,8 +191,6 @@ class Tour {
                 scorePotentielArea.textContent = this.scorePotentiel.toString();
             }
         }, 1200); // Décalage d'1,2 seconde pour attendre la fin du lancer
-        console.log('Score potentiel :', this.scorePotentiel);
-        
     }
 
     calculerClassiquesPoints(scorePotentiel) {

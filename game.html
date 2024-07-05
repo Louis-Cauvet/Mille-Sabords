@@ -9,8 +9,7 @@
 </head>
 
 <body>
-    <!-- <audio id="diamant" src="assets/audio/dés.mp3" preload="auto"></audio> -->
-    <audio id="card-sound" controls></audio>
+    <audio id="card-sound"></audio>
     <audio id="diceRollSound" src="assets/audio/dés.mp3" preload="auto"></audio>
     <audio id="CardSound" src="assets/audio/tirer_carte.mp3" preload="auto"></audio>
     <audio id="TetedemortSound" src="assets/audio/tete_de_mort.mp3" preload="auto"></audio>
@@ -23,21 +22,21 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('modalCongrats')">&times;</span>
             <h2>Bien joué !</h2>
-            <p>Félicitations, vous avez atteint l'objectif !</p>
+            <p>Félicitations, vous venez d'atteindre l'objectif de la partie !</p>
+            <p>Il ne reste plus qu'un tour aux autres pour essayer de vous dépasser, ou de faire redescendre votre
+            score en dessous de cet objectif.</p>
         </div>
     </div>
 
-    <!-- Modal Gagnant -->
     <div id="modalWinner" class="modal">
         <div class="modal-content">
             <img src="assets/img/bg_index.jpg" alt="image bg" class="background">
             <span class="close" onclick="closeModal('modalWinner')">&times;</span>
             <h2>Bravo !</h2>
-            <p>Nous avons un gagnant !</p>
-            <p id="winnerName"></p>
+            <p>Nous avons un gagnant ! <span id="winnerName"></span> a su dominer la concurrence et devenir le Roi des Pirates.
             <div class="button-container">
                 <button onclick="rejouerPartie()">Refaire une partie</button>
-                <button onclick="rejouerAutreJoueur()">Refaire une partie en changeant de joueur</button>
+                <button onclick="rejouerAutreJoueur()">Refaire une partie en changeant de joueurs</button>
             </div>
         </div>
     </div>

@@ -50,8 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
  *************************************/
 function startPlayerTour() {
     window.playerTour = new Tour();
-    savedDiceContainer.textContent = '0'; // Utilisation de savedDiceContainer ici
-    resetDiceInputs(); // Réinitialiser les valeurs des inputs des dés à zéro
+    savedDiceContainer.textContent = '0';
+    resetDiceInputs();
     finishedPlayerTour = false;
     highlightActiveUser(currentPlayerIndex);
     drawCard();
@@ -227,18 +227,12 @@ function calculateAndUpdateScore() {
     if (window.playerTour) {
         playerTour.calculerScorePotentiel();
         savedDiceContainer.textContent = playerTour.getScorePotentiel().toString();
-        console.log('Score potentiel :', playerTour.getScorePotentiel());
     } else {
         console.error('playerTour n\'est pas défini ou est null.');
     }
 }
 
-
-
-
-
 function updatePlayerTour(inputId, inputValue) {
-    // Assurez-vous que playerTour est bien défini avant de l'utiliser ici
     if (window.playerTour) {
         const diceNumber = inputId.split('-')[1]; // Récupère le numéro du dé à partir de l'ID
         const propertyName = getPropertyNameForDiceNumber(diceNumber); // Convertit le numéro du dé en nom de propriété
@@ -414,6 +408,7 @@ function afficherModalGagnant() {
         modal.style.display = 'block';
     }
 }
+
 function rejouerPartie() {
     // Insérez ici la logique pour recommencer une partie avec le même joueur
     alert('Début de la nouvelle partie avec les même joueur !');
@@ -423,5 +418,5 @@ function rejouerPartie() {
 // Fonction pour refaire une partie en changeant de joueur
 function rejouerAutreJoueur() {
     localStorage.clear(); 
-    window.location.href = 'index.html'; // Adapter l'URL selon votre structure de fichiers
+    window.location.href = 'index.html';
 }

@@ -304,12 +304,10 @@ class Tour {
                     this.tetes_de_mort -= 1;
                     this.vies -= 1;
                     this.mageUtilise = true;
-                    console.log("Un dé tête de mort a été replacé et une vie a été retirée.");
+
                     return;
                 }
             }
-        } else {
-            console.log("Aucune vie disponible ou capacité mage déjà utilisée.");
         }
     }
 }

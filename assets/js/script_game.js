@@ -607,13 +607,12 @@ function goToDeadIsland() {
     nextTurnButton.onclick = nextTurnDeadIsland;
 
     const overlays = document.querySelectorAll('.dice-container .overlay');
-    console.log('Overlays found:', overlays); // Pour vérifier si les éléments sont trouvés
+
     overlays.forEach((overlay) => {
         overlay.classList.add('active');
     });
 
     calculateNegativePoints(playerTour.getTetesDeMort());
-    console.log(playerTour.getTetesDeMort());
 }
 
 /*************************************
@@ -738,7 +737,6 @@ function nextTurnDeadIsland() {
         if (i !== currentPlayerIndex) {
             // on soustrait le montant spécifié aux scores des autres joueurs
             scores[i] += pointsMoins;
-            console.log(scores[i]);
 
             // On passe le score à 0 si il était sensé passer dans les négatifs
             if (scores[i] <0) {
