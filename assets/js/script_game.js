@@ -4,6 +4,7 @@
  Variables globales
  *************************************/
 const gameData = JSON.parse(localStorage.getItem('gameData'));     // données de la partie (choisies dans la page précédente)
+
 let scores = [];     // Tableau de gestion des scores
 let currentPlayerIndex = 0;   // Indice du joueur actuel
 let finishedPlayerTour = false;   // Blocage du bouton de lancement des dés
@@ -13,7 +14,7 @@ const savedDiceContainer = document.getElementById('savedDiceContainer');
 
 const rollDiceButton = document.getElementById('rollDiceButton');
 
-const potentialScore = document.getElementById('scorePotentiel');
+const potentialScore = document.querySelector('#scorePotentiel span');
 
 const nextTurnButton = document.querySelector(".next-turn-button");
 
@@ -30,12 +31,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // on affiche les noms des joueurs et leurs scores, ainsi que l'objectif de points à atteindre
     if (gameData) {
+        console.log(gameData["modeAnimals"]);
+        if(gameData["modeAnimals"] === true) {
+            document.getElementById('playersList').classList.add('as--animals');
+        }
+
         maxPointsInfo.textContent = `Objectif : ${gameData.maxPoints}`;
         gameData.players.forEach(player => {
             scores.push(0);
             const li = document.createElement('li');
+
             li.textContent = `${player} - Score: ${scores[scores.length - 1]}`;
             playerList.appendChild(li);
+
+            const playerImg = document.createElement('div');
+            playerImg.className = 'player-image';
+
+            li.appendChild(playerImg);
         });
     } else {
         alert('Les données de la partie n\'ont pas été trouvées');
@@ -49,20 +61,24 @@ document.addEventListener('DOMContentLoaded', () => {
  Gestion de la musique en arrière plan
  *************************************/
 document.addEventListener('DOMContentLoaded', function() {
-      var audio = document.getElementById('sound');
+  let audio = document.getElementById('sound');
 
-      // Écouter les interactions utilisateur
-      document.addEventListener('click', function() {
+  // Écouter les interactions utilisateur
+  document.addEventListener('click', function() {
+      let horreur = document.getElementById('horreur');
+      if (horreur.paused) {
           audio.play();
-      });
+      }
+  });
 
-      document.addEventListener('keydown', function(event) {
-        // Lancer l'audio si une touche spécifique est pressée
-        if (event.key === 'Enter') {
-          audio.play();
-        }
-      });
-    });
+  document.addEventListener('keydown', function(event) {
+    // Lancer l'audio si une touche spécifique est pressée
+    let horreur = document.getElementById('horreur');
+    if (event.key === 'Enter' && horreur.paused) {
+      audio.play();
+    }
+  });
+});
 
 /*************************************
  Démarrage du nouveau tour d'un joueur
@@ -105,44 +121,20 @@ function highlightActiveUser(index) {
  *************************************/
 function drawCard() {
     const images = [
-        'pirate',
-        'pirate',
-        'pirate',
-        'pirate',
-        'piece',
-        'piece',
-        'piece',
-        'piece',
-        'diamant',
-        'diamant',
-        'diamant',
-        'diamant',
-        'bateau_300',
-        'bateau_300',
-        'bateau_500',
-        'bateau_500',
-        'bateau_1000',
-        'bateau_1000',
-        'singe_perroquet',
-        'singe_perroquet',
-        'singe_perroquet',
-        'singe_perroquet',
-        'tete_de_mort_1',
-        'tete_de_mort_1',
-        'tete_de_mort_1',
-        'tete_de_mort_2',
-        'tete_de_mort_2',
-        'tresor',
-        'tresor',
-        'tresor',
-        'tresor',
-        'mage',
-        'mage',
-        'mage',
-        'mage',
+        ...Array(4).fill('pirate'),
+        ...Array(4).fill('piece'),
+        ...Array(4).fill('diamant'),
+        ...Array(2).fill('bateau_300'),
+        ...Array(2).fill('bateau_500'),
+        ...Array(2).fill('bateau_1000'),
+        ...Array(4).fill('singe_perroquet'),
+        ...Array(3).fill('tete_de_mort_1'),
+        ...Array(2).fill('tete_de_mort_2'),
+        ...Array(4).fill('tresor'),
+        ...Array(4).fill('mage'),
     ];
 
-     // Ajouter une correspondance entre les cartes et les backgrounds
+    // Ajouter une correspondance entre les cartes et les backgrounds
     const backgroundImages = {
         pirate: 'assets/img/bg_game/bg_game_pirate.jpg',
         piece: 'assets/img/bg_game/bg_game_piece.jpg',
@@ -438,7 +430,7 @@ function nextTurn() {
 
     // On met à jour l'affichage du score du joueur
     const playerListItems = document.querySelectorAll('#playersList li');
-    playerListItems[currentPlayerIndex].textContent = `${gameData.players[currentPlayerIndex]} - Score: ${scores[currentPlayerIndex]}`;
+    playerListItems[currentPlayerIndex].innerHTML = `${gameData.players[currentPlayerIndex]} - Score: ${scores[currentPlayerIndex]} <div class="player-image"></div>`;
 
     const maxPoints = gameData.maxPoints;
     const currentPlayerScore = scores[currentPlayerIndex];
@@ -472,8 +464,14 @@ function nextTurn() {
         }
     }
 
+    // On supprime tous le contenu des deux conteneurs de dés
     diceContainer.innerHTML = '';
     savedDiceContainer.innerHTML = '';
+
+    // On réajoute l'affichage du score potentiel
+    let potentialScoreHtml = `<div id="scorePotentiel">Votre score potentiel : <span>0</span></div>
+                                    <div class="overlay" id="overlayrolling"></div>`;
+    diceContainer.innerHTML += potentialScoreHtml;
 
     // On passe au joueur suivant
     currentPlayerIndex = (currentPlayerIndex + 1) % gameData.players.length;
@@ -527,17 +525,18 @@ function goToDeadIsland() {
     audio.pause();
 
     let horreur = document.getElementById('horreur');
-    audio.play();
+    horreur.play();
 
     // Changer l'image de fond
     document.body.style.backgroundImage = "url('assets/img/bg_game/bg_game_iledelamort.jpg')";
 
-    document.getElementById("iledelamort").innerHTML = "Ile de la mort !";
+    document.getElementById("messageContainer").innerHTML = "Vous débarquez sur l'Ile de la Tête de Mort mouhahahaha !!";
+    document.getElementById("messageContainer").classList.add('visible');
     // On change la fonction du bouton de relance des dés
     rollDiceButton.onclick = rollDiceDeadIsland;
 
     // On cache le bouton de fin de tour pour éviter que l'utilisateur arrête son tour alors qu'il est sur l'île de la Tête de Mort, et on change sa fonction
-    nextTurnButton.style.display = "none";
+    nextTurnButton.style.opacity = "0";
     nextTurnButton.onclick = nextTurnDeadIsland;
 
     // On empêche le clic sur les zones de sauvegarde et de relance
@@ -629,8 +628,7 @@ function rollDiceDeadIsland() {
                 break;
         }
       document.getElementById("messageContainer").textContent = message;
-      document.getElementById("messageContainer").style.display = "block";
-      nextTurnButton.style.display = "block";
+      nextTurnButton.style.opacity = "1";
       rollDiceButton.disabled = true;
     }, 1100);
   } else {
@@ -676,6 +674,8 @@ function nextTurnDeadIsland() {
     diceContainer.innerHTML = "";
     savedDiceContainer.innerHTML = "";
 
+
+
     // on passe au joueur suivant
     currentPlayerIndex = (currentPlayerIndex + 1) % gameData.players.length;
 
@@ -690,6 +690,12 @@ function outOfDeadIsland() {
     // on rétablit les fonctions par défaut pour les boutons
     rollDiceButton.onclick = rollDice;
     nextTurnButton.onclick = nextTurn;
+
+    let horreur = document.getElementById('horreur');
+    horreur.pause();
+
+    let audio = document.getElementById('sound');
+    audio.play();
 
 
     document.getElementById("iledelamort").textContent = "";

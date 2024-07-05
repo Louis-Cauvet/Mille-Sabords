@@ -1,60 +1,335 @@
+@font-face {
+  font-family: 'Freebooter';
+  src: url('../fonts/Freebooter.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --primary-color : #774935;
+  --primary-dark-color: #57321f;
+
+  --primary-font : Freebooter, sans-serif;
+
+  --shadow : 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  font-family: var(--primary-font);
   margin: 0;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow-x: hidden;
-  background-size: cover;
-  transition: background-image 1s ease;
-}
-
-.game-info {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 250px;
-  z-index: 1;
-}
-
-h1 {
-  color: #333;
-  font-size: 24px;
-}
-
-ul {
-  list-style: none;
   padding: 0;
+  min-height: 100vh;
+  color: white;
+  overflow-x: hidden;
+  background-image: url("../img/bg_index.jpg");
+  background-size: cover;
+  background-position: center;
 }
 
-ul li {
-  background-color: #e9ecef;
-  margin: 5px 0;
-  padding: 10px;
-  border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--primary-color);
+  font-family: var(--primary-font);
+  font-size: 22px;
+  height: fit-content;
+  cursor: pointer;
+  color: white;
+}
+
+button:hover {
+  background-color: var(--primary-dark-color);
+}
+
+button:disabled {
+  background-color: #8a8888;
+  cursor: not-allowed;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.inner-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 35px 50px;
+}
+
+.title {
+  margin: 0 0 20px;
+  font-size: 50px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: var(--shadow);
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: white;
+  z-index: 2;
+}
+
+#goalNumber {
+  margin: 0 0 10px;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+}
+
+main {
+  position: relative;
+  display: flex;
+  gap: 105px;
+  width: 100%;
+}
+
+.open-modal-button {
+  position: absolute;
+  top: -15px;
+  right: 230px;
+  padding-right: 23px;
+  font-size: 30px;
+  width: fit-content;
+  border-radius: 50%;
+}
+
+.modal {
+  display: flex;
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease-in-out, visibility .3s ease-in-out;
+}
+
+.modal.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal p {
+  font-size: 22px;
+}
+
+.modal .overlay-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: .5;
+  z-index: -1;
+}
+
+.modal .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: scroll;
+  text-align: center;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.modal .modal-content::-webkit-scrollbar {
+  display: none;
+}
+
+
+.modal .modal-content .close {
+  color: black;
+  float: right;
+  font-size: 65px;
+  line-height: 30px;
+  font-weight: bold;
+}
+
+.modal .modal-content .modal-title {
+  margin-top: 10px;
+  font-size: 26px;
+}
+
+.modal .modal-content img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal .close:hover,
+.modal .close:focus {
+  color: #000;
+  text-decoration: none;
   cursor: pointer;
 }
 
-.dice-container {
+main .left-part {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 2;
+}
+
+.game-info {
   position: relative;
+  padding: 10px 15px;
+  height: fit-content;
+  border-radius: 10px;
+  width: fit-content;
+  min-height: 135px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.game-info .background {
+  border-radius: inherit;
+  opacity: .8;
+}
+
+ #playersList {
   display: flex;
   flex-direction: row;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+#playersList li {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  padding-left: 0;
   align-items: center;
-  justify-content: center;
-  gap: 35px;
-  margin-top: 50px;
+  font-size: 22px;
+  gap: 8px;
+  transition: font-size .7s ease;
+}
+
+#playersList li.active-user {
+  font-size: 25px;
+  transition: font-size .5s ease;
+}
+
+#playersList li .player-image {
+  width: 50px;
+  aspect-ratio: 1/1;
+  background-size: cover;
+  background-position: top;
+  transition: width .7s ease;
+}
+
+#playersList li.active-user .player-image {
+  width: 60px;
+  transition: width .5s ease;
+}
+
+#playersList li:nth-child(1) .player-image {
+  background-image: url("../img/perso/homme_pirate.png");
+}
+
+#playersList.as--animals li:nth-child(1) .player-image {
+  background-image: url("../img/perso/elephant_pirate.png");
+}
+
+#playersList li:nth-child(2) .player-image {
+  background-image: url("../img/perso/femme_pirate2.png");
+}
+
+#playersList.as--animals li:nth-child(2) .player-image {
+  background-image: url("../img/perso/grenouille_pirate.png");
+}
+
+#playersList li:nth-child(3) .player-image {
+  background-image: url("../img/perso/homme_pirate2.png");
+}
+
+#playersList.as--animals li:nth-child(3) .player-image {
+  background-image: url("../img/perso/souris_pirate.png");
+}
+
+#playersList li:nth-child(4) .player-image {
+  background-image: url("../img/perso/femme_pirate.png");
+}
+
+#playersList.as--animals li:nth-child(4) .player-image {
+  background-image: url("../img/perso/girafe_pirate.png");
+}
+
+#playersList li:nth-child(5) .player-image {
+  background-image: url("../img/perso/homme_pirate3.png");
+}
+
+#playersList.as--animals li:nth-child(5) .player-image {
+  background-image: url("../img/perso/poisson_pirate.png");
+}
+
+.turn-area {
+  padding: 10px 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.turn-area h2 {
+  margin: 5px 0 10px;
+  font-size: 26px;
+}
+
+.turn-area .rolling-area {
+  display: flex;
+  align-items: center;
+  gap: 10px 25px;
+}
+
+.rolling-area #rollingDiceContainer {
+  position: relative;
+  padding: 10px 20px;
+  width: 500px;
+  height: 250px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.rolling-area #rollingDiceContainer:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--primary-dark-color);
+  opacity: .8;
+  z-index: -1;
+  border-radius: inherit;
 }
 
 .dice-container .overlay {
@@ -72,8 +347,12 @@ button {
   display: block;
 }
 
-.dice {
-  position: relative;
+.dice-container #scorePotentiel {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.turn-area .dice {
   width: 50px;
   height: 50px;
   border-radius: 5px;
@@ -86,13 +365,66 @@ button {
   transition: transform 1s;
 }
 
+.turn-area #rollingDiceContainer .dice {
+  position: absolute;
+}
+
+.dice.locked-dice {
+  pointer-events: none;
+}
+
+.dice.locked-dice .active {
+  border: 3px solid black;
+  cursor: not-allowed;
+}
+
+
+#rollingDiceContainer .dice#dice1 {
+  left: 305px;
+  top: 70px;
+}
+
+#rollingDiceContainer .dice#dice2 {
+  left: 40px;
+  top: 40px;
+}
+
+#rollingDiceContainer .dice#dice3 {
+  left: 30px;
+  top: 150px;
+}
+
+#rollingDiceContainer .dice#dice4 {
+  left: 445px;
+  top: 55px;
+}
+
+#rollingDiceContainer .dice#dice5 {
+  left: 160px;
+  top: 90px;
+}
+
+#rollingDiceContainer .dice#dice6 {
+  left: 420px;
+  top: 160px;
+}
+
+#rollingDiceContainer .dice#dice7 {
+  left: 150px;
+  top: 185px;
+}
+
+#rollingDiceContainer .dice#dice8 {
+  left: 295px;
+  top: 195px;
+}
+
 .dice .side {
   position: absolute;
   background-color: #fff;
   border-radius: 5px;
   width: 50px;
   height: 50px;
-  border: 1px solid #e5e5e5;
   text-align: center;
   line-height: 2em;
 }
@@ -151,19 +483,74 @@ button {
   object-fit: cover;
 }
 
-.saved-dice .active {
-  background-color: #ffc107 !important;
+.reserve-area {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px 25px;
+  margin-top: 30px;
+  width: 100%;
+}
+
+.reserve-area .player-reserve {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 10px;
+  box-sizing: border-box;
+  width: 525px;
+  border-radius: 10px;
+}
+
+.reserve-area .player-reserve:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--primary-dark-color);
+  opacity: .8;
+  z-index: -1;
+  border-radius: inherit;
+}
+
+.reserve-area #savedDiceContainer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  padding: 10px 5px;
+  width: 100%;
+  min-height: 70px;
+  box-sizing: border-box;
+}
+
+#messageContainer {
+  display: none;
+  color: white;
+  font-weight: bold;
+  margin: 12px 0;
+  font-size: 24px;
+  text-align: center;
+}
+
+#messageContainer.visible {
+  display: block;
+}
+
+main .right-part {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
 }
 
 .card-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  width: 200px;
-  height: 300px;
-  z-index: 1;
-  border-radius: 10px;
-  perspective: 1000px;
+    width: 200px;
+    height: 300px;
+    border-radius: 10px;
+    perspective: 1000px;
 }
 
 .card-container .card {
@@ -171,6 +558,7 @@ button {
   width: 100%;
   height: 100%;
   border-radius: inherit;
+  box-shadow: 8px 8px 20px black;
   transform-style: preserve-3d;
   transition: transform 0.6s;
 }
@@ -190,7 +578,7 @@ button {
 
 .card-container img,
 .card-container .editor-img {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   width: 100%;
@@ -204,6 +592,13 @@ button {
   padding: 10px;
   box-sizing: border-box;
   transform: rotateY(180deg);
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.card-container .card-back::-webkit-scrollbar {
+  display: none;
 }
 
 .card-container .card-back .editor-img:after {
@@ -214,158 +609,236 @@ button {
   width: 100%;
   height: 100%;
   background-color: black;
-  opacity: .4;
+  opacity: .6;
   border-radius: inherit;
 }
 
 .card-container .card-back #card-description {
   position: relative;
   margin: 0;
-  font-size: 13.5px;
+  font-size: 22px;
   color: white;
 }
 
-.next-turn-button {
+.points-listing {
+  position: relative;
   margin-top: 20px;
-  background-color: #28a745;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.3s;
-  z-index: 1;
-}
-
-.next-turn-button:hover {
-  background-color: #218838;
-}
-
-.photo-buttons {
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 40px;
-  z-index: 1;
-}
-
-.photo-button {
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.3s;
-}
-
-.photo-button:hover {
-  background-color: #0056b3;
-}
-
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 2;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  /* Activation du défilement automatique */
-  background-color: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: center;
-  padding-top: 250px;
-  /* Ajustement pour centrer verticalement */
-  box-sizing: border-box;
-  /* Assure que padding ne modifie pas la taille globale du modal */
-}
-
-.modal.visible {
-  display: flex;
-}
-
-.modal-content {
-  background-color: #fff;
-  padding: 20px;
+  width: 200px;
   border-radius: 10px;
-  width: 80%;
-  max-width: 500px;
+}
+
+.points-listing img {
+  width: 100%;
+  height: auto;
+  border-radius: inherit;
+}
+
+footer {
+  position: relative;
+  padding: 5px 20px;
   text-align: center;
+  font-size: 20px;
 }
 
-.modal-content img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+footer pre {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  row-gap: 7px;
+  font-family: var(--primary-font);
 }
 
-div#modalLeft {
-  margin-top: 2000px;
+@media screen and (max-width: 1080px) {
+  .title {
+    padding-top: 50px;
+  }
+
+  main {
+    flex-direction: column;
+  }
+
+  button {
+    font-size: 20px;
+  }
+
+  .open-modal-button {
+    left: -20px;
+    top: -20px;
+    right: initial;
+  }
+
+  main .left-part {
+    margin-top: 15px;
+  }
+
+  .turn-area {
+    flex-direction: row;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .turn-area .rolling-area {
+    flex-direction: column;
+  }
+
+  .rolling-area #rollingDiceContainer {
+    width: 415px;
+  }
+
+  #rollingDiceContainer .dice#dice1 {
+    left: 275px;
+    top: 65px;
+  }
+
+  #rollingDiceContainer .dice#dice4 {
+    left: 385px;
+    top: 50px;
+  }
+
+  #rollingDiceContainer .dice#dice6 {
+    left: 375px;
+    top: 195px;
+  }
+
+  #rollingDiceContainer .dice#dice7 {
+    left: 135px;
+    top: 190px;
+  }
+
+  #rollingDiceContainer .dice#dice8 {
+    left: 270px;
+    top: 165px;
+  }
+
+  .reserve-area {
+    flex-direction: column;
+    margin-top: 0;
+  }
+
+  .reserve-area .player-reserve {
+    width: 100%;
+  }
+
+  main .right-part {
+    position: absolute;
+    top: -125px;
+    right: 0;
+  }
+
+  .points-listing {
+    display: none;
+  }
 }
 
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+@media screen and (max-width: 970px) {
+  .turn-area {
+    flex-direction: column;
+  }
+
+  .reserve-area {
+    max-width: 665px;
+  }
+
+  main .right-part {
+    right: initial;
+    top: 190px;
+    left: 470px
+  }
 }
 
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
+@media screen and (max-width: 740px) {
+  main .left-part {
+    flex-direction: row;
+  }
+
+  .game-info {
+    min-width: 135px;
+    box-sizing: border-box;
+  }
+
+  #playersList {
+    flex-direction: column
+  }
+
+  .turn-area {
+    margin-top: 320px;
+  }
+
+  main .right-part {
+    top: 15px;
+    left: 145px;
+    flex-direction: row;
+    gap: 15px;
+  }
+
+  .card-container {
+    min-width: 200px;
+  }
+
+  .points-listing {
+    display: block;
+    margin-top: 0;
+    min-width: 200px;
+  }
 }
 
-/* Styles pour l'utilisateur actif */
-.active-user {
-  background-color: #28a745 !important;
-  /* Fond en vert */
-  width: 245px !important;
-  /* Largeur agrandie */
-  color: #fff;
-  /* Texte en blanc pour contraste */
-  /* Texte en blanc pour contraste */
+@media screen and (max-width: 700px) {
+  main .left-part {
+    flex-direction: column;
+  }
+
+  .turn-area {
+    margin-top: 45px;
+  }
+
+  main .right-part {
+    left: 200px;
+    flex-direction: column;
+  }
+
+  .points-listing {
+    display: none;
+  }
 }
 
-.saved-dice {
-  background-color: #ffc107 !important;
-  /* Fond en jaune pour indiquer les dés sauvegardés */
+@media screen and (max-width: 530px) {
+  .rolling-area #rollingDiceContainer {
+    width: 360px;
+  }
+
+  #rollingDiceContainer .dice#dice1 {
+    left: 230px;
+    top: 55px;
+  }
+
+  #rollingDiceContainer .dice#dice2 {
+    left: 25px;
+    top: 60px;
+  }
+
+  #rollingDiceContainer .dice#dice3 {
+    left: 15px;
+    top: 190px;
+  }
+
+  #rollingDiceContainer .dice#dice4 {
+    left: 330px;
+    top: 75px;
+  }
+
+  #rollingDiceContainer .dice#dice5 {
+    left: 130px;
+    top: 95px;
+  }
+
+  #rollingDiceContainer .dice#dice6 {
+    left: 330px;
+    top: 205px;
+  }
+
+  #rollingDiceContainer .dice#dice8 {
+    left: 260px;
+    top: 150px;
+  }
 }
 
-.mage-dice {
-  border: 2px solid blue;
-  pointer-events: all;
-}
-
-.locked-dice .active {
-  border: 2px solid red; /* Exemple: bordure rouge pour les dés verrouillés */
-  pointer-events: none; /* Empêche les événements de clic sur les dés verrouillés */
-}
-
-#messageContainer {
-  display: none;
-  color: red;
-  font-weight: bold;
-  margin-top: 20px;
-}
-
-#messageContainer.visible {
-  display: block;
-}
-
-.background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1;
-}

@@ -8,6 +8,8 @@ const maxPlayers = 5;
 let players = [];
 let maxPoints = null;
 
+let modeAnimals = false;
+
 /*************************************
  Gestion de la musique en arrière plan
  *************************************/
@@ -112,7 +114,13 @@ function updatePlayerList() {
  *************************************/
 function switchPersosMode() {
     const playersDisplay = document.querySelector('.players-display');
-    playersDisplay.classList.toggle('as--animals');
+    if (playersDisplay.classList.contains('as--animals')) {
+        playersDisplay.classList.remove('as--animals');
+        modeAnimals = false;
+    } else {
+        playersDisplay.classList.add('as--animals');
+        modeAnimals = true;
+    }
 }
 
 /*************************************
@@ -135,7 +143,8 @@ function createGame() {
     if (players.length >= minPlayers && maxPoints !== null) {
         const gameData = {
             players: players,
-            maxPoints: maxPoints
+            maxPoints: maxPoints,
+            modeAnimals: modeAnimals,
         };
         localStorage.setItem('gameData', JSON.stringify(gameData));
         window.location.href = 'game.html';

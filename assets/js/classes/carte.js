@@ -37,31 +37,25 @@ class Carte {
                 playerTour.setObjectifBateau(2);
                 playerTour.setScoreBateau(300);
                 textDescription =
-                    'Le joueur doit obtenir, au minimum, autant de sabres avec les dés que le nombre de symboles sur la ' +
-                    'carte. S\'il y parvient, en plus de son résultat aux dés, il reçoit le bonus indiqué en bas de la ' +
-                    'carte. Dans le cas contraire, le joueur obtient zéro point quelque soit son résultat aux dés, et ' +
-                    'on lui retire de son score la valeur indiquée sur la carte. <br>  Celui qui tire cette carte et qui ' +
-                    'obtient 4 têtes de mort ou plus lors de son premier lancer perd immédiatement son tour.';
+                    'Si le joueur obtient au moins le même nombre de sabres que celui sur la carte, il reçoit le bonus' +
+                    ' de points indiqué. S\'il échoue, il obtient zéro point et on lui retire le score indiqué sur la' +
+                    ' carte. Sìl obtient 4 têtes de mort ou plus au premier lancer, il perd immédiatement le tour.';
                 break;
             case 'bateau_500':
                 playerTour.setObjectifBateau(3);
                 playerTour.setScoreBateau(500);
                 textDescription =
-                    'Le joueur doit obtenir, au minimum, autant de sabres avec les dés que le nombre de symboles sur la ' +
-                    'carte. S\'il y parvient, en plus de son résultat aux dés, il reçoit le bonus indiqué en bas de la ' +
-                    'carte. Dans le cas contraire, le joueur obtient zéro point quelque soit son résultat aux dés, et ' +
-                    'on lui retire de son score la valeur indiquée sur la carte. <br> Celui qui tire cette carte et qui ' +
-                    'obtient 4 têtes de mort ou plus lors de son premier lancer perd immédiatement son tour.';
+                    'Si le joueur obtient au moins le même nombre de sabres que celui sur la carte, il reçoit le bonus' +
+                    ' de points indiqué. S\'il échoue, il obtient zéro point et on lui retire le score indiqué sur la' +
+                    ' carte. Sìl obtient 4 têtes de mort ou plus au premier lancer, il perd immédiatement le tour.';
                 break;
             case 'bateau_1000':
                 playerTour.setObjectifBateau(4);
                 playerTour.setScoreBateau(1000);
                 textDescription =
-                    'Le joueur doit obtenir, au minimum, autant de sabres avec les dés que le nombre de symboles sur la ' +
-                    'carte. S\'il y parvient, en plus de son résultat aux dés, il reçoit le bonus indiqué en bas de la ' +
-                    'carte. Dans le cas contraire, le joueur obtient zéro point quelque soit son résultat aux dés, et ' +
-                    'on lui retire de son score la valeur indiquée sur la carte. <br>  Celui qui tire cette carte et qui ' +
-                    'obtient 4 têtes de mort ou plus lors de son premier lancer perd immédiatement son tour.';
+                    'Si le joueur obtient au moins le même nombre de sabres que celui sur la carte, il reçoit le bonus' +
+                    ' de points indiqué. S\'il échoue, il obtient zéro point et on lui retire le score indiqué sur la' +
+                    ' carte. Sìl obtient 4 têtes de mort ou plus au premier lancer, il perd immédiatement le tour.';
                 break;
             case 'singe_perroquet':
                 playerTour.setGroupeAnimaux(true);

@@ -150,23 +150,6 @@ class Tour {
         this.scorePotentiel = value;
     }
 
-  mettreAJour(diceTypeCount) {
-    this.diamants = diceTypeCount.diamants || 0;
-    this.pieces = diceTypeCount.pieces || 0;
-    this.singes = diceTypeCount.singes || 0;
-    this.perroquets = diceTypeCount.perroquets || 0;
-    this.epees = diceTypeCount.epees || 0;
-
-    // Calcul du score potentiel à chaque mise à jour des dés
-    this.calculerScorePotentiel();
-  }
-
-
-   /*************************************
-    Verifie si 9 donne identique
-    *************************************/
-
-
 
     /*************************************
      Calcul du score potentiel selon les dés obtenus et la carte tirée
@@ -198,13 +181,12 @@ class Tour {
             score = this.calculerTourAnimauxPoints();
         }
 
-
         // Attribution du score potentiel calculé à l'attribut de la classe
         this.scorePotentiel = score;
 
         setTimeout( ()=> {
             // Affichage du score potentiel dans le div avec l'id scorePotentiel (avec un décalage d'1,2 seconde pour attendre la fin du lancer)
-            const scorePotentielArea = document.getElementById('scorePotentiel');
+            const scorePotentielArea = document.querySelector('#scorePotentiel span');
             if (scorePotentielArea) {
                 scorePotentielArea.textContent = this.scorePotentiel.toString();
             }
