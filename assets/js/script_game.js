@@ -748,7 +748,7 @@ function nextTurnDeadIsland() {
     // on met à jour l'affichage du score total du joueur dans la liste des joueurs
     const playerListItems = document.querySelectorAll("#playersList li");
     for (let i = 0; i < gameData.players.length; i++) {
-        playerListItems[i].textContent = `${gameData.players[i]} - Score: ${scores[i]}`;
+        playerListItems[i].innerHTML = `${gameData.players[currentPlayerIndex]} - Score: ${scores[currentPlayerIndex]} <div class="player-image"></div>`;
     }
 
     // on vide l'affichage du score
