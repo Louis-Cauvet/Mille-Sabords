@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /*************************************
  Variables globales
@@ -58,9 +58,55 @@ function startPlayerTour() {
             const inputValue = parseInt(event.target.value, 10);
             // Mettre à jour l'objet Tour en fonction des changements d'entrée
             updatePlayerTour(inputId, inputValue);
+
+            // Vérifier si le total des inputs est correct en fonction de la carte tirée
+            if (checkTotalDiceInputs()) {
+                console.log('Le total des inputs est correct.');
+                console.log(playerTour.getCarteTiree().nom);
+            } else {
+                console.log('Le total des inputs n\'est pas correct.');
+                                console.log(playerTour.getCarteTiree().nom);
+
+            }
         });
     });
 }
+
+function checkTotalDiceInputs() {
+    const diceInputs = document.querySelectorAll('.dice-input');
+    let total = 0;
+    let allInputsFilled = true;
+
+    // Déterminer le total attendu en fonction de la carte tirée
+    let expectedTotal;
+    switch (playerTour.getCarteTiree().nom) {
+        case 'piece':
+        case 'diamant':
+        case 'tete_de_mort_1':
+            expectedTotal = 9;
+            break;
+        case 'tete_de_mort_2':
+            expectedTotal = 10;
+            break;
+        default:
+            expectedTotal = 8;
+    }
+
+    // Calculer le total actuel des inputs
+    diceInputs.forEach(input => {
+        const inputValue = parseInt(input.value, 10);
+        if (isNaN(inputValue)) {
+            allInputsFilled = false;
+        } else {
+            total += inputValue;
+        }
+    });
+
+    // Vérifier si tous les inputs sont remplis et si le total correspond à celui attendu
+    return allInputsFilled && total === expectedTotal;
+}
+
+
 
 /*************************************
  Fonction pour tirer une carte
@@ -117,9 +163,43 @@ function highlightActiveUser(index) {
  Mise à jour du tour du joueur actif
  *************************************/
 function calculateAndUpdateScore() {
+    const diceInputs = document.querySelectorAll('.dice-input');
+checkVictoryCondition()
+    // Vérifier le total des dés en fonction de la carte tirée
+    let expectedTotal;
+    switch (playerTour.getCarteTiree().nom) {
+        case 'piece':
+        case 'diamant':
+        case 'tete_de_mort_1':
+            expectedTotal = 9;
+            break;
+        case 'tete_de_mort_2':
+            expectedTotal = 10;
+            break;
+        default:
+            expectedTotal = 8;
+    }
+
+    // Vérifier le total des dés
+    let total = 0;
+    let allInputsFilled = true;
+    diceInputs.forEach(input => {
+        const inputValue = parseInt(input.value, 10);
+        if (isNaN(inputValue)) {
+            allInputsFilled = false;
+        } else {
+            total += inputValue;
+        }
+    });
+
+    if (!allInputsFilled || total !== expectedTotal) {
+        alert(`Vous devez renseigner exactement ${expectedTotal} dés pour calculer le score potentiel.`);
+        return;
+    }
+
     console.log('Calculating and updating score...');
-    
-    // Récupérer les valeurs actuelles des dés depuis les inputs
+
+    // Mettre à jour playerTour avec les nouvelles valeurs des dés
     const diceTypeCount = {
         Deux: parseInt(document.getElementById('input-dice2').value, 10),
         Un: parseInt(document.getElementById('input-dice1').value, 10),
@@ -128,7 +208,6 @@ function calculateAndUpdateScore() {
         Quatre: parseInt(document.getElementById('input-dice4').value, 10)
     };
 
-    // Mettre à jour playerTour avec les nouvelles valeurs des dés
     updatePlayerTour('input-dice2', diceTypeCount.Deux);
     updatePlayerTour('input-dice1', diceTypeCount.Un);
     updatePlayerTour('input-dice5', diceTypeCount.Cinq);
@@ -137,13 +216,14 @@ function calculateAndUpdateScore() {
 
     // Recalculer le score potentiel et mettre à jour l'affichage
     if (window.playerTour) {
-        playerTour.calculerScorePotentiel(); // Recalculer le score potentiel basé sur les nouvelles valeurs des dés
-        savedDiceContainer.textContent = playerTour.getScorePotentiel().toString(); // Mettre à jour l'affichage du score potentiel
+        playerTour.calculerScorePotentiel();
+        savedDiceContainer.textContent = playerTour.getScorePotentiel().toString();
         console.log('Score potentiel :', playerTour.getScorePotentiel());
     } else {
         console.error('playerTour n\'est pas défini ou est null.');
     }
 }
+
 
 
 
@@ -178,10 +258,16 @@ function getPropertyNameForDiceNumber(diceNumber) {
 
 
 function nextTurn() {
+if (!checkTotalDiceInputs()) {
+        alert('Vous devez renseigner exactement 8 dés avant de terminer votre tour.');
+        return;
+    }
+
     // Jouer le son
     let CardSound = document.getElementById('CardSound');
     CardSound.play();
-
+    checkVictoryCondition()
+    calculateAndUpdateScore();
     // On ajoute le score potentiel du lancer au score total du joueur
     scores[currentPlayerIndex] += playerTour.scorePotentiel;
 
@@ -257,7 +343,7 @@ function closeModal(modalId) {
 }
 
 function checkVictoryCondition() {
-    if (playerTour.getDiamants() >= 9 || playerTour.getPieces() >= 9 || playerTour.getTetesDeMort() >= 9) {
+    if (playerTour.getDeux() >= 9 || playerTour.getUn() >= 9 || playerTour.getSix() >= 9) {
         afficherModalGagnant();
     }
 }

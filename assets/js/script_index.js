@@ -169,15 +169,8 @@ function createGame() {
         };
         localStorage.setItem('gameData', JSON.stringify(gameData));
         window.location.href = url;
-        // loadScript(scriptUrl);
     } else if (players.length < minPlayers) {
         alert('Il faut au moins 2 joueurs pour participer !');
     }
 }
 
-// function loadScript(scriptUrl) {
-//     const script = document.createElement('script');
-//     script.src = scriptUrl;
-//     script.async = true;
-//     document.head.appendChild(script);
-// }

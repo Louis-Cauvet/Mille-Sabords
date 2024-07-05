@@ -587,6 +587,7 @@ function goToDeadIsland() {
     });
 
     calculateNegativePoints(playerTour.getTetesDeMort());
+    console.log(playerTour.getTetesDeMort());
 }
 
 /*************************************
@@ -595,7 +596,9 @@ function goToDeadIsland() {
 function calculateNegativePoints(nbTetesMort) {
     let pointsmoins = nbTetesMort * playerTour.getIndiceReduction();
     playerTour.setScorePotentiel(pointsmoins);
-    potentialScore.textContent = playerTour.scorePotentiel.toString() + " (pour les autres joueurs)";
+
+    const scorePotentielDiv = document.getElementById('scorePotentiel');
+    scorePotentielDiv.innerHTML = "Score : <span>" + playerTour.scorePotentiel.toString() + "</span> (pour les autres joueurs)";
 }
 
 /*************************************
@@ -664,9 +667,9 @@ function rollDiceDeadIsland() {
 
     let victoryConditionValue = 8;
 
-    if (playerTour.getCarteTiree() === 'tete_de_mort') {
+    if (playerTour.getCarteTiree().nom === 'tete_de_mort') {
         victoryConditionValue = 9;
-    } else if (playerTour.getCarteTiree() === 'tete_de_mort_2') {
+    } else if (playerTour.getCarteTiree().nom === 'tete_de_mort_2') {
         victoryConditionValue = 10;
     }
 
@@ -701,7 +704,7 @@ function rollDiceDeadIsland() {
  Passage au tour suivant demandé par le joueur dans le mode Ile de la Tete de Mort
  *************************************/
 function nextTurnDeadIsland() {
-    const pointsMoins = parseInt(potentialScore.textContent, 10);
+    const pointsMoins = parseFloat(document.querySelector('#scorePotentiel span').textContent);
 
     // On parcourt la liste des joueurs pour tous leur retirer des points excepté le joueur actuel
     for (let i = 0; i < scores.length; i++) {
@@ -709,6 +712,7 @@ function nextTurnDeadIsland() {
         if (i !== currentPlayerIndex) {
             // on soustrait le montant spécifié aux scores des autres joueurs
             scores[i] += pointsMoins;
+            console.log(scores[i]);
 
             // On passe le score à 0 si il était sensé passer dans les négatifs
             if (scores[i] <0) {
@@ -729,8 +733,6 @@ function nextTurnDeadIsland() {
     // on vide la zone des dés
     diceContainer.innerHTML = "";
     savedDiceContainer.innerHTML = "";
-
-
 
     // on passe au joueur suivant
     currentPlayerIndex = (currentPlayerIndex + 1) % gameData.players.length;
@@ -755,8 +757,6 @@ function outOfDeadIsland() {
     let audio = document.getElementById('sound');
     audio.play();
 
-
-    document.getElementById("iledelamort").textContent = "";
     document.getElementById("messageContainer").style.display = "none";
     document.getElementById("messageContainer").textContent = "Vous avez perdu ! Au suivant !";
 }
