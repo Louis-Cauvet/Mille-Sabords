@@ -546,6 +546,10 @@ main .right-part {
   width: 200px;
 }
 
+.overlay{
+  display: block;
+}
+
 .card-container {
     width: 200px;
     height: 300px;

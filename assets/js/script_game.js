@@ -119,7 +119,7 @@ function highlightActiveUser(index) {
 /*************************************
  Tirage d'une carte de manière aléatoire
  *************************************/
-function drawCard() {
+ function drawCard() {
     const images = [
         ...Array(4).fill('pirate'),
         ...Array(4).fill('piece'),
@@ -170,6 +170,13 @@ function drawCard() {
  *************************************/
 // Générer les 8 dés pour le premier lancement
 function insertDices() {
+
+    let initialRollingContent = `<div class="overlay" id="overlayrolling"></div>`;
+    diceContainer.innerHTML = initialRollingContent;
+
+    let initialSavedContent = `<div class="overlay" id="overlaysaved"></div>`;
+    savedDiceContainer.innerHTML = initialSavedContent;
+
     for (let i=1; i<=8 ; i++) {
         let newDiceHtml = `<div id='dice${i}' class="dice">
                                         <div class='side' data-face="diamants">
@@ -274,8 +281,6 @@ function rollDice() {
             dice.dataset.result = dice.querySelector(`.side.active`).dataset.face;
             diceTypeCount[dice.dataset.result]++;
 
-            // diceTypeCount["tetes_de_mort"] += 3; // TODO : A enlever
-
             // on fixe un délai pour laisser le temps à l'animation de s'exécuter entièrement avant le tri des dés
             setTimeout(function() {
                 if (dice.dataset.result === 'tetes_de_mort') {
@@ -284,18 +289,6 @@ function rollDice() {
                     savedDiceContainer.appendChild(dice);
                     checkVictoryCondition();
 
-                    // On vérifie si le joueur à obtenu au moins 4 têtes de morts au premier lancer, et on passe en mode 'Ile de la Tête de Mort' si c'est le cas
-                    if (playerTour.getNbLancers() === 1) {
-                        if (diceTypeCount['tetes_de_mort'] >= 4 && !playerTour.getCarteTiree().nom.includes("bateau")) {
-                            goToDeadIsland();
-                        } else {
-                            CheckMage();
-                            checkSkull();
-                        }
-                    } else {
-                        CheckMage();
-                        checkSkull();
-                    }
                 } else if(!finishedPlayerTour) {
                     dice.onclick = function () {
                         // on ajoute le dé choisi par l'utilisateur à l'espace de sauvegarde
@@ -320,10 +313,7 @@ function rollDice() {
             }, 1500);
         });
 
-        // Si le joueur a pioché la carte du Mage, on lui accorde une change supplémentaire
-        if (playerTour.getVies() > 0) {
-            playerTour.replaceSkullDice();
-        }
+        console.log(playerTour);
 
         // On incrémente le compteur du type de face correspondant à celle obtenue pour les dés de la zone de sauvegarde
         const dicesToSave = savedDiceContainer.querySelectorAll('.saved-dice');
@@ -341,6 +331,23 @@ function rollDice() {
 
         // On calcule le score potentiel du joueur si il s'arrête à ce lancer
         playerTour.calculerScorePotentiel();
+
+        setTimeout(() => {
+            if (playerTour.getTetesDeMort() >= 3) {
+                if (playerTour.getNbLancers() === 1 && diceTypeCount['tetes_de_mort'] >= 4 && !playerTour.getCarteTiree().nom.includes("bateau")) {
+                    goToDeadIsland();
+                } else {
+                    CheckMage();
+                    checkSkull();
+                }
+            } else {
+                CheckMage();
+                checkSkull();
+            }
+        }, 1800); 
+        
+
+        
     } else {
         alert("Vous ne pouvez pas relancer avec un seul dé dans votre zone de relance !")
     }
@@ -356,7 +363,7 @@ function checkSkull() {
         rollDiceButton.disabled = true;
 
         // Si l'utilisateur n'a pas tiré la carte 'Trésor' et qu'il n'a pas un score négatif, on repasse à son score potentiel à 0
-        if (playerTour.getBanque() === false || playerTour.getScorePotentiel() > 0) {
+        if (playerTour.getBanque() === false && playerTour.getScorePotentiel() > 0 && !playerTour.getCarteTiree().nom.includes("bateau")) {
             playerTour.setScorePotentiel(0);
             potentialScore.textContent = playerTour.scorePotentiel.toString();
         }
@@ -555,9 +562,10 @@ function goToDeadIsland() {
     nextTurnButton.style.opacity = "0";
     nextTurnButton.onclick = nextTurnDeadIsland;
 
-    // On empêche le clic sur les zones de sauvegarde et de relance
-    document.querySelectorAll(".dice-container .overlay").forEach((overlay) => {
-        overlay.classList.add("active");
+    const overlays = document.querySelectorAll('.dice-container .overlay');
+    console.log('Overlays found:', overlays); // Pour vérifier si les éléments sont trouvés
+    overlays.forEach((overlay) => {
+        overlay.classList.add('active');
     });
 
     calculateNegativePoints(playerTour.getTetesDeMort());
@@ -631,8 +639,18 @@ function rollDiceDeadIsland() {
     }, 1100);
   });
 
+    const allDeadHeaddice = document.querySelectorAll('.dice-container div[data-result="tetes_de_mort"]').length;
+
+    let victoryConditionValue = 8;
+
+    if (playerTour.getCarteTiree() === 'tete_de_mort') {
+        victoryConditionValue = 9;
+    } else if (playerTour.getCarteTiree() === 'tete_de_mort_2') {
+        victoryConditionValue = 10;
+    }
+
   // Vérifier si aucune tête de mort n'est obtenue et arrêter le tour si c'est le cas
-  if (diceTypeCount["tetes_de_mort"] === 0 || diceTypeCount["tetes_de_mort"] === 8) {
+  if (diceTypeCount["tetes_de_mort"] === 0 ||  allDeadHeaddice === victoryConditionValue) {
     setTimeout(function () {
         let message = '';
         switch (diceTypeCount["tetes_de_mort"]) {
@@ -647,8 +665,9 @@ function rollDiceDeadIsland() {
       nextTurnButton.style.opacity = "1";
       rollDiceButton.disabled = true;
     }, 1100);
-  } else {
+  } else if (diceTypeCount["tetes_de_mort"] === 0 ||  allDeadHeaddice === 9) {
     rollDiceButton.disabled = false;
+  } else if (diceTypeCount["tetes_de_mort"] === 0 ||  allDeadHeaddice === 10) {
   }
 
   setTimeout(function () {
