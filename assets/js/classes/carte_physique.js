@@ -21,14 +21,12 @@ class Carte {
                 break;
             case 'piece':
                 playerTour.setUn(1);
-                this.addPieceToSavedDices();
                 textDescription =
                     'Le joueur commence son tour avec un symbole pièce d\'or. Cette dernière rapporte des points à la ' +
                     'fois dans une combinaison de dés mais aussi comme simple pièce, soit 100 points.';
                 break;
             case 'diamant':
                 playerTour.setDeux(1);
-                this.addDiamantToSavedDices();
                 textDescription =
                     'Le joueur commence son tour avec un symbole diamant. Ce dernier rapporte des points à la ' +
                     'fois dans une combinaison de dés mais aussi comme simple diamant, soit 100 points.';
@@ -71,13 +69,11 @@ class Carte {
                 break;
             case 'tete_de_mort_1':
                 playerTour.setTetesDeMort(1);
-                this.addSkullToSavedDices(1);
                 textDescription =
                     'Le tour du joueur débute avec un symbole tête de mort.';
                 break;
             case 'tete_de_mort_2':
                 playerTour.setTetesDeMort(2);
-                this.addSkullToSavedDices(2);
                 textDescription =
                     'Le tour du joueur débute avec deux symboles tête de mort.';
                 break;
