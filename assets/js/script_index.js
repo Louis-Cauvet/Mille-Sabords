@@ -126,6 +126,7 @@ Lancement du jeu, sous réserve de validation de tous les prérequis pour jouer 
 function createGame() {
     const maxPointsInput = document.getElementById('maxPoints');
     const choosenObjectif = parseInt(maxPointsInput.value);
+            let url ;
 
     if (choosenObjectif >= 2000) {
         if (choosenObjectif <= 10000) {
@@ -146,7 +147,6 @@ function createGame() {
                 return;
             }
 
-            let url, scriptUrl;
 
             if (gameTypeValue === 'dematerialiser') {
                 url = 'game.html';
