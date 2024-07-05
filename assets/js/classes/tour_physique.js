@@ -38,11 +38,11 @@ class Tour {
         this.nbLancers = value;
     }
 
-    getTetesDeMort() {
+    getSix() {
         return this.Six;
     }
 
-    setTetesDeMort(value) {
+    setSix(value) {
         this.Six = value;
     }
 

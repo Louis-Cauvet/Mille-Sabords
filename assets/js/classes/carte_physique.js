@@ -68,12 +68,12 @@ class Carte {
                     'Par exemple, deux perroquets et trois singes forment une combinaison de 5 dés identiques, soit 500 points.';
                 break;
             case 'tete_de_mort_1':
-                playerTour.setTetesDeMort(1);
+                playerTour.setSix(1);
                 textDescription =
                     'Le tour du joueur débute avec un symbole tête de mort.';
                 break;
             case 'tete_de_mort_2':
-                playerTour.setTetesDeMort(2);
+                playerTour.setSix(2);
                 textDescription =
                     'Le tour du joueur débute avec deux symboles tête de mort.';
                 break;
