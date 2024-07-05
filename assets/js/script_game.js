@@ -568,6 +568,7 @@ function goToDeadIsland() {
     });
 
     calculateNegativePoints(playerTour.getTetesDeMort());
+    console.log(playerTour.getTetesDeMort());
 }
 
 /*************************************
@@ -576,6 +577,7 @@ function goToDeadIsland() {
 function calculateNegativePoints(nbTetesMort) {
     let pointsmoins = nbTetesMort * playerTour.getIndiceReduction();
     playerTour.setScorePotentiel(pointsmoins);
+
     const scorePotentielDiv = document.getElementById('scorePotentiel');
     scorePotentielDiv.innerHTML = "Score : <span>" + playerTour.scorePotentiel.toString() + "</span> (pour les autres joueurs)";
 }
@@ -688,6 +690,7 @@ function nextTurnDeadIsland() {
         if (i !== currentPlayerIndex) {
             // on soustrait le montant spécifié aux scores des autres joueurs
             scores[i] += pointsMoins;
+            console.log(scores[i]);
 
             // On passe le score à 0 si il était sensé passer dans les négatifs
             if (scores[i] <0) {
