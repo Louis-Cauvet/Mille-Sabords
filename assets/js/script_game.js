@@ -568,6 +568,7 @@ function goToDeadIsland() {
     });
 
     calculateNegativePoints(playerTour.getTetesDeMort());
+    console.log(playerTour.getTetesDeMort());
 }
 
 /*************************************
@@ -576,7 +577,12 @@ function goToDeadIsland() {
 function calculateNegativePoints(nbTetesMort) {
     let pointsmoins = nbTetesMort * playerTour.getIndiceReduction();
     playerTour.setScorePotentiel(pointsmoins);
-    potentialScore.textContent = playerTour.scorePotentiel.toString() + " (pour les autres joueurs)";
+    console.log(pointsmoins);
+    console.log(playerTour.getIndiceReduction());
+    console.log(nbTetesMort);
+    console.log(pointsmoins < 0);
+    const scorePotentielDiv = document.getElementById('scorePotentiel');
+    scorePotentielDiv.innerHTML = "Score : <span>" + playerTour.scorePotentiel.toString() + "</span> (pour les autres joueurs)";
 }
 
 /*************************************
@@ -642,10 +648,12 @@ function rollDiceDeadIsland() {
 
     let victoryConditionValue = 8;
 
-    if (playerTour.getCarteTiree() === 'tete_de_mort') {
+    if (playerTour.getCarteTiree().nom === 'tete_de_mort') {
         victoryConditionValue = 9;
-    } else if (playerTour.getCarteTiree() === 'tete_de_mort_2') {
+        console.log('ZABI 1');
+    } else if (playerTour.getCarteTiree().nom === 'tete_de_mort_2') {
         victoryConditionValue = 10;
+        console.log('ZABI 2 ');
     }
 
   // Vérifier si aucune tête de mort n'est obtenue et arrêter le tour si c'est le cas
@@ -679,14 +687,15 @@ function rollDiceDeadIsland() {
  Passage au tour suivant demandé par le joueur dans le mode Ile de la Tete de Mort
  *************************************/
 function nextTurnDeadIsland() {
-    const pointsMoins = parseInt(potentialScore.textContent, 10);
-
+    const pointsMoins = parseFloat(document.querySelector('#scorePotentiel span').textContent);
+    console.log(pointsMoins);
     // On parcourt la liste des joueurs pour tous leur retirer des points excepté le joueur actuel
     for (let i = 0; i < scores.length; i++) {
         // on vérifie si l'index courant n'est pas celui du joueur en cours
         if (i !== currentPlayerIndex) {
             // on soustrait le montant spécifié aux scores des autres joueurs
             scores[i] += pointsMoins;
+            console.log(scores[i]);
 
             // On passe le score à 0 si il était sensé passer dans les négatifs
             if (scores[i] <0) {
@@ -731,8 +740,6 @@ function outOfDeadIsland() {
     let audio = document.getElementById('sound');
     audio.play();
 
-
-    document.getElementById("iledelamort").textContent = "";
     document.getElementById("messageContainer").style.display = "none";
     document.getElementById("messageContainer").textContent = "Vous avez perdu ! Au suivant !";
 }
