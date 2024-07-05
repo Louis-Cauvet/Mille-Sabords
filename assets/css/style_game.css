@@ -687,6 +687,10 @@ footer pre {
   font-family: var(--primary-font);
 }
 
+.physical-game .turn-area {
+  width: 90%;
+}
+
 .physical-game .turn-area .rolling-area {
   width: 500px;
 }

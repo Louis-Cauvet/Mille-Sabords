@@ -22,12 +22,21 @@ document.addEventListener('DOMContentLoaded', () => {
     savedDiceContainer = document.getElementById('scorePotentiel'); // Assignation de savedDiceContainer ici
 
     if (gameData) {
+        if(gameData["modeAnimals"] === true) {
+            document.getElementById('playersList').classList.add('as--animals');
+        }
+
         maxPointsInfo.textContent = `Objectif : ${gameData.maxPoints}`;
         gameData.players.forEach(player => {
             scores.push(0);
             const li = document.createElement('li');
             li.textContent = `${player} - Score: ${scores[scores.length - 1]}`;
             playerList.appendChild(li);
+
+            const playerImg = document.createElement('div');
+            playerImg.className = 'player-image';
+
+            li.appendChild(playerImg);
         });
     } else {
         alert('Les données de la partie n\'ont pas été trouvées');
@@ -179,12 +188,15 @@ function calculateAndUpdateScore() {
         }
     });
 
-    if (!allInputsFilled || total !== expectedTotal) {
-        alert(`Vous devez renseigner exactement ${expectedTotal} dés pour calculer le score potentiel. (Pensez à rajouter les têtes de mort/pièce/diamant des cartes)`);
+    if (!allInputsFilled) {
+        alert('Tous les champs de dés doivent être remplis.');
         return;
     }
 
-    console.log('Calculating and updating score...');
+    if (total !== expectedTotal) {
+        alert(`Vous devez renseigner exactement ${expectedTotal} dés pour calculer le score potentiel. (Pensez à rajouter les têtes de mort/pièce/diamant des cartes)`);
+        return;
+    }
 
     // Mettre à jour playerTour avec les nouvelles valeurs des dés
     const diceTypeCount = {
@@ -308,7 +320,7 @@ function nextTurn() {
 
     // On met à jour l'affichage du score du joueur
     const playerListItems = document.querySelectorAll('#playersList li');
-    playerListItems[currentPlayerIndex].textContent = `${gameData.players[currentPlayerIndex]} - Score: ${scores[currentPlayerIndex]}`;
+    playerListItems[currentPlayerIndex].innerHTML = `${gameData.players[currentPlayerIndex]} - Score: ${scores[currentPlayerIndex]} <div class="player-image"></div>`;
 
     const maxPoints = gameData.maxPoints;
     const currentPlayerScore = scores[currentPlayerIndex];
