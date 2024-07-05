@@ -254,9 +254,14 @@ function rollDice() {
             const rollingIndex = Math.floor((Math.random() * 6) + 1);
             for (let i = 1; i <= 6; i++) {
                 dice.classList.remove('show-' + i);
-                if (rollingIndex === i) {
-                    dice.classList.add('show-' + i);
-                }
+                // On ajoute une rotation pour éviter que le dé ne bouge pas si la face reste la même
+                dice.classList.add('show-'+ i +2);
+
+                setTimeout(() => {
+                    if (rollingIndex === i) {
+                        dice.classList.add('show-' + i);
+                    }
+                }, 300);
             }
 
             // On rend actif la face tirée au sort sur chaque dé
