@@ -82,7 +82,6 @@ function addPlayerImage(playerName) {
  Suppression d'un joueur dans la liste
  *************************************/
 function deletePlayer(event) {
-
     const userToDelete = event.target.parentElement;
     const playerName = userToDelete.querySelector('p').textContent;
 
@@ -101,8 +100,6 @@ function deletePlayer(event) {
 function updatePlayerList() {
     const playerList = document.querySelector('.player-image-container');
     playerList.innerHTML = '';
-
-    console.log(playerList);
 
     players.forEach(player => {
         addPlayerImage(player);
@@ -133,12 +130,36 @@ function createGame() {
     if (choosenObjectif >= 2000) {
         if (choosenObjectif <= 10000) {
             maxPoints = choosenObjectif;
+
+            const gameTypeRadios = document.getElementsByName('gameType');
+            let gameTypeValue = null;
+
+            for (let i = 0; i < gameTypeRadios.length; i++) {
+                if (gameTypeRadios[i].checked) {
+                    gameTypeValue = gameTypeRadios[i].value;
+                    break;
+                }
+            }
+
+            if (!gameTypeValue) {
+                alert('Veuillez choisir le type de partie.');
+                return;
+            }
+
+            let url, scriptUrl;
+
+            if (gameTypeValue === 'dematerialiser') {
+                url = 'game.html';
+            } else if (gameTypeValue === 'physique') {
+                url = 'game_physique.html';
+            }
         } else {
             alert('Veuillez entrer un objectif de 10000 maximum !')
         }
     } else {
         alert('Veuillez entrer un objectif de 2000 minimum !');
     }
+
 
     if (players.length >= minPlayers && maxPoints !== null) {
         const gameData = {
@@ -147,8 +168,16 @@ function createGame() {
             modeAnimals: modeAnimals,
         };
         localStorage.setItem('gameData', JSON.stringify(gameData));
-        window.location.href = 'game.html';
+        window.location.href = url;
+        // loadScript(scriptUrl);
     } else if (players.length < minPlayers) {
         alert('Il faut au moins 2 joueurs pour participer !');
     }
 }
+
+// function loadScript(scriptUrl) {
+//     const script = document.createElement('script');
+//     script.src = scriptUrl;
+//     script.async = true;
+//     document.head.appendChild(script);
+// }

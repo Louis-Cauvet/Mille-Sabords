@@ -23,6 +23,7 @@
         </div>
     </div>
 
+    <!-- Modal Gagnant -->
     <div id="modalWinner" class="modal">
         <div class="modal-content">
             <img src="assets/img/bg_index.jpg" alt="image bg" class="background">
@@ -30,6 +31,10 @@
             <h2>Bravo !</h2>
             <p>Nous avons un gagnant !</p>
             <p id="winnerName"></p>
+            <div class="button-container">
+                <button onclick="rejouerPartie()">Refaire une partie</button>
+                <button onclick="rejouerAutreJoueur()">Refaire une partie en changeant de joueur</button>
+            </div>
         </div>
     </div>
 
@@ -58,8 +63,6 @@
                     </ul>
                 </div>
                 <div class="turn-area">
-<!--                    <p id="iledelamort"></p>-->
-
                     <div class="rolling-area">
                         <div class="dice-container" id="rollingDiceContainer">
                             <div class="overlay" id="overlayrolling"></div>

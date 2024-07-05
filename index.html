@@ -15,21 +15,34 @@
             <div class="left-part">
                 <img src="assets/img/bg-parchemin.jpg" alt="image bg" class="background">
                 <h1 class="title">Mille Sabords</h1>
-                <p class="game-description">Yohoho moussaillons ! Prêts pour une nouvelle aventure sur les mers tumultueuses des Caraîbes ?<br>
-                    Ce jeu mettra à l'épreuve votre audace, votre stratégie mais également votre chance. Armez-vous de vos dés et
-                    préparez-vous à braver les surprises que les cartes vous réservent pour devenir le pirate le plus redouté des océans !<br>
-                    Chaque lancer est une opportunité de remplir votre cale de butin, mais également de subir les foudres de la mer.
-                    Allez-vous risquer le tout pour le tout, ou choisir de sécuriser vos gains ? la décision vous appartient !</p>
+                <p class="game-description">Yohoho moussaillons ! Prêts pour une nouvelle aventure sur les mers
+                    tumultueuses des Caraîbes ?<br>
+                    Ce jeu mettra à l'épreuve votre audace, votre stratégie mais également votre chance. Armez-vous de
+                    vos dés et
+                    préparez-vous à braver les surprises que les cartes vous réservent pour devenir le pirate le plus
+                    redouté des océans !<br>
+                    Chaque lancer est une opportunité de remplir votre cale de butin, mais également de subir les
+                    foudres de la mer.
+                    Allez-vous risquer le tout pour le tout, ou choisir de sécuriser vos gains ? la décision vous
+                    appartient !</p>
                 <div class="params-choices">
                     <div class="choice-box">
                         <h2>Définir l'objectif de la partie</h2>
-                        <input type="number" id="maxPoints" placeholder="Compris entre 2000 et 10000" min="2000" max="10000" step="1000">
+                        <input type="number" id="maxPoints" placeholder="Compris entre 2000 et 10000" min="2000"
+                            max="10000" step="1000">
                     </div>
                     <div class="choice-box">
                         <h2>Ajouter les joueurs</h2>
                         <input type="text" id="playerName" placeholder="Nom du joueur">
                         <button id="addPlayerButton" onclick="addPlayer()">Ajouter ce joueur</button>
                     </div>
+                    <div class="choice-box">
+                        <h2>Type de partie</h2>
+                        <label><input type="radio" name="gameType" value="physique" checked> Partie physique</label>
+                        <label><input type="radio" name="gameType" value="dematerialiser"> Dématérialiser</label>
+                    </div>
+
+
                 </div>
             </div>
             <div class="players-display">
@@ -63,7 +76,8 @@
 
     <script src="assets/js/script_index.js" type="text/javascript"></script>
     <noscript>
-        <p>JavaScript est désactivé dans votre navigateur. Veuillez l'activer pour profiter pleinement de notre super jeu !</p>
+        <p>JavaScript est désactivé dans votre navigateur. Veuillez l'activer pour profiter pleinement de notre super
+            jeu !</p>
     </noscript>
 </body>
 
