@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // on affiche les noms des joueurs et leurs scores, ainsi que l'objectif de points à atteindre
     if (gameData) {
-        console.log(gameData["modeAnimals"]);
         if(gameData["modeAnimals"] === true) {
             document.getElementById('playersList').classList.add('as--animals');
         }
@@ -96,9 +95,9 @@ function startPlayerTour() {
 
     highlightActiveUser(currentPlayerIndex);
 
-    drawCard();
-
     insertDices();
+
+    drawCard();
 }
 
 
@@ -113,6 +112,45 @@ function highlightActiveUser(index) {
     });
 
     playerItems[index].classList.add('active-user');
+}
+
+
+/*************************************
+ Génération et affichage des 8 dés pour le premier lancement
+ *************************************/
+// Générer les 8 dés pour le premier lancement
+function insertDices() {
+
+    let initialRollingContent = `<div class="overlay" id="overlayrolling"></div>
+                                        <div id="scorePotentiel">Votre score potentiel : <span>0</span></div>`;
+    diceContainer.innerHTML = initialRollingContent;
+
+    let initialSavedContent = `<div class="overlay" id="overlaysaved"></div>`;
+    savedDiceContainer.innerHTML = initialSavedContent;
+
+    for (let i=1; i<=8 ; i++) {
+        let newDiceHtml = `<div id='dice${i}' class="dice">
+                                        <div class='side' data-face="diamants">
+                                            <img src="assets/img/face_dice/diamond.png" alt="face diamant">
+                                        </div>
+                                        <div class='side' data-face="perroquets">
+                                            <img src="assets/img/face_dice/perroquet.png" alt="face perroquet">
+                                        </div>
+                                        <div class='side' data-face="tetes_de_mort">
+                                            <img src="assets/img/face_dice/tete_de_mort.png" alt="face tete de mort">
+                                        </div>
+                                        <div class='side' data-face="pieces">
+                                            <img src="assets/img/face_dice/piece.png" alt="face piece">
+                                        </div>
+                                        <div class='side' data-face="epees">
+                                            <img src="assets/img/face_dice/epee.png" alt="face epee">
+                                        </div>
+                                        <div class='side' data-face="singes">
+                                            <img src="assets/img/face_dice/singe.png" alt="face singe">
+                                        </div>
+                                    </div>`;
+        diceContainer.innerHTML += newDiceHtml;
+    }
 }
 
 
@@ -162,44 +200,6 @@ function highlightActiveUser(index) {
 
     // On définit la carte tirée, et on applique son effet
     playerTour.setCarteTiree(playerCard);
-}
-
-
-/*************************************
- Génération et affichage des 8 dés pour le premier lancement
- *************************************/
-// Générer les 8 dés pour le premier lancement
-function insertDices() {
-
-    let initialRollingContent = `<div class="overlay" id="overlayrolling"></div>`;
-    diceContainer.innerHTML = initialRollingContent;
-
-    let initialSavedContent = `<div class="overlay" id="overlaysaved"></div>`;
-    savedDiceContainer.innerHTML = initialSavedContent;
-
-    for (let i=1; i<=8 ; i++) {
-        let newDiceHtml = `<div id='dice${i}' class="dice">
-                                        <div class='side' data-face="diamants">
-                                            <img src="assets/img/face_dice/diamond.png" alt="face diamant">
-                                        </div>
-                                        <div class='side' data-face="perroquets">
-                                            <img src="assets/img/face_dice/perroquet.png" alt="face perroquet">
-                                        </div>
-                                        <div class='side' data-face="tetes_de_mort">
-                                            <img src="assets/img/face_dice/tete_de_mort.png" alt="face tete de mort">
-                                        </div>
-                                        <div class='side' data-face="pieces">
-                                            <img src="assets/img/face_dice/piece.png" alt="face piece">
-                                        </div>
-                                        <div class='side' data-face="epees">
-                                            <img src="assets/img/face_dice/epee.png" alt="face epee">
-                                        </div>
-                                        <div class='side' data-face="singes">
-                                            <img src="assets/img/face_dice/singe.png" alt="face singe">
-                                        </div>
-                                    </div>`;
-        diceContainer.innerHTML += newDiceHtml;
-    }
 }
 
 
@@ -313,7 +313,6 @@ function rollDice() {
             }, 1500);
         });
 
-        console.log(playerTour);
 
         // On incrémente le compteur du type de face correspondant à celle obtenue pour les dés de la zone de sauvegarde
         const dicesToSave = savedDiceContainer.querySelectorAll('.saved-dice');
