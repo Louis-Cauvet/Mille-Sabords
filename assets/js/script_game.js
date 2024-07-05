@@ -196,11 +196,34 @@ function insertDices() {
         mage: 'assets/img/bg_game/bg_game_mage.jpg',
     };
 
+    const cardSounds = {
+        pirate: 'assets/audio/pirate.mp3',
+        piece: 'assets/audio/piece.mp3',
+        diamant: 'assets/audio/diamant.mp3',
+        bateau_300: 'assets/audio/bateau.mp3',
+        bateau_500: 'assets/audio/bateau.mp3',
+        bateau_1000: 'assets/audio/bateau.mp3',
+        singe_perroquet: 'assets/audio/animaux.mp3',
+        tete_de_mort_1: 'assets/audio/ile_de_la_mort.mp3',
+        tete_de_mort_2: 'assets/audio/ile_de_la_mort.mp3',
+        tresor: 'assets/audio/tresor.mp3',
+        mage: 'assets/audio/mage.mp3',
+    };
+
     // On tire au sort une carte
     const randomImage = images[Math.floor(Math.random() * images.length)];
     setTimeout(() => {
         document.getElementById('randomImage').src = `assets/img/cards/${randomImage}.jpg`;
     }, 650)
+
+    // Jouer le son correspondant à la carte tirée
+    const soundUrl = cardSounds[randomImage];
+    const audioElement = document.getElementById('card-sound');
+    audioElement.src = soundUrl;
+    audioElement.load(); // Recharger l'élément audio pour prendre en compte la nouvelle source
+    setTimeout(() => {
+        audioElement.play();
+    }, 1000);
 
     // Modifier le background en fonction de la carte tirée
     const backgroundUrl = backgroundImages[randomImage];
@@ -438,6 +461,9 @@ function nextTurn() {
     // Jouer le son
     let CardSound = document.getElementById('CardSound');
     CardSound.play();
+    setTimeout(() => {
+        
+    }, 1000);
 
     // On ajoute le score potentiel du lancer au score total du joueur
     scores[currentPlayerIndex] += playerTour.scorePotentiel;
