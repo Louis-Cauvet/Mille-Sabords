@@ -1,3 +1,6 @@
+/********************************
+* FONTS
+ ********************************/
 @font-face {
   font-family: 'Freebooter';
   src: url('../fonts/Freebooter.ttf') format('truetype');
@@ -5,6 +8,9 @@
   font-style: normal;
 }
 
+/********************************
+* ANIMATIONS
+ ********************************/
 @keyframes rollingSwitch {
   0% {
     transform: translateX(0);
@@ -23,6 +29,9 @@
   }
 }
 
+/********************************
+* ROOT VARIABLES
+ ********************************/
 :root {
   --primary-color : #774935;
   --primary-dark-color: #57321f;
@@ -32,6 +41,9 @@
   --shadow : 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+/********************************
+* TAGS' STYLES
+ ********************************/
 body {
   font-family: var(--primary-font);
   margin: 0;
@@ -39,6 +51,10 @@ body {
   min-height: 100vh;
   color: white;
   overflow-x: hidden;
+}
+
+main {
+  width: 100%;
 }
 
 a {
@@ -71,16 +87,9 @@ button:disabled {
   cursor: not-allowed;
 }
 
-.background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1;
-}
-
+/********************************
+* GLOBAL CLASSES
+ ********************************/
 .inner-page {
   position: relative;
   display: flex;
@@ -91,10 +100,19 @@ button:disabled {
   min-height: inherit;
 }
 
-main {
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
 }
 
+/********************************
+* LEFT PART --> INTRODUCTION
+ ********************************/
 main .left-part {
   position: relative;
   display: flex;
@@ -131,6 +149,9 @@ main .left-part .game-description{
   text-shadow: var(--shadow);
 }
 
+/********************************
+* LEFT PART --> INPUTS
+ ********************************/
 main .params-choices {
   position: relative;
   display: flex;
@@ -161,47 +182,6 @@ main .params-choices .choice-box.inline h2 {
   margin-bottom: 5px;
 }
 
-.params-choices .choice-box.inline input[type="radio"] {
-  position: relative;
-  visibility: hidden;
-}
-
-.params-choices .choice-box.inline input[type="radio"]::before {
-  content: "";
-  position: absolute;
-  left: -10px;
-  top: -1px;
-  width: 20px;
-  aspect-ratio: 1/1;
-  background-color: white;
-  border-radius: 50%;
-  border: 1px solid var(--primary-color);
-  visibility: visible;
-}
-
-.params-choices .choice-box.inline input[type="radio"]:checked::after {
-  content: "";
-  position: absolute;
-  left: -7.4px;
-  top: 2px;
-  width: 16px;
-  aspect-ratio: 1/1;
-  border-radius: 50%;
-  background-color: var(--primary-color);
-  visibility: visible;
-}
-
-
-main .params-choices .choice-box.inline label {
-  font-size: 24px;
-  margin-right: 40px;
-  cursor: pointer;
-}
-
-main .params-choices .choice-box.inline input {
-  width: fit-content;
-}
-
 main .params-choices .choice-box input {
   padding: 10px;
   margin: 10px 0;
@@ -226,12 +206,107 @@ main .params-choices .choice-box h2 {
   text-shadow: var(--shadow);
 }
 
+/********************************
+* RIGHT PART --> PLAYERS PANEL
+ ********************************/
 main .players-display {
   position: absolute;
   right: 0;
   top: 20px;
 }
 
+.players-display .players-table {
+  width: 950px;
+  height: auto;
+}
+
+.players-display .players-container {
+  position: absolute;
+  left: 455px;
+  top: 330px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.players-display .player-image-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.players-display .player-image-container-ind {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 70px;
+}
+
+.players-display .player-image-container-ind .player-image {
+  width: 80px;
+  aspect-ratio: 1/1;
+  background-size: cover;
+  background-position: top;
+}
+
+.players-display .player-image-container-ind p {
+  margin: 10px 0;
+  font-size: 24px;
+  white-space: break-spaces;
+  text-align: center;
+}
+
+.players-display .player-image-container-ind .delete-player-button {
+  padding: 8px 13px;
+  font-size: 16px;
+  border-radius: 50%;
+  font-family: Arial, sans-serif;
+}
+
+.players-display .player-image-container-ind:nth-child(1) .player-image {
+  background-image: url("../img/persos/homme_pirate.png");
+}
+
+.players-display.as--animals .player-image-container-ind:nth-child(1) .player-image {
+  background-image: url("../img/persos/elephant_pirate.png");
+}
+
+.players-display .player-image-container-ind:nth-child(2) .player-image {
+  background-image: url("../img/persos/femme_pirate2.png");
+}
+
+.players-display.as--animals .player-image-container-ind:nth-child(2) .player-image {
+  background-image: url("../img/persos/grenouille_pirate.png");
+}
+
+.players-display .player-image-container-ind:nth-child(3) .player-image {
+  background-image: url("../img/persos/homme_pirate2.png");
+}
+
+.players-display.as--animals .player-image-container-ind:nth-child(3) .player-image {
+  background-image: url("../img/persos/souris_pirate.png");
+}
+
+.players-display .player-image-container-ind:nth-child(4) .player-image {
+  background-image: url("../img/persos/femme_pirate.png");
+}
+
+.players-display.as--animals .player-image-container-ind:nth-child(4) .player-image {
+  background-image: url("../img/persos/girafe_pirate.png");
+}
+
+.players-display .player-image-container-ind:nth-child(5) .player-image {
+  background-image: url("../img/persos/homme_pirate3.png");
+}
+
+.players-display.as--animals .player-image-container-ind:nth-child(5) .player-image {
+  background-image: url("../img/persos/poisson_pirate.png");
+}
+
+/********************************
+* RIGHT PART --> TOGGLE BUTTON
+ ********************************/
 .players-display .switch {
   position: absolute;
   left: 605px;
@@ -324,100 +399,18 @@ main .players-display {
   visibility: hidden;
 }
 
-.players-display .players-table {
-  width: 950px;
-  height: auto;
-}
-
-.players-display .players-container {
-  position: absolute;
-  left: 455px;
-  top: 330px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-.players-display .player-image-container {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-}
-
-.players-display .player-image-container-ind {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  max-width: 70px;
-}
-
-.players-display .player-image-container-ind .player-image {
-  width: 80px;
-  aspect-ratio: 1/1;
-  background-size: cover;
-  background-position: top;
-}
-
-.players-display .player-image-container-ind p {
-  margin: 10px 0;
-  font-size: 24px;
-  white-space: break-spaces;
-  text-align: center;
-}
-
-.players-display .player-image-container-ind .delete-player-button {
-  padding: 8px 13px;
-  font-size: 16px;
-  border-radius: 50%;
-  font-family: Arial, sans-serif;
-}
-
-.players-display .player-image-container-ind:nth-child(1) .player-image {
-  background-image: url("../img/perso/homme_pirate.png");
-}
-
-.players-display.as--animals .player-image-container-ind:nth-child(1) .player-image {
-  background-image: url("../img/perso/elephant_pirate.png");
-}
-
-.players-display .player-image-container-ind:nth-child(2) .player-image {
-  background-image: url("../img/perso/femme_pirate2.png");
-}
-
-.players-display.as--animals .player-image-container-ind:nth-child(2) .player-image {
-  background-image: url("../img/perso/grenouille_pirate.png");
-}
-
-.players-display .player-image-container-ind:nth-child(3) .player-image {
-  background-image: url("../img/perso/homme_pirate2.png");
-}
-
-.players-display.as--animals .player-image-container-ind:nth-child(3) .player-image {
-  background-image: url("../img/perso/souris_pirate.png");
-}
-
-.players-display .player-image-container-ind:nth-child(4) .player-image {
-  background-image: url("../img/perso/femme_pirate.png");
-}
-
-.players-display.as--animals .player-image-container-ind:nth-child(4) .player-image {
-  background-image: url("../img/perso/girafe_pirate.png");
-}
-
-.players-display .player-image-container-ind:nth-child(5) .player-image {
-  background-image: url("../img/perso/homme_pirate3.png");
-}
-
-.players-display.as--animals .player-image-container-ind:nth-child(5) .player-image {
-  background-image: url("../img/perso/poisson_pirate.png");
-}
+/********************************
+* BOTTOM PART --> START PARTY BUTTON
+ ********************************/
 
 .inner-page .create-game {
   font-size: 30px;
   margin-top: 60px;
 }
 
+/********************************
+* FOOTER
+ ********************************/
 footer {
   position: relative;
   padding: 5px 20px;
@@ -433,6 +426,9 @@ footer pre {
   font-family: var(--primary-font);
 }
 
+/********************************
+* MEDIA QUERIES
+ ********************************/
 @media screen and (max-width: 1325px) {
   main .left-part {
     margin-left: 2.5%;

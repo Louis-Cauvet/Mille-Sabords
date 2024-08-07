@@ -21,7 +21,7 @@ body {
   min-height: 100vh;
   color: white;
   overflow-x: hidden;
-  background-image: url("../img/bg_index.jpg");
+  background-image: url("../img/bg/bg_index.jpg");
   background-size: cover;
   background-position: center;
   transition: background-image 1.5s ease;
@@ -270,43 +270,43 @@ main .left-part {
 }
 
 #playersList li:nth-child(1) .player-image {
-  background-image: url("../img/perso/homme_pirate.png");
+  background-image: url("../img/persos/homme_pirate.png");
 }
 
 #playersList.as--animals li:nth-child(1) .player-image {
-  background-image: url("../img/perso/elephant_pirate.png");
+  background-image: url("../img/persos/elephant_pirate.png");
 }
 
 #playersList li:nth-child(2) .player-image {
-  background-image: url("../img/perso/femme_pirate2.png");
+  background-image: url("../img/persos/femme_pirate2.png");
 }
 
 #playersList.as--animals li:nth-child(2) .player-image {
-  background-image: url("../img/perso/grenouille_pirate.png");
+  background-image: url("../img/persos/grenouille_pirate.png");
 }
 
 #playersList li:nth-child(3) .player-image {
-  background-image: url("../img/perso/homme_pirate2.png");
+  background-image: url("../img/persos/homme_pirate2.png");
 }
 
 #playersList.as--animals li:nth-child(3) .player-image {
-  background-image: url("../img/perso/souris_pirate.png");
+  background-image: url("../img/persos/souris_pirate.png");
 }
 
 #playersList li:nth-child(4) .player-image {
-  background-image: url("../img/perso/femme_pirate.png");
+  background-image: url("../img/persos/femme_pirate.png");
 }
 
 #playersList.as--animals li:nth-child(4) .player-image {
-  background-image: url("../img/perso/girafe_pirate.png");
+  background-image: url("../img/persos/girafe_pirate.png");
 }
 
 #playersList li:nth-child(5) .player-image {
-  background-image: url("../img/perso/homme_pirate3.png");
+  background-image: url("../img/persos/homme_pirate3.png");
 }
 
 #playersList.as--animals li:nth-child(5) .player-image {
-  background-image: url("../img/perso/poisson_pirate.png");
+  background-image: url("../img/persos/poisson_pirate.png");
 }
 
 .turn-area {
@@ -344,7 +344,7 @@ main .left-part {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image:  url("../img/tapis-jeu.png");
+  background-image:  url("../img/bg/bg-tapis-jeu.png");
   background-size: cover;
   background-position: center;
   opacity: .8;
@@ -530,7 +530,7 @@ main .left-part {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image:  url("../img/tapis-jeu.png");
+  background-image:  url("../img/bg/bg-tapis-jeu.png");
   background-size: cover;
   background-position: center;
   opacity: .8;

@@ -1,38 +1,40 @@
 "use strict";
 
 /*************************************
- Variables globales
+ Global variables
  *************************************/
 const minPlayers = 2;
 const maxPlayers = 5;
 let players = [];
 let maxPoints = null;
 
-let modeAnimals = false;
+let animalsMode = false;
+
 
 /*************************************
- Gestion de la musique en arrière plan
+ Background music management
  *************************************/
 document.addEventListener('DOMContentLoaded', function() {
-      var audio = document.getElementById('sound');
+  const audio = document.getElementById('sound');
 
-      // Écouter les interactions utilisateur
-      document.addEventListener('click', function() {
-        if (audio.paused) {
-          audio.play();
-        }
-      });
+  // Music start during user click's interaction
+  document.addEventListener('click', function() {
+    if (audio.paused) {
+      audio.play();
+    }
+  });
 
-      document.addEventListener('keydown', function(event) {
-        // Lancer l'audio si une touche spécifique est pressée
-        if (event.key === 'Enter' && audio.paused) {
-          audio.play();
-        }
-      });
-    });
+  // Music start during user keyboard's interaction
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && audio.paused) {
+      audio.play();
+    }
+  });
+});
+
 
 /*************************************
- Ajout du joueur dans la liste
+ Add player to list
  *************************************/
 function addPlayer() {
     const playerNameInput = document.getElementById('playerName');
@@ -53,20 +55,26 @@ function addPlayer() {
     }
 }
 
+
 /*************************************
- Affichage du nouveau joueur à l'écran
+ Dynamic display of a new player in list
  *************************************/
 function addPlayerImage(playerName) {
     const playerImageContainer = document.querySelector('.player-image-container');
+
+    // Player's container
     const playerDiv = document.createElement('div');
     playerDiv.className = 'player-image-container-ind';
 
+    // Player's image
     const playerImg = document.createElement('div');
     playerImg.className = 'player-image';
 
+    // Player's name
     const playerLabel = document.createElement('p');
     playerLabel.textContent = playerName;
 
+    // Player's delete button
     const playerDeleteButton = document.createElement('button');
     playerDeleteButton.className = 'delete-player-button';
     playerDeleteButton.textContent = 'x';
@@ -78,8 +86,9 @@ function addPlayerImage(playerName) {
     playerImageContainer.appendChild(playerDiv);
 }
 
+
 /*************************************
- Suppression d'un joueur dans la liste
+ Dynamic deletion of a player from the list
  *************************************/
 function deletePlayer(event) {
     const userToDelete = event.target.parentElement;
@@ -87,17 +96,18 @@ function deletePlayer(event) {
 
     players = players.filter(player => player !== playerName);
 
-    updatePlayerList();
+    updatePlayersList();
 
     if (players.length < maxPlayers) {
         document.getElementById('addPlayerButton').disabled = false;
     }
 }
 
+
 /*************************************
- Mise à jour de la liste des joueurs
+ Players' list update
  *************************************/
-function updatePlayerList() {
+function updatePlayersList() {
     const playerList = document.querySelector('.player-image-container');
     playerList.innerHTML = '';
 
@@ -106,71 +116,55 @@ function updatePlayerList() {
     });
 }
 
+
 /*************************************
- Passage du mode Humain au mode Animaux et inversement pour les personnages
+ Switch from Human mode to Animal mode & vice versa
  *************************************/
 function switchPersosMode() {
     const playersDisplay = document.querySelector('.players-display');
+
     if (playersDisplay.classList.contains('as--animals')) {
         playersDisplay.classList.remove('as--animals');
-        modeAnimals = false;
+        animalsMode = false;
     } else {
         playersDisplay.classList.add('as--animals');
-        modeAnimals = true;
+        animalsMode = true;
     }
 }
 
+
 /*************************************
-Lancement du jeu, sous réserve de validation de tous les prérequis pour jouer (joueurs, score objectif)
+ Game launch, subject to validation of all prerequisites (players, target score)
  *************************************/
 function createGame() {
     const maxPointsInput = document.getElementById('maxPoints');
     const choosenObjectif = parseInt(maxPointsInput.value);
 
-    let url;
-
     if (choosenObjectif >= 2000) {
         if (choosenObjectif <= 10000) {
             maxPoints = choosenObjectif;
-
-            const gameTypeRadios = document.getElementsByName('gameType');
-            let gameTypeValue = null;
-
-            for (let i = 0; i < gameTypeRadios.length; i++) {
-                if (gameTypeRadios[i].checked) {
-                    gameTypeValue = gameTypeRadios[i].value;
-                    break;
-                }
-            }
-
-            if (!gameTypeValue) {
-                alert('Veuillez choisir le type de partie.');
-                return;
-            }
-
-            if (gameTypeValue === 'dematerialiser') {
-                url = 'game.html';
-            } else if (gameTypeValue === 'physique') {
-                url = 'game_physique.html';
-            }
         } else {
+            maxPoints = null;
             alert('Veuillez entrer un objectif de 10000 maximum !')
         }
     } else {
+        maxPoints = null;
         alert('Veuillez entrer un objectif de 2000 minimum !');
     }
-
 
     if (players.length >= minPlayers && maxPoints !== null) {
         const gameData = {
             players: players,
             maxPoints: maxPoints,
-            modeAnimals: modeAnimals,
+            animalsMode: animalsMode,
         };
+
+        // Storage registration of game's data
         localStorage.setItem('gameData', JSON.stringify(gameData));
-        window.location.href = url;
+        // Redirect to the game page
+        window.location.href = 'game.html';
+
     } else if (players.length < minPlayers) {
         alert('Il faut au moins 2 joueurs pour participer !');
     }
 }
-

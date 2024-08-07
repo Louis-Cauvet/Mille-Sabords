@@ -183,17 +183,17 @@ function insertDices() {
 
     // Ajouter une correspondance entre les cartes et les backgrounds
     const backgroundImages = {
-        pirate: 'assets/img/bg_game/bg_game_pirate.jpg',
-        piece: 'assets/img/bg_game/bg_game_piece.jpg',
-        diamant: 'assets/img/bg_game/bg_game_diamond.jpg',
-        bateau_300: 'assets/img/bg_game/bg_game_bateau.jpg',
-        bateau_500: 'assets/img/bg_game/bg_game_bateau.jpg',
-        bateau_1000: 'assets/img/bg_game/bg_game_bateau.jpg',
-        singe_perroquet: 'assets/img/bg_game/bg_game_animaux.jpg',
-        tete_de_mort_1: 'assets/img/bg_game/bg_game_1tetedemort.jpg',
-        tete_de_mort_2: 'assets/img/bg_game/bg_game_2tetedemort.jpg',
-        tresor: 'assets/img/bg_game/bg_game_tresor.jpg',
-        mage: 'assets/img/bg_game/bg_game_mage.jpg',
+        pirate: 'assets/img/bg/bg_game_pirate.jpg',
+        piece: 'assets/img/bg/bg_game_piece.jpg',
+        diamant: 'assets/img/bg/bg_game_diamond.jpg',
+        bateau_300: 'assets/img/bg/bg_game_bateau.jpg',
+        bateau_500: 'assets/img/bg/bg_game_bateau.jpg',
+        bateau_1000: 'assets/img/bg/bg_game_bateau.jpg',
+        singe_perroquet: 'assets/img/bg/bg_game_animaux.jpg',
+        tete_de_mort_1: 'assets/img/bg/bg_game_1tetedemort.jpg',
+        tete_de_mort_2: 'assets/img/bg/bg_game_2tetedemort.jpg',
+        tresor: 'assets/img/bg/bg_game_tresor.jpg',
+        mage: 'assets/img/bg/bg_game_mage.jpg',
     };
 
     const cardSounds = {
@@ -595,7 +595,7 @@ function goToDeadIsland() {
     horreur.play();
 
     // Changer l'image de fond
-    document.body.style.backgroundImage = "url('assets/img/bg_game/bg_game_iledelamort.jpg')";
+    document.body.style.backgroundImage = "url('assets/img/bg/bg_game_iledelamort.jpg')";
 
     document.getElementById("messageContainer").innerHTML = "Vous débarquez sur l'Ile de la Tête de Mort mouhahahaha !!";
     document.getElementById("messageContainer").classList.add('visible');
