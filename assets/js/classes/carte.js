@@ -103,7 +103,6 @@ class Carte {
      Ajout d'un dé pièce automatiquement dans la zone de sauvegarde si le joueur tire la carte 'Pièce'
      *************************************/
     addPieceToSavedDices() {
-        // const savedDiceContainer = document.getElementById("savedDiceContainer");
         let pieceDiceHtml = `<div id='dice9' class="dice show-4 saved-dice locked-dice" data-result="pieces">
                                         <div></div>
                                         <div></div>
@@ -121,7 +120,6 @@ class Carte {
      Ajout d'un dé diamant automatiquement dans la zone de sauvegarde si le joueur tire la carte 'Diamant'
      *************************************/
     addDiamantToSavedDices() {
-        // const savedDiceContainer = document.getElementById("savedDiceContainer");
         let pieceDiceHtml = `<div id='dice9' class="dice show-1 saved-dice locked-dice" data-result="diamants">
                                         <div class='side active' data-face="diamants">
                                             <img src="assets/img/face_dice/diamond.png" alt="face diamant">
@@ -139,7 +137,6 @@ class Carte {
      Ajout d'un ou plusieurs dé(s) tête de mort automatiquement dans la zone de sauvegarde si le joueur tire la carte 'Tête de mort'
      *************************************/
     addSkullToSavedDices(skullsNumber) {
-        // const savedDiceContainer = document.getElementById("savedDiceContainer");
         let index  = 9;
         let skullDicesHtml = '';
 

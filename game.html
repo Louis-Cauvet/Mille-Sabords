@@ -2,25 +2,40 @@
 <html lang="fr">
 
 <head>
+    <!-- Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mille Sabords - Partie dématérialisée</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Plongez dans l'aventure palpitante de Mille Sabords, un jeu de dés inspiré du célèbre
+     jeu de société. Amasser des trésors, défiez vos amis en ligne et devenez le pirate le plus riche des sept mers.
+     Facile à apprendre, difficile à maîtriser, Mille Sabords combine stratégie, chance et suspense pour une expérience captivante.">
+    <meta name="keywords" content="mille-sabords, jeu de dés, jeu de société, pirate, trésors, multijoueurs, chance, stratégie, jeu en ligne, facile à apprendre, immersion">
+    <meta name="author" content="Hugo Rivaux, Souhail Cherif, Yoann Vincent, Louis Cauvet">
+
+    <!-- Title -->
+    <title>Mille Sabords - Partie en cours</title>
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="assets/img/favicon/site.webmanifest">
+    <link rel="mask-icon" href="assets/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="assets/css/style_game.css">
 </head>
 
 <body>
-    <audio id="card-sound"></audio>
-    <audio id="diceRollSound" src="assets/audio/dés.mp3" preload="auto"></audio>
-    <audio id="CardSound" src="assets/audio/tirer_carte.mp3" preload="auto"></audio>
-    <audio id="TetedemortSound" src="assets/audio/tete_de_mort.mp3" preload="auto"></audio>
-    <audio id="sound" autoplay loop src="assets/audio/musique_fond.mp3" type="audio/mp3" preload="auto"></audio>
-    <audio id="horreur" loop src="assets/audio/horreur.mp3" type="audio/mp3" preload="auto"></audio>
+    <div class="overlay-death">
+        <!-- Allow to make a fade transition when a user enter in death island -->
+    </div>
 
-    <div class="overlaydeath"></div>
-
-    <div id="modalCongrats" class="modal">
+    <div id="modal-congrats" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('modalCongrats')">&times;</span>
+            <span class="close" onclick="closeModal('modal-congrats')">&times;</span>
             <h2>Bien joué !</h2>
             <p>Félicitations, vous venez d'atteindre l'objectif de la partie !</p>
             <p>Il ne reste plus qu'un tour aux autres pour essayer de vous dépasser, ou de faire redescendre votre
@@ -28,12 +43,12 @@
         </div>
     </div>
 
-    <div id="modalWinner" class="modal">
+    <div id="modal-winner" class="modal">
         <div class="modal-content">
-            <img src="assets/img/bg/bg_index.jpg" alt="image bg" class="background">
-            <span class="close" onclick="closeModal('modalWinner')">&times;</span>
+            <img src="assets/img/bg/bg_index.jpg" alt="Décor de pirate en guise de fond" class="background">
+            <span class="close" onclick="closeModal('modal-winner')">&times;</span>
             <h2>Bravo !</h2>
-            <p>Nous avons un gagnant ! <span id="winnerName"></span> a su dominer la concurrence et devenir le Roi des Pirates.
+            <p>Nous avons un gagnant ! <span id="winner-name"></span> a su dominer la concurrence et devenir le Roi des Pirates.
             <div class="button-container">
                 <button onclick="rejouerPartie()">Refaire une partie</button>
                 <button onclick="rejouerAutreJoueur()">Refaire une partie en changeant de joueurs</button>
@@ -45,50 +60,54 @@
         <h1 class="title">Mille Sabords</h1>
 
         <main>
-            <button class="open-modal-button" onclick="openModal('leftModal')" title="Règles du jeu"><i>i</i></button>
+            <button class="open-modal-button" onclick="openModal('rules-modal')" title="Règles du jeu"><i>i</i></button>
 
-            <div id="leftModal" class="modal">
+            <div id="rules-modal" class="modal">
                 <div class="overlay-modal"></div>
-                <div class="modal-content" id="modalLeft">
-                    <span class="close" onclick="closeModal('leftModal')">&times;</span>
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal('rules-modal')">&times;</span>
                     <h3 class="modal-title">Règles du jeu pour les nouveaux moussaillons !</h3>
-                    <img src="assets/img/regle-part-1.jpg" alt="Left Photo 1">
-                    <img src="assets/img/regle-part-2.jpg" alt="Left Photo 2">
+                    <img src="assets/img/regle-part-1.jpg" alt="Règles du jeu partie 1">
+                    <img src="assets/img/regle-part-2.jpg" alt="Règles du jeu partie 2">
                 </div>
             </div>
 
             <section class="left-part">
                 <div class="game-info">
-                    <img src="assets/img/bg/bg_parchemin.jpg" alt="image bg" class="background">
-                    <p id="goalNumber"></p>
-                    <ul id="playersList">
-                        <!-- La liste des joueurs sera ajoutée ici -->
+                    <img src="assets/img/bg/bg_parchemin.jpg" alt="Parchemin en guide de fond" class="background">
+                    <p id="goal-number">
+                        <!-- Dynamic goal's score addition here -->
+                    </p>
+                    <ul id="players-list">
+                        <!-- Dynamic players' list addition here -->
                     </ul>
                 </div>
                 <div class="turn-area">
                     <div class="rolling-area">
-                        <div class="dice-container" id="rollingDiceContainer">
-                            <div class="overlay" id="overlayrolling"></div>
-                            <div id="scorePotentiel">Votre score potentiel : <span>0</span></div>
-                            <!-- Les dés à lancer seront ajoutés ici -->
+                        <div class="dice-container" id="rolling-dice-container">
+                            <div class="overlay" id="overlay-rolling">
+                                <!-- Allow to not click on dice when the player's turn is finished -->
+                            </div>
+                            <div id="potential-score">Votre score potentiel : <span>0</span></div>
+                            <!-- Dynamic rolling dices addition here -->
                         </div>
-                        <button id="rollDiceButton" onclick="rollDice()">Lancer les dés</button>
+                        <button id="roll-dice-button" onclick="rollDice()">Lancer les dés</button>
                     </div>
 
                     <div class="reserve-area">
                         <div class="player-reserve">
                             <h2>Votre réserve de dés</h2>
-                            <div class="dice-container" id="savedDiceContainer">
-                                <div class="overlay" id="overlaysaved"></div>
-                                <!-- Les dés sauvegardés seront ajoutés ici -->
+                            <div class="dice-container" id="saved-dice-container">
+                                <div class="overlay" id="overlay-saved">
+                                    <!-- Allow to not click on dice when the player's turn is finished -->
+                                </div>
+                                <!-- Dynamic saved dices addition here -->
                             </div>
-                            <div id="messageContainer">
+                            <div id="message-container">
                                 Vous avez perdu ! Au suivant !
                             </div>
                         </div>
-
-                        <button id="flipCardButton" class="next-turn-button" onclick="nextTurn()">Terminer le
-                            tour</button>
+                        <button id="flip-card-button" class="next-turn-button" onclick="nextTurn()">Terminer le tour</button>
                     </div>
                 </div>
             </section>
@@ -97,39 +116,45 @@
                 <div class="card-container">
                     <div class="card">
                         <div class="card-front">
-                            <img id="randomImage" src="" alt="Random Image">
+                            <img id="card-image" src="" alt="Image de la carte tirée aléatoirement">
                         </div>
                         <div class="card-back">
                             <div class="editor-img">
-                                <img class="bg-image" src="assets/img/cards/dos_carte.jpg" alt="Image de fond">
+                                <img src="assets/img/cards/dos_carte.jpg" alt="Image de dos d'une carte">
                             </div>
                             <p id="card-description">
-                                <!-- La description de chaque carte sera ajoutée ici-->
+                                <!-- Dynamic card's description addition here -->
                             </p>
                         </div>
                     </div>
                 </div>
 
                 <div class="points-listing">
-                    <img src="assets/img/points-sheet.jpg" alt="Liste de détail des points">
+                    <img src="assets/img/points-sheet.jpg" alt="Détail de la manière de compter les points">
                 </div>
             </section>
         </main>
     </div>
 
     <footer>
-        <img src="assets/img/bg/bg_parchemin.jpg" alt="image bg" class="background">
+        <img src="assets/img/bg/bg_parchemin.jpg" alt="Parchemin en guide de fond" class="background">
         <pre>2024     ©     <a href="https://github.com/Hrivaux" target="_blank">Hugo Rivaux</a>  -  <a href="https://github.com/SouhailCherif42" target="_blank">Souhail Cherif</a>  -  <a href="https://github.com/YoYoDaa" target="_blank">Yoann Vincent</a>  -  <a href="https://github.com/Louis-Cauvet" target="_blank">Louis Cauvet</a>   (B3 IW ESGI)</pre>
     </footer>
 
-    <script src="assets/js/classes/carte.js" type="text/javascript"></script>
-    <script src="assets/js/classes/tour.js" type="text/javascript"></script>
-    <script src="assets/js/script_game.js" type="text/javascript"></script>
-    <noscript>
-        <p>JavaScript est désactivé dans votre navigateur. Veuillez l'activer pour profiter pleinement de notre super
-            jeu !</p>
-    </noscript>
+    <!-- Sounds -->
+    <audio id="bg-sound" autoplay loop src="assets/audio/musique_fond.mp3" preload="auto"></audio>
+    <audio id="roll-dice-sound" src="assets/audio/dés.mp3" preload="auto"></audio>
+    <audio id="card-sound" src="assets/audio/tirer_carte.mp3" preload="auto"></audio>
+    <audio id="death-sound" src="assets/audio/tete_de_mort.mp3" preload="auto"></audio>
+    <audio id="horror-sound" loop src="assets/audio/horreur.mp3" preload="auto"></audio>
 
+    <!-- Scripts JS -->
+    <script src="assets/js/classes/carte.js"></script>
+    <script src="assets/js/classes/tour.js"></script>
+    <script src="assets/js/script_game.js"></script>
+    <noscript>
+        <p>JavaScript est désactivé dans votre navigateur. Veuillez l'activer pour profiter pleinement de notre super jeu !</p>
+    </noscript>
 </body>
 
 </html>

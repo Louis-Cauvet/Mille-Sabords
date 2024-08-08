@@ -9,12 +9,12 @@ let scores = [];     // Tableau de gestion des scores
 let currentPlayerIndex = 0;   // Indice du joueur actuel
 let finishedPlayerTour = false;   // Blocage du bouton de lancement des dés
 
-const diceContainer = document.getElementById('rollingDiceContainer');
-const savedDiceContainer = document.getElementById('savedDiceContainer');
+const diceContainer = document.getElementById('rolling-dice-container');
+const savedDiceContainer = document.getElementById('saved-dice-container');
 
-const rollDiceButton = document.getElementById('rollDiceButton');
+const rollDiceButton = document.getElementById('roll-dice-button');
 
-const potentialScore = document.querySelector('#scorePotentiel span');
+const potentialScore = document.querySelector('#potential-score span');
 
 const nextTurnButton = document.querySelector(".next-turn-button");
 
@@ -26,13 +26,13 @@ let extraTurnsCount = 0;
  Affichage des données de la partie au chargement de la page
  *************************************/
 document.addEventListener('DOMContentLoaded', () => {
-    const maxPointsInfo = document.getElementById('goalNumber');
-    const playerList = document.getElementById('playersList');
+    const maxPointsInfo = document.getElementById('goal-number');
+    const playerList = document.getElementById('players-list');
 
     // on affiche les noms des joueurs et leurs scores, ainsi que l'objectif de points à atteindre
     if (gameData) {
-        if(gameData["modeAnimals"] === true) {
-            document.getElementById('playersList').classList.add('as--animals');
+        if(gameData["animalsMode"] === true) {
+            document.getElementById('players-list').classList.add('as--animals');
         }
 
         maxPointsInfo.textContent = `Objectif : ${gameData.maxPoints}`;
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-document.getElementById('flipCardButton').addEventListener('click', () => {
+document.getElementById('flip-card-button').addEventListener('click', () => {
     const card = document.querySelector('.card');
     card.classList.add('clicked');
     setTimeout(() => {
@@ -69,21 +69,21 @@ document.getElementById('flipCardButton').addEventListener('click', () => {
  Gestion de la musique en arrière plan
  *************************************/
 document.addEventListener('DOMContentLoaded', function() {
-  let audio = document.getElementById('sound');
+  const bgSound = document.getElementById('bg-sound');
 
   // Écouter les interactions utilisateur
   document.addEventListener('click', function() {
-      let horreur = document.getElementById('horreur');
-      if (horreur.paused) {
-          audio.play();
+      let horrorSound = document.getElementById('horror-sound');
+      if (horrorSound.paused) {
+          bgSound.play();
       }
   });
 
   document.addEventListener('keydown', function(event) {
     // Lancer l'audio si une touche spécifique est pressée
-    let horreur = document.getElementById('horreur');
-    if (event.key === 'Enter' && horreur.paused) {
-      audio.play();
+    let horrorSound = document.getElementById('horror-sound');
+    if (event.key === 'Enter' && horrorSound.paused) {
+        bgSound.play();
     }
   });
 });
@@ -96,7 +96,7 @@ function startPlayerTour() {
     window.playerTour = new Tour();
 
     // on réinitalise les informations qui ont pu apparaître durant le tour précédent
-    document.getElementById('messageContainer').classList.remove('visible');
+    document.getElementById('message-container').classList.remove('visible');
     potentialScore.textContent = '0';
     rollDiceButton.disabled = false;
     finishedPlayerTour = false;
@@ -114,7 +114,7 @@ function startPlayerTour() {
  Indication visuelle de l'utilisateur en train de jouer
  *************************************/
 function highlightActiveUser(index) {
-    const playerItems = document.querySelectorAll('#playersList li');
+    const playerItems = document.querySelectorAll('#players-list li');
 
     playerItems.forEach(item => {
         item.classList.remove('active-user');
@@ -130,11 +130,11 @@ function highlightActiveUser(index) {
 // Générer les 8 dés pour le premier lancement
 function insertDices() {
 
-    let initialRollingContent = `<div class="overlay" id="overlayrolling"></div>
-                                        <div id="scorePotentiel">Votre score potentiel : <span>0</span></div>`;
+    let initialRollingContent = `<div class="overlay" id="overlay-rolling"></div>
+                                        <div id="potential-score">Votre score potentiel : <span>0</span></div>`;
     diceContainer.innerHTML = initialRollingContent;
 
-    let initialSavedContent = `<div class="overlay" id="overlaysaved"></div>`;
+    let initialSavedContent = `<div class="overlay" id="overlay-saved"></div>`;
     savedDiceContainer.innerHTML = initialSavedContent;
 
     for (let i=1; i<=8 ; i++) {
@@ -211,13 +211,13 @@ function insertDices() {
     };
 
     // On tire au sort une carte
-    const randomImage = images[Math.floor(Math.random() * images.length)];
+    const cardRandomImage = images[Math.floor(Math.random() * images.length)];
     setTimeout(() => {
-        document.getElementById('randomImage').src = `assets/img/cards/${randomImage}.jpg`;
+        document.getElementById('card-image').src = `assets/img/cards/${cardRandomImage}.jpg`;
     }, 650)
 
     // Jouer le son correspondant à la carte tirée
-    const soundUrl = cardSounds[randomImage];
+    const soundUrl = cardSounds[cardRandomImage];
     const audioElement = document.getElementById('card-sound');
     audioElement.src = soundUrl;
     audioElement.load(); // Recharger l'élément audio pour prendre en compte la nouvelle source
@@ -226,11 +226,11 @@ function insertDices() {
     }, 1000);
 
     // Modifier le background en fonction de la carte tirée
-    const backgroundUrl = backgroundImages[randomImage];
+    const backgroundUrl = backgroundImages[cardRandomImage];
     document.body.style.backgroundImage = `url(${backgroundUrl})`;
 
     // On ajoute la variable de carte de manière globale (en l'attachant à 'window') pour pouvoir y accéder de partout
-    window.playerCard = new Carte(randomImage);
+    window.playerCard = new Carte(cardRandomImage);
 
     // On définit la carte tirée, et on applique son effet
     playerTour.setCarteTiree(playerCard);
@@ -265,8 +265,8 @@ function rollDice() {
     }
 
     // Jouer le son
-    var diceRollSound = document.getElementById('diceRollSound');
-    diceRollSound.play();
+    var rollDiceSound = document.getElementById('roll-dice-sound');
+    rollDiceSound.play();
 
     // on vérifie qu'il y a plus d'un dé dans la zone de relance
     if (diceContainer.querySelectorAll('.dice').length > 1) {
@@ -401,7 +401,7 @@ function checkSkull() {
             potentialScore.textContent = playerTour.scorePotentiel.toString();
         }
 
-        document.getElementById('messageContainer').classList.add('visible');
+        document.getElementById('message-container').classList.add('visible');
         document.querySelectorAll('.dice-container .overlay').forEach(overlay => {
             overlay.classList.add('active');
         })
@@ -413,10 +413,10 @@ function checkSkull() {
  Vérification et application de la carte mage
  *************************************/
 function CheckMage() {
-    const diceHeadDead = document.getElementById('savedDiceContainer').querySelectorAll('div[data-result="tetes_de_mort"]').length;
+    const diceHeadDead = document.getElementById('saved-dice-container').querySelectorAll('div[data-result="tetes_de_mort"]').length;
     if (playerTour.getVies() > 0 && diceHeadDead > 0) {
 
-        const diceElement = document.getElementById('savedDiceContainer').querySelector('div[data-result="tetes_de_mort"]');
+        const diceElement = document.getElementById('saved-dice-container').querySelector('div[data-result="tetes_de_mort"]');
         const activeDice = diceElement.querySelector('.active');
 
         if (diceElement) {
@@ -459,8 +459,8 @@ function unsaveDice(diceElement) {
  *************************************/
 function nextTurn() {
     // Jouer le son
-    let CardSound = document.getElementById('CardSound');
-    CardSound.play();
+    let cardSound = document.getElementById('card-sound');
+    cardSound.play();
     setTimeout(() => {
         
     }, 1000);
@@ -477,13 +477,13 @@ function nextTurn() {
     playerTour.scorePotentiel = 0;
 
     // On met à jour l'affichage du score du joueur
-    const playerListItems = document.querySelectorAll('#playersList li');
+    const playerListItems = document.querySelectorAll('#players-list li');
     playerListItems[currentPlayerIndex].innerHTML = `${gameData.players[currentPlayerIndex]} - Score: ${scores[currentPlayerIndex]} <div class="player-image"></div>`;
 
     const maxPoints = gameData.maxPoints;
     const currentPlayerScore = scores[currentPlayerIndex];
     if (currentPlayerScore >= maxPoints && !extraTurns) {
-        openModal('modalCongrats');
+        openModal('modal-congrats');
         extraTurns = true;
         playerWhoReachedGoal = currentPlayerIndex;
         extraTurnsCount++;
@@ -504,8 +504,8 @@ function nextTurn() {
             }
         }
         if (!anotherPlayerReachedGoal || highestScore >= maxPoints) {
-            openModal('modalWinner');
-            document.getElementById('winnerName').textContent = gameData.players[winnerIndex];
+            openModal('modal-winner');
+            document.getElementById('winner-name').textContent = gameData.players[winnerIndex];
             extraTurns = false;
             playerWhoReachedGoal = -1;
             extraTurnsCount = 0;
@@ -517,8 +517,8 @@ function nextTurn() {
     savedDiceContainer.innerHTML = '';
 
     // On réajoute l'affichage du score potentiel
-    let potentialScoreHtml = `<div id="scorePotentiel">Votre score potentiel : <span>0</span></div>
-                                    <div class="overlay" id="overlayrolling"></div>`;
+    let potentialScoreHtml = `<div id="potential-score">Votre score potentiel : <span>0</span></div>
+                                    <div class="overlay" id="overlay-rolling"></div>`;
     diceContainer.innerHTML += potentialScoreHtml;
 
     // On passe au joueur suivant
@@ -541,8 +541,8 @@ function checkVictoryCondition() {
  Affichage de la modale annonçant le gagnant
  *************************************/
 function afficherModalGagnant() {
-    const modal = document.getElementById('modalWinner');
-    const winnerNameElement = document.getElementById('winnerName');
+    const modal = document.getElementById('modal-winner');
+    const winnerNameElement = document.getElementById('winner-name');
 
     // On identifie le joueur actuel comme étant le gagnant de la partie
     const winnerName = gameData.players[currentPlayerIndex];
@@ -585,20 +585,20 @@ function goToDeadIsland() {
     playerTour.setModeTeteDeMort(true);
 
     // Jouer le son
-    let TetedemortSound = document.getElementById('TetedemortSound');
-    TetedemortSound.play();
+    let deathSound = document.getElementById('death-sound');
+    deathSound.play();
 
-    let audio = document.getElementById('sound');
-    audio.pause();
+    let bgSound = document.getElementById('bg-sound');
+    bgSound.pause();
 
-    let horreur = document.getElementById('horreur');
-    horreur.play();
+    let horrorSound = document.getElementById('horror-sound');
+    horrorSound.play();
 
     // Changer l'image de fond
     document.body.style.backgroundImage = "url('assets/img/bg/bg_game_iledelamort.jpg')";
 
-    document.getElementById("messageContainer").innerHTML = "Vous débarquez sur l'Ile de la Tête de Mort mouhahahaha !!";
-    document.getElementById("messageContainer").classList.add('visible');
+    document.getElementById("message-container").innerHTML = "Vous débarquez sur l'Ile de la Tête de Mort mouhahahaha !!";
+    document.getElementById("message-container").classList.add('visible');
     // On change la fonction du bouton de relance des dés
     rollDiceButton.onclick = rollDiceDeadIsland;
 
@@ -622,7 +622,7 @@ function calculateNegativePoints(nbTetesMort) {
     let pointsmoins = nbTetesMort * playerTour.getIndiceReduction();
     playerTour.setScorePotentiel(pointsmoins);
 
-    const scorePotentielDiv = document.getElementById('scorePotentiel');
+    const scorePotentielDiv = document.getElementById('potential-score');
     scorePotentielDiv.innerHTML = "Score : <span>" + playerTour.scorePotentiel.toString() + "</span> (pour les autres joueurs)";
 }
 
@@ -630,8 +630,8 @@ function calculateNegativePoints(nbTetesMort) {
  Lancement des dés dans le mode Ile de la Tête de Mort
  *************************************/
 function rollDiceDeadIsland() {
-    let diceRollSound = document.getElementById('diceRollSound');
-    diceRollSound.play();
+    let rollDiceSound = document.getElementById('roll-dice-sound');
+    rollDiceSound.play();
 
   // Jeu de l'île de la mort
   const diceTypeCount = {
@@ -710,7 +710,7 @@ function rollDiceDeadIsland() {
                 message = 'La chance, vous avez eu toutes les têtes de mort !';
                 break;
         }
-      document.getElementById("messageContainer").textContent = message;
+      document.getElementById("message-container").textContent = message;
       nextTurnButton.style.opacity = "1";
       rollDiceButton.disabled = true;
     }, 1100);
@@ -729,7 +729,7 @@ function rollDiceDeadIsland() {
  Passage au tour suivant demandé par le joueur dans le mode Ile de la Tete de Mort
  *************************************/
 function nextTurnDeadIsland() {
-    const pointsMoins = parseFloat(document.querySelector('#scorePotentiel span').textContent);
+    const pointsMoins = parseFloat(document.querySelector('#potential-score span').textContent);
 
     // On parcourt la liste des joueurs pour tous leur retirer des points excepté le joueur actuel
     for (let i = 0; i < scores.length; i++) {
@@ -746,7 +746,7 @@ function nextTurnDeadIsland() {
     }
 
     // on met à jour l'affichage du score total du joueur dans la liste des joueurs
-    const playerListItems = document.querySelectorAll("#playersList li");
+    const playerListItems = document.querySelectorAll("#players-list li");
     for (let i = 0; i < gameData.players.length; i++) {
         playerListItems[i].innerHTML = `${gameData.players[currentPlayerIndex]} - Score: ${scores[currentPlayerIndex]} <div class="player-image"></div>`;
     }
@@ -775,12 +775,12 @@ function outOfDeadIsland() {
     rollDiceButton.onclick = rollDice;
     nextTurnButton.onclick = nextTurn;
 
-    let horreur = document.getElementById('horreur');
-    horreur.pause();
+    let horrorSound = document.getElementById('horror-sound');
+    horrorSound.pause();
 
-    let audio = document.getElementById('sound');
-    audio.play();
+    let bgSound = document.getElementById('bg-sound');
+    bgSound.play();
 
-    document.getElementById("messageContainer").style.display = "none";
-    document.getElementById("messageContainer").textContent = "Vous avez perdu ! Au suivant !";
+    document.getElementById("message-container").style.display = "none";
+    document.getElementById("message-container").textContent = "Vous avez perdu ! Au suivant !";
 }

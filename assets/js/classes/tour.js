@@ -194,7 +194,7 @@ class Tour {
 
         setTimeout( ()=> {
             // Affichage du score potentiel dans le div avec l'id scorePotentiel (avec un décalage d'1,2 seconde pour attendre la fin du lancer)
-            const scorePotentielArea = document.querySelector('#scorePotentiel span');
+            const scorePotentielArea = document.querySelector('#potential-score span');
             if (scorePotentielArea) {
                 scorePotentielArea.textContent = this.scorePotentiel.toString();
             }

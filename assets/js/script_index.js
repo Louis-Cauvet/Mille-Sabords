@@ -14,22 +14,18 @@ let animalsMode = false;
 /*************************************
  Background music management
  *************************************/
-document.addEventListener('DOMContentLoaded', function() {
-  const audio = document.getElementById('sound');
+document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('sound');
 
-  // Music start during user click's interaction
-  document.addEventListener('click', function() {
-    if (audio.paused) {
-      audio.play();
-    }
-  });
+    const playAudio = () => {
+        if (audio.paused) audio.play();
+    };
 
-  // Music start during user keyboard's interaction
-  document.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter' && audio.paused) {
-      audio.play();
-    }
-  });
+    // Music start during user click's or keyboard's interaction
+    document.addEventListener('click', playAudio);
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Enter') playAudio();
+    });
 });
 
 
@@ -40,18 +36,20 @@ function addPlayer() {
     const playerNameInput = document.getElementById('playerName');
     const playerName = playerNameInput.value.trim();
 
-    if (playerName && players.length < maxPlayers) {
+    if (!playerName) {
+        alert('Veuillez entrer un nom de joueur.');
+    } else if (players.length >= maxPlayers) {
+        alert('Nombre maximum de joueurs atteint.');
+    } else if (players.includes(playerName)) {
+        alert('Ce joueur existe déjà.');
+    } else {
         players.push(playerName);
         addPlayerImage(playerName);
         playerNameInput.value = '';
-    } else if (!playerName) {
-        alert('Veuillez entrer un nom de joueur.');
-    } else {
-        alert('Nombre maximum de joueurs atteint.');
-    }
 
-    if (players.length >= maxPlayers) {
-        document.getElementById('addPlayerButton').disabled = true;
+        if (players.length >= maxPlayers) {
+            document.getElementById('addPlayerButton').disabled = true;
+        }
     }
 }
 
@@ -80,9 +78,7 @@ function addPlayerImage(playerName) {
     playerDeleteButton.textContent = 'x';
     playerDeleteButton.onclick = deletePlayer;
 
-    playerDiv.appendChild(playerImg);
-    playerDiv.appendChild(playerLabel);
-    playerDiv.appendChild(playerDeleteButton);
+    playerDiv.append(playerImg, playerLabel, playerDeleteButton);
     playerImageContainer.appendChild(playerDiv);
 }
 
@@ -98,9 +94,7 @@ function deletePlayer(event) {
 
     updatePlayersList();
 
-    if (players.length < maxPlayers) {
-        document.getElementById('addPlayerButton').disabled = false;
-    }
+    document.getElementById('addPlayerButton').disabled = false;
 }
 
 
@@ -111,9 +105,7 @@ function updatePlayersList() {
     const playerList = document.querySelector('.player-image-container');
     playerList.innerHTML = '';
 
-    players.forEach(player => {
-        addPlayerImage(player);
-    });
+    players.forEach(addPlayerImage);
 }
 
 
@@ -140,23 +132,18 @@ function createGame() {
     const maxPointsInput = document.getElementById('maxPoints');
     const choosenObjectif = parseInt(maxPointsInput.value);
 
-    if (choosenObjectif >= 2000) {
-        if (choosenObjectif <= 10000) {
-            maxPoints = choosenObjectif;
-        } else {
-            maxPoints = null;
-            alert('Veuillez entrer un objectif de 10000 maximum !')
-        }
+    if (choosenObjectif >= 2000 && choosenObjectif <= 10000) {
+        maxPoints = choosenObjectif;
     } else {
         maxPoints = null;
-        alert('Veuillez entrer un objectif de 2000 minimum !');
+        alert('Veuillez entrer un objectif entre 2000 et 10000 !');
     }
 
     if (players.length >= minPlayers && maxPoints !== null) {
         const gameData = {
-            players: players,
-            maxPoints: maxPoints,
-            animalsMode: animalsMode,
+            players,
+            maxPoints,
+            animalsMode
         };
 
         // Storage registration of game's data

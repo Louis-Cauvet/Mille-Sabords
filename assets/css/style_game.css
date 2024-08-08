@@ -1,3 +1,6 @@
+/********************************
+* FONTS
+ ********************************/
 @font-face {
   font-family: 'Freebooter';
   src: url('../fonts/Freebooter.ttf') format('truetype');
@@ -5,6 +8,9 @@
   font-style: normal;
 }
 
+/********************************
+* ROOT VARIABLES
+ ********************************/
 :root {
   --primary-color : #774935;
   --primary-dark-color: #57321f;
@@ -14,6 +20,9 @@
   --shadow : 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+/********************************
+* TAGS' STYLES
+ ********************************/
 body {
   font-family: var(--primary-font);
   margin: 0;
@@ -27,21 +36,11 @@ body {
   transition: background-image 1.5s ease;
 }
 
-body .overlaydeath {
-  position: fixed;
-  top: 0;
-  left: 0;
+main {
+  position: relative;
+  display: flex;
+  gap: 105px;
   width: 100%;
-  height: 100%;
-  background-color: #000;
-  opacity: 0;
-  visibility: hidden;
-  transition: all .7s ease;
-}
-
-body.deathmode .overlaydeath {
-  visibility: visible;
-  opacity: 1;
 }
 
 a {
@@ -75,6 +74,16 @@ button:disabled {
   cursor: not-allowed;
 }
 
+/********************************
+* GLOBAL CLASSES
+ ********************************/
+.inner-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 35px 50px;
+}
+
 .background {
   position: absolute;
   top: 0;
@@ -83,13 +92,6 @@ button:disabled {
   height: 100%;
   object-fit: cover;
   z-index: -1;
-}
-
-.inner-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px 35px 50px;
 }
 
 .title {
@@ -105,20 +107,33 @@ button:disabled {
   z-index: 2;
 }
 
-#goalNumber {
-  margin: 0 0 10px;
-  font-size: 28px;
-  font-weight: bold;
-  text-align: center;
+.overlay{
+  display: block;
 }
 
-main {
-  position: relative;
-  display: flex;
-  gap: 105px;
+/********************************
+* BODY OVERLAY
+ ********************************/
+body .overlay-death {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  background-color: #000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .7s ease;
 }
 
+body.deathmode .overlay-death {
+  visibility: visible;
+  opacity: 1;
+}
+
+/********************************
+* MODALS
+ ********************************/
 .open-modal-button {
   position: absolute;
   top: -15px;
@@ -209,6 +224,9 @@ main {
   cursor: pointer;
 }
 
+/********************************
+* LEFT PART ---> GOAL SCORE & PLAYERS' LIST
+ ********************************/
 main .left-part {
   display: flex;
   flex-direction: column;
@@ -231,7 +249,14 @@ main .left-part {
   opacity: .8;
 }
 
- #playersList {
+#goal-number {
+  margin: 0 0 10px;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+}
+
+ #players-list {
   display: flex;
   flex-direction: row;
   gap: 25px;
@@ -240,7 +265,7 @@ main .left-part {
   list-style-type: none;
 }
 
-#playersList li {
+#players-list li {
   display: flex;
   flex-direction: column-reverse;
   justify-content: flex-end;
@@ -251,12 +276,12 @@ main .left-part {
   transition: font-size .7s ease;
 }
 
-#playersList li.active-user {
+#players-list li.active-user {
   font-size: 25px;
   transition: font-size .5s ease;
 }
 
-#playersList li .player-image {
+#players-list li .player-image {
   width: 50px;
   aspect-ratio: 1/1;
   background-size: cover;
@@ -264,51 +289,54 @@ main .left-part {
   transition: width .7s ease;
 }
 
-#playersList li.active-user .player-image {
+#players-list li.active-user .player-image {
   width: 60px;
   transition: width .5s ease;
 }
 
-#playersList li:nth-child(1) .player-image {
+#players-list li:nth-child(1) .player-image {
   background-image: url("../img/persos/homme_pirate.png");
 }
 
-#playersList.as--animals li:nth-child(1) .player-image {
+#players-list.as--animals li:nth-child(1) .player-image {
   background-image: url("../img/persos/elephant_pirate.png");
 }
 
-#playersList li:nth-child(2) .player-image {
+#players-list li:nth-child(2) .player-image {
   background-image: url("../img/persos/femme_pirate2.png");
 }
 
-#playersList.as--animals li:nth-child(2) .player-image {
+#players-list.as--animals li:nth-child(2) .player-image {
   background-image: url("../img/persos/grenouille_pirate.png");
 }
 
-#playersList li:nth-child(3) .player-image {
+#players-list li:nth-child(3) .player-image {
   background-image: url("../img/persos/homme_pirate2.png");
 }
 
-#playersList.as--animals li:nth-child(3) .player-image {
+#players-list.as--animals li:nth-child(3) .player-image {
   background-image: url("../img/persos/souris_pirate.png");
 }
 
-#playersList li:nth-child(4) .player-image {
+#players-list li:nth-child(4) .player-image {
   background-image: url("../img/persos/femme_pirate.png");
 }
 
-#playersList.as--animals li:nth-child(4) .player-image {
+#players-list.as--animals li:nth-child(4) .player-image {
   background-image: url("../img/persos/girafe_pirate.png");
 }
 
-#playersList li:nth-child(5) .player-image {
+#players-list li:nth-child(5) .player-image {
   background-image: url("../img/persos/homme_pirate3.png");
 }
 
-#playersList.as--animals li:nth-child(5) .player-image {
+#players-list.as--animals li:nth-child(5) .player-image {
   background-image: url("../img/persos/poisson_pirate.png");
 }
 
+/********************************
+* CENTER PART ---> ROLLING DICES' AREA
+ ********************************/
 .turn-area {
   padding: 10px 0;
   width: 100%;
@@ -328,7 +356,7 @@ main .left-part {
   gap: 10px 25px;
 }
 
-.rolling-area #rollingDiceContainer {
+.rolling-area #rolling-dice-container {
   position: relative;
   padding: 10px 20px;
   width: 500px;
@@ -337,7 +365,7 @@ main .left-part {
   text-align: center;
 }
 
-.rolling-area #rollingDiceContainer:after {
+.rolling-area #rolling-dice-container:after {
   content: '';
   position: absolute;
   top: 0;
@@ -367,7 +395,7 @@ main .left-part {
   display: block;
 }
 
-.dice-container #scorePotentiel {
+.dice-container #potential-score {
   font-size: 28px;
   font-weight: bold;
 }
@@ -385,7 +413,7 @@ main .left-part {
   transition: transform 1s;
 }
 
-.turn-area #rollingDiceContainer .dice {
+.turn-area #rolling-dice-container .dice {
   position: absolute;
 }
 
@@ -398,43 +426,45 @@ main .left-part {
   cursor: not-allowed;
 }
 
-
-#rollingDiceContainer .dice#dice1 {
+/********************************
+* CENTER PART ---> DICES' STRUCTURE
+ ********************************/
+#rolling-dice-container .dice#dice1 {
   left: 305px;
   top: 70px;
 }
 
-#rollingDiceContainer .dice#dice2 {
+#rolling-dice-container .dice#dice2 {
   left: 40px;
   top: 40px;
 }
 
-#rollingDiceContainer .dice#dice3 {
+#rolling-dice-container .dice#dice3 {
   left: 30px;
   top: 150px;
 }
 
-#rollingDiceContainer .dice#dice4 {
+#rolling-dice-container .dice#dice4 {
   left: 445px;
   top: 55px;
 }
 
-#rollingDiceContainer .dice#dice5 {
+#rolling-dice-container .dice#dice5 {
   left: 160px;
   top: 90px;
 }
 
-#rollingDiceContainer .dice#dice6 {
+#rolling-dice-container .dice#dice6 {
   left: 420px;
   top: 160px;
 }
 
-#rollingDiceContainer .dice#dice7 {
+#rolling-dice-container .dice#dice7 {
   left: 150px;
   top: 185px;
 }
 
-#rollingDiceContainer .dice#dice8 {
+#rolling-dice-container .dice#dice8 {
   left: 295px;
   top: 195px;
 }
@@ -503,6 +533,9 @@ main .left-part {
   object-fit: cover;
 }
 
+/********************************
+* CENTER PART ---> RESERVE DICES' AREA
+ ********************************/
 .reserve-area {
   display: flex;
   justify-content: flex-end;
@@ -538,7 +571,7 @@ main .left-part {
   border-radius: inherit;
 }
 
-.reserve-area #savedDiceContainer {
+.reserve-area #saved-dice-container {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -549,7 +582,7 @@ main .left-part {
   box-sizing: border-box;
 }
 
-#messageContainer {
+#message-container {
   display: none;
   color: white;
   font-weight: bold;
@@ -558,18 +591,17 @@ main .left-part {
   text-align: center;
 }
 
-#messageContainer.visible {
+#message-container.visible {
   display: block;
 }
 
+/********************************
+* RIGHT PART ---> PLAYER TURN'S CARD & POINTS' LISTING
+ ********************************/
 main .right-part {
   display: flex;
   flex-direction: column;
   width: 200px;
-}
-
-.overlay{
-  display: block;
 }
 
 .card-container {
@@ -577,7 +609,6 @@ main .right-part {
     height: 300px;
     border-radius: 10px;
     perspective: 1000px;
-  /*perspective: 700px;*/
     cursor: pointer;
     user-select: none;
 }
@@ -602,7 +633,7 @@ main .right-part {
 }
 
 .card-container:hover .card.clicked {
-  transform: rotateY(none);
+  transform: none;
 }
 
 .card-container .card-front,
@@ -630,7 +661,6 @@ main .right-part {
   padding: 10px;
   box-sizing: border-box;
   transform: rotateY(180deg);
-  /*transform: rotateY(180deg) rotateZ(180deg);*/
   overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -672,6 +702,9 @@ main .right-part {
   border-radius: inherit;
 }
 
+/********************************
+* FOOTER
+ ********************************/
 footer {
   position: relative;
   padding: 5px 20px;
@@ -687,76 +720,9 @@ footer pre {
   font-family: var(--primary-font);
 }
 
-.physical-game .turn-area {
-  width: 90%;
-}
-
-.physical-game .turn-area .rolling-area {
-  width: 500px;
-}
-
-.physical-game .rolling-area .dice-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: fit-content;
-  padding: 20px;
-  width: 100%;
-}
-
-.physical-game .rolling-area .background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  border-radius: 20px;
-  opacity: .75;
-}
-
-.physical-game .dice-container #scorePotentiel {
-  margin-bottom: 10px;
-}
-
-.physical-game .rolling-area .container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-
-.physical-game .dice-container .input-area {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-  max-width: 130px;
-}
-
-.physical-game .locked-dice {
-  display: none;
-}
-
-.physical-game .dice-container .input-area input {
-  max-width: 100px;
-  font-size: var(--primary-font);
-  border-radius: 5px;
-  border: none;
-}
-
-.physical-game .dice-container .input-area input:focus {
-  outline-color: var(--primary-color);
-}
-
-.physical-game .dice-container img {
-  width: 50px;
-  aspect-ratio: 1/1;
-}
-
+/********************************
+* MEDIA QUERIES
+ ********************************/
 @media screen and (max-width: 1080px) {
   .title {
     padding-top: 50px;
@@ -790,31 +756,31 @@ footer pre {
     flex-direction: column;
   }
 
-  .rolling-area #rollingDiceContainer {
+  .rolling-area #rolling-dice-container {
     width: 415px;
   }
 
-  #rollingDiceContainer .dice#dice1 {
+  #rolling-dice-container .dice#dice1 {
     left: 275px;
     top: 65px;
   }
 
-  #rollingDiceContainer .dice#dice4 {
+  #rolling-dice-container .dice#dice4 {
     left: 385px;
     top: 50px;
   }
 
-  #rollingDiceContainer .dice#dice6 {
+  #rolling-dice-container .dice#dice6 {
     left: 375px;
     top: 195px;
   }
 
-  #rollingDiceContainer .dice#dice7 {
+  #rolling-dice-container .dice#dice7 {
     left: 135px;
     top: 190px;
   }
 
-  #rollingDiceContainer .dice#dice8 {
+  #rolling-dice-container .dice#dice8 {
     left: 270px;
     top: 165px;
   }
@@ -865,7 +831,7 @@ footer pre {
     box-sizing: border-box;
   }
 
-  #playersList {
+  #players-list {
     flex-direction: column
   }
 
@@ -911,41 +877,41 @@ footer pre {
 }
 
 @media screen and (max-width: 530px) {
-  .rolling-area #rollingDiceContainer {
+  .rolling-area #rolling-dice-container {
     width: 360px;
   }
 
-  #rollingDiceContainer .dice#dice1 {
+  #rolling-dice-container .dice#dice1 {
     left: 230px;
     top: 55px;
   }
 
-  #rollingDiceContainer .dice#dice2 {
+  #rolling-dice-container .dice#dice2 {
     left: 25px;
     top: 60px;
   }
 
-  #rollingDiceContainer .dice#dice3 {
+  #rolling-dice-container .dice#dice3 {
     left: 15px;
     top: 190px;
   }
 
-  #rollingDiceContainer .dice#dice4 {
+  #rolling-dice-container .dice#dice4 {
     left: 330px;
     top: 75px;
   }
 
-  #rollingDiceContainer .dice#dice5 {
+  #rolling-dice-container .dice#dice5 {
     left: 130px;
     top: 95px;
   }
 
-  #rollingDiceContainer .dice#dice6 {
+  #rolling-dice-container .dice#dice6 {
     left: 330px;
     top: 205px;
   }
 
-  #rollingDiceContainer .dice#dice8 {
+  #rolling-dice-container .dice#dice8 {
     left: 260px;
     top: 150px;
   }
