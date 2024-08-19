@@ -27,7 +27,6 @@ body {
   font-family: var(--primary-font);
   margin: 0;
   padding: 0;
-  min-height: 100vh;
   color: white;
   overflow-x: hidden;
   background-image: url("../img/bg/bg_index.jpg");
@@ -39,8 +38,11 @@ body {
 main {
   position: relative;
   display: flex;
-  gap: 105px;
+  justify-content: center;
+  gap: 90px;
+  margin: 0 auto;
   width: 100%;
+  max-width: 1920px;
 }
 
 a {
@@ -82,7 +84,7 @@ button:disabled {
   flex-direction: column;
   align-items: center;
   padding: 20px 35px 50px;
-  min-height: 100svh;
+  min-height: calc(100svh - 20px - 50px - 70px);
 }
 
 .background {
@@ -137,9 +139,8 @@ body.deathmode .overlay-death {
  ********************************/
 .open-modal-button {
   position: absolute;
-  top: -15px;
-  right: 230px;
-  padding-right: 23px;
+  top: -30px;
+  left: -20px;
   font-size: 30px;
   width: fit-content;
   border-radius: 50%;
@@ -231,8 +232,8 @@ body.deathmode .overlay-death {
 main .left-part {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 10px;
-  flex-grow: 2;
 }
 
 .game-info {
@@ -264,6 +265,7 @@ main .left-part {
   margin: 0;
   padding: 0;
   list-style-type: none;
+  text-align: center;
 }
 
 #players-list li {
@@ -272,13 +274,13 @@ main .left-part {
   justify-content: flex-end;
   padding-left: 0;
   align-items: center;
-  font-size: 22px;
+  font-size: 21px;
   gap: 8px;
   transition: font-size .7s ease;
 }
 
 #players-list li.active-user {
-  font-size: 25px;
+  font-size: 23px;
   transition: font-size .5s ease;
 }
 
@@ -343,7 +345,7 @@ main .left-part {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
 }
 
 .turn-area h2 {
@@ -539,7 +541,7 @@ main .left-part {
  ********************************/
 .reserve-area {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   gap: 10px 25px;
   margin-top: 30px;
@@ -553,7 +555,7 @@ main .left-part {
   align-items: center;
   padding: 0 10px;
   box-sizing: border-box;
-  width: 525px;
+  width: 540px;
   border-radius: 10px;
 }
 
@@ -738,8 +740,8 @@ footer pre {
   }
 
   .open-modal-button {
-    left: -20px;
-    top: -20px;
+    left: -30px;
+    top: -35px;
     right: initial;
   }
 
@@ -750,7 +752,7 @@ footer pre {
   .turn-area {
     flex-direction: row;
     gap: 15px;
-    align-items: flex-start;
+    align-items: flex-end;
   }
 
   .turn-area .rolling-area {
@@ -788,7 +790,7 @@ footer pre {
 
   .reserve-area {
     flex-direction: column;
-    margin-top: 0;
+    margin-top:0;
   }
 
   .reserve-area .player-reserve {
@@ -797,7 +799,7 @@ footer pre {
 
   main .right-part {
     position: absolute;
-    top: -125px;
+    top: -30px;
     right: 0;
   }
 
@@ -807,8 +809,14 @@ footer pre {
 }
 
 @media screen and (max-width: 970px) {
+  main .left-part {
+    align-items: center;
+  }
+
   .turn-area {
     flex-direction: column;
+    align-items: flex-start;
+    max-width: 665px;
   }
 
   .reserve-area {
@@ -818,58 +826,36 @@ footer pre {
   main .right-part {
     right: initial;
     top: 190px;
-    left: 470px
-  }
-}
-
-@media screen and (max-width: 740px) {
-  main .left-part {
-    flex-direction: row;
-  }
-
-  .game-info {
-    min-width: 135px;
-    box-sizing: border-box;
-  }
-
-  #players-list {
-    flex-direction: column
-  }
-
-  .turn-area {
-    margin-top: 320px;
-  }
-
-  main .right-part {
-    top: 15px;
-    left: 145px;
-    flex-direction: row;
-    gap: 15px;
-  }
-
-  .card-container {
-    min-width: 200px;
-  }
-
-  .points-listing {
-    display: block;
-    margin-top: 0;
-    min-width: 200px;
+    left: 72%;
   }
 }
 
 @media screen and (max-width: 700px) {
   main .left-part {
     flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .game-info {
+    min-width: 135px;
+    box-sizing: border-box;
+    width: calc(100% - 220px);
+  }
+
+  #players-list {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .turn-area {
     margin-top: 45px;
+    align-items: center;
   }
 
   main .right-part {
-    left: 200px;
-    flex-direction: column;
+    left: initial;
+    right: 0;
+    top: 15px;
   }
 
   .points-listing {
