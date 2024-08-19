@@ -82,6 +82,7 @@ button:disabled {
   flex-direction: column;
   align-items: center;
   padding: 20px 35px 50px;
+  min-height: 100svh;
 }
 
 .background {

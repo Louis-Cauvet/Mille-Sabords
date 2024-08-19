@@ -102,8 +102,8 @@ function deletePlayer(event) {
  Players' list update
  *************************************/
 function updatePlayersList() {
-    const playerList = document.querySelector('.player-image-container');
-    playerList.innerHTML = '';
+    const playersList = document.querySelector('.player-image-container');
+    playersList.innerHTML = '';
 
     players.forEach(addPlayerImage);
 }
