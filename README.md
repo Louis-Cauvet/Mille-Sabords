@@ -22,6 +22,8 @@ Projet réalisé intégralement en **Vanilla JS**, **HTML** et **CSS**.
 ### Prise en main du projet ⬇️
 Une fois le projet récupéré en local, vous avez juste à cliquer sur le fichier 'index.html' et c'est parti ! Les règles du jeu sont disponibles en cliquant sur le bouton 'i' à côté de la liste des joueurs une fois la partie démarrée.
 
+⚠️⚠️ **Attention** : Au premier clic sur l'écran, une musique se lance. Cela peut être assez fort et surprenant si on ne s'y attend pas. ⚠️⚠️
+
 ### Retour personnel sur ce projet 💭
 Je suis très fier de ce projet, qui est complet et fonctionnel. En effet, il coche toutes les cases des objectifs qui nous avaient été fixés.
 
