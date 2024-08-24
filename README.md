@@ -25,9 +25,9 @@ Une fois le projet récupéré en local, vous avez juste à cliquer sur le fichi
 ⚠️⚠️ **Attention** : Au premier clic sur l'écran, une musique se lance. Cela peut être assez fort et surprenant si on ne s'y attend pas. ⚠️⚠️
 
 ### Retour personnel sur ce projet 💭
-Je suis très fier de ce projet, qui est complet et fonctionnel. En effet, il coche toutes les cases des objectifs qui nous avaient été fixés.
+Je suis très fier de ce projet, qui est complet et fonctionnel. En effet, il coche toutes les cases des objectifs qui nous avaient été initalement fixés.
 
-Je suis surtout très satisfait de la manière dont nous nous sommes entendus, organisés et avons échangé nos idées avec les autres membres de l'équipe, car c'était la première fois que nous travaillions ensemble mais j'ai trouvé que l'atmosphère de travail était fluide et détendue, malgré la pression de l'enjeu.
+Je suis surtout très satisfait de la manière dont nous nous sommes entendus, organisés et avons échangé nos idées avec les autres membres de l'équipe, car c'était la première fois que nous travaillions ensemble mais j'ai trouvé que l'atmosphère de travail était fluide et détendue, malgré la pression de l'enjeu. La répartition des tâches s'est effectuée de manière très naturelle et équitable.
 
 ### Quelques images du projet 📷
 ![Choix des joueurs et du score à atteindre](https://github.com/Louis-Cauvet/Captures-des-projets/blob/main/Mille%20Sabords/capture1.png)
