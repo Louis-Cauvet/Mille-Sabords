@@ -20,7 +20,9 @@ Projet réalisé intégralement en **Vanilla JS**, **HTML** et **CSS**.
 - Louis Cauvet
 
 ### Prise en main du projet ⬇️
-Une fois le projet récupéré en local, vous avez juste à cliquer sur le fichier 'index.html' et c'est parti ! Les règles du jeu sont disponibles en cliquant sur le bouton 'i' à côté de la liste des joueurs une fois la partie démarrée.
+J'ai mis en ligne ce projet via GutHub, vous pouvez le retrouver à l'url suivante : https://louis-cauvet.github.io/Mille-Sabords/ 
+
+Les règles du jeu sont disponibles en cliquant sur le bouton 'i' à côté de la liste des joueurs une fois la partie démarrée.
 
 ⚠️⚠️ **Attention** : Au premier clic sur l'écran, une musique se lance. Cela peut être assez fort et surprenant si on ne s'y attend pas. ⚠️⚠️
 
